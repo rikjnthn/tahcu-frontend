@@ -1,3 +1,20 @@
+:root {
+  --primary: #08a045;
+  --secondary: #6bbf59;
+  --tertiary: #0b6e4f;
+  --quaternary: #073b3a;
+  --white: #fff;
+}
+
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     --primary: #067432;
+//     --secondary: #2c5822;
+//     --tertiary: #11a777;
+//     --quaternary: #36e7e4;
+//   }
+// }
+
 * {
   padding: 0;
   margin: 0;
@@ -7,4 +24,163 @@
 html,
 body {
   overflow: hidden;
+}
+
+main {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.dark_overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #0000004d;
+  top: 0;
+}
+
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo_profile_xl {
+  width: 10rem;
+  height: 10rem;
+}
+
+.photo_profile_md {
+  width: 3.75rem;
+  height: 3.75rem;
+}
+
+.photo_profile_sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+.user-profile-photo {
+  display: flex;
+  justify-content: center;
+  height: 15rem;
+  margin-top: 3rem;
+  border-bottom: 1px solid #000;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+.flex-row-reversed {
+  flex-direction: row-reverse;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.left-10 {
+  left: 1rem;
+}
+
+.right-10 {
+  right: 1rem;
+}
+
+.-right-100 {
+  right: -100%;
+}
+
+.w-0 {
+  width: 0;
+}
+
+.-z-1 {
+  z-index: -1;
+}
+
+.z-1 {
+  z-index: 1;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.chat-profile-container,
+.chat-page-container {
+  --transition-duration: 100ms;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background: #fff;
+  transition: transform var(--transition-duration);
+}
+
+.translateX-0 {
+  transform: translateX(0);
+}
+
+.-translateX-100 {
+  transform: translateX(100%);
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-stack {
+  grid-template-areas: "stack";
+  grid-area: stack;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.user-select-none {
+  user-select: none;
+}
+
+.display-none {
+  display: none;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
 }
