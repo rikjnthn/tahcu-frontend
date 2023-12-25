@@ -1,0 +1,14 @@
+.next_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  width: 4rem;
+  height: 4rem;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  border: none;
+  border-radius: 50rem;
+  background-color: var(--primary);
+}
