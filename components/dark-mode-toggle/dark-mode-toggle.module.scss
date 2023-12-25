@@ -1,0 +1,41 @@
+.dark_mode_toggle {
+  & > div:first-child {
+    display: flex;
+  }
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 14px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  width: 2.5rem;
+  height: 1rem;
+  border-radius: 50rem;
+  margin-left: auto;
+  background-color: rgb(209, 209, 209);
+
+  &::before {
+    --transition-duration: 100ms;
+
+    content: "";
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+    position: relative;
+    background-color: var(--tertiary);
+    border-radius: 50rem;
+    transition: inset var(--transition-duration);
+  }
+}
+
+.toggle_true::before {
+  left: 50%;
+}
+
+.toggle_false::before {
+  left: -10%;
+}
