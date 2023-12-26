@@ -9,9 +9,9 @@ import BackButton from "../back-button";
 import style from "./chat-contact-header.module.scss";
 
 const ChatContactHeader = ({
-  setOpenNav,
+  setIsOpenNav,
 }: {
-  setOpenNav: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenNav: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
@@ -24,7 +24,7 @@ const ChatContactHeader = ({
       {!isSearch && (
         <div className={style.logo_and_hamburger}>
           <HamburgerButton
-            onClick={() => setOpenNav(true)}
+            onClick={() => setIsOpenNav(true)}
             fill="#000000"
             title="Open navigation"
           />

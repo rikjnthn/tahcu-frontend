@@ -4,7 +4,7 @@ import { useId } from "react";
 import MemberList from "../member-list";
 import style from "./create-group-information.module.scss";
 
-const TemporaryGroupInformation = () => {
+const CreateGroupInformation = () => {
   const groupNameInputId = useId();
 
   return (
@@ -24,4 +24,4 @@ const TemporaryGroupInformation = () => {
   );
 };
 
-export default TemporaryGroupInformation;
+export default CreateGroupInformation;

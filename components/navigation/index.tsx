@@ -7,11 +7,11 @@ import PhotoProfile from "../photo-profile";
 import style from "./navigation.module.scss";
 import DarkModeToggle from "../dark-mode-toggle";
 
-const Navigation = ({ openNav }: { openNav: boolean }) => {
+const Navigation = ({ isOpenNav }: { isOpenNav: boolean }) => {
   const router = useRouter();
 
   return (
-    <nav className={`${style.navigation} ${!openNav ? style.close_nav : ""}`}>
+    <nav className={`${style.navigation} ${!isOpenNav ? style.close_nav : ""}`}>
       <div onClick={() => router.push("/user")}>
         <PhotoProfile name="name" size="md" />
         <div>
