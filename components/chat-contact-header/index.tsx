@@ -7,15 +7,16 @@ import HamburgerButton from "../hamburger-button";
 import SearchButton from "../search-button";
 import BackButton from "../back-button";
 import style from "./chat-contact-header.module.scss";
+import { SetStateType } from "@/interface";
 
 const ChatContactHeader = ({
   setIsOpenNav,
 }: {
-  setIsOpenNav: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenNav: SetStateType<boolean>;
 }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
-  const handleSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSearchClick = () => {
     setIsSearch((prev) => !prev);
   };
 
@@ -38,7 +39,7 @@ const ChatContactHeader = ({
         }
       >
         {isSearch && (
-          <div className="tes tes2">
+          <div>
             <BackButton
               onClick={() => setIsSearch(false)}
               fill="#000"

@@ -8,9 +8,10 @@ import CreatePrivateChat from "@/components/create-private-chat";
 import style from "./home-page.module.scss";
 
 const HomePage = () => {
-  const [openChatContact, setOpenChatContact] = useState<boolean>(true);
-  const [openCreateGroup, setOpenCreateGroup] = useState<boolean>(false);
-  const [openCreatePrivate, setOpenCreatePrivate] = useState<boolean>(false);
+  const [isopenChatContact, setIsOpenChatContact] = useState<boolean>(true);
+  const [isopenCreateGroup, setIsOpenCreateGroup] = useState<boolean>(false);
+  const [isopenCreatePrivate, setIsOpenCreatePrivate] =
+    useState<boolean>(false);
 
   return (
     <div className={style.home}>

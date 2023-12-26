@@ -18,20 +18,21 @@
       user-select: none;
     }
   }
+}
 
-  & > .search_container {
+.search_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 50rem;
+  padding-inline: 0.75rem;
+  background-color: transparent;
+
+  & > div {
+    flex: 1 0 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 100%;
-    border: 1px solid;
-    border-radius: 50rem;
-    padding-inline: 0.75rem;
-    background-color: transparent;
-
-    & > div {
-      flex: 1 0 0;
-      display: flex;
-    }
   }
 }
