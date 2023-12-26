@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 2rem;
+
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}

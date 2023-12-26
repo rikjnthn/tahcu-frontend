@@ -1,0 +1,17 @@
+.create_group_information {
+  & > form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-inline: 2rem;
+
+    & > input {
+      height: 3rem;
+      font-size: 16px;
+      font-family: inherit;
+      padding: 1rem;
+      border-radius: 5px;
+      border: 1px solid #818181;
+    }
+  }
+}
