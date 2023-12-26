@@ -7,7 +7,6 @@ import HamburgerButton from "../hamburger-button";
 import SearchButton from "../search-button";
 import BackButton from "../back-button";
 import style from "./chat-contact-header.module.scss";
-import SearchBar from "../search-bar";
 
 const ChatContactHeader = ({
   setOpenNav,
