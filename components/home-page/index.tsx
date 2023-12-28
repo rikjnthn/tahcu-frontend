@@ -1,27 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import ChatHomePage from "@/components/chat-home-page";
 import CreateGroupPage from "@/components/create-group-page";
 import CreatePrivateChat from "@/components/create-private-chat";
 import style from "./home-page.module.scss";
+import { useHomePage } from "@/context/home-page-context";
 
 const HomePage = () => {
-  const [isopenChatContact, setIsOpenChatContact] = useState<boolean>(true);
-  const [isopenCreateGroup, setIsOpenCreateGroup] = useState<boolean>(false);
-  const [isopenCreatePrivate, setIsOpenCreatePrivate] =
-    useState<boolean>(false);
+  const { isOpenChatContact, isOpenCreateGroup, isOpenCreatePrivateChat } =
+    useHomePage();
 
   return (
     <div className={style.home}>
-      <div>
+      <div
+        className={`${isOpenChatContact ? "translateX-0" : "-translateX-100"}`}
+      >
         <ChatHomePage />
       </div>
-      <div>
+      <div
+        className={`${isOpenCreateGroup ? "translateX-0" : "translateX-100"}`}
+      >
         <CreateGroupPage />
       </div>
-      <div>
+      <div
+        className={`${
+          isOpenCreatePrivateChat ? "translateX-0" : "translateX-100"
+        }`}
+      >
         <CreatePrivateChat />
       </div>
     </div>

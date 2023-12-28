@@ -12,7 +12,7 @@ const FloatButton = () => {
 
   return (
     <div className={style.float_button}>
-      {isOpen && <FloatOption />}
+      {isOpen && <FloatOption setIsOpen={setIsOpen} />}
 
       {isOpen ? (
         <CloseButton

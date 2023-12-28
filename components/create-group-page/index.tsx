@@ -4,7 +4,7 @@ import CreateGroup from "../create-group";
 import AddingMembers from "../adding-members";
 
 const CreateGroupPage = () => {
-  return !true ? (
+  return true ? (
     <div>
       <AddingMembers />
     </div>

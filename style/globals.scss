@@ -37,6 +37,7 @@ main {
   height: 100%;
   background-color: #0000004d;
   top: 0;
+  z-index: 1;
 }
 
 .margin-left-auto {
@@ -150,6 +151,10 @@ textarea:focus {
 }
 
 .-translateX-100 {
+  transform: translateX(-100%);
+}
+
+.translateX-100 {
   transform: translateX(100%);
 }
 

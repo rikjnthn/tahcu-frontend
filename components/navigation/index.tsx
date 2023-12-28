@@ -11,7 +11,11 @@ const Navigation = ({ isOpenNav }: { isOpenNav: boolean }) => {
   const router = useRouter();
 
   return (
-    <nav className={`${style.navigation} ${!isOpenNav ? style.close_nav : ""}`}>
+    <nav
+      className={`${style.navigation} ${
+        !isOpenNav ? `${style.close_nav}` : ""
+      }`}
+    >
       <div onClick={() => router.push("/user")}>
         <PhotoProfile name="name" size="md" />
         <div>

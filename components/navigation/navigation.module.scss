@@ -1,5 +1,5 @@
 .navigation {
-  --transition-duration: 100ms;
+  --transition-duration: 250ms;
 
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   left: 0;
   top: 0;
   background-color: var(--white);
-  transition: transform var(--transition-duration);
+  transition: transform linear var(--transition-duration);
   z-index: 10;
   user-select: none;
 
