@@ -15,7 +15,7 @@ const HomePage = () => {
   return (
     <div className={style.home}>
       <div
-        className={`${isOpenChatContact ? "translateX-0" : "-translateX-100"}`}
+        className={`${isOpenChatContact ? "translateX-0" : "-translateX-10"}`}
       >
         <ChatHomePage />
       </div>

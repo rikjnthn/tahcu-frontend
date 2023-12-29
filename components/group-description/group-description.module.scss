@@ -1,0 +1,11 @@
+.description {
+  padding: 1rem 2.5rem;
+
+  & > span {
+    font-weight: 600;
+  }
+
+  & > div {
+    margin-top: 1rem;
+  }
+}

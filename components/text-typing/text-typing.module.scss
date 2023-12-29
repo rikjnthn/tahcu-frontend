@@ -1,0 +1,26 @@
+.text_typing {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+
+  & > textarea {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 1.5rem;
+    min-height: 1.5rem;
+    max-height: 20rem;
+    border: none;
+    padding-inline-end: 2rem;
+    font-family: inherit;
+    font-size: 14px;
+    background-color: var(--white);
+    resize: none;
+  }
+}
+
+.plane_button {
+}

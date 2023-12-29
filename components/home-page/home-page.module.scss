@@ -1,11 +1,15 @@
 .home {
   & > div {
-    --transition-duration: 250ms;
+    --transition-duration: 200ms;
 
     position: absolute;
     width: 100%;
     height: 100%;
     background-color: #fff;
     transition: transform linear var(--transition-duration);
+
+    &:first-child {
+      --transition-duration: 100ms;
+    }
   }
 }
