@@ -1,0 +1,57 @@
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  max-width: 85%;
+  list-style: none;
+  cursor: default;
+
+  @media (pointer: coarse) {
+    &:active {
+      & > div:first {
+        background: #999;
+      }
+    }
+  }
+
+  @media (pointer: fine) {
+    &:focus {
+      background: #000;
+    }
+  }
+
+  & > div:first-child {
+    position: relative;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 14px;
+    background-color: var(--white);
+
+    & > span:first-child {
+      position: relative;
+      word-break: break-word;
+      white-space: pre-wrap;
+      padding-inline-end: 1.25rem;
+    }
+
+    .time {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      padding: 5px;
+      font-size: 12px;
+      color: #7e7e7e;
+      z-index: 1;
+    }
+  }
+}
+
+.message_context_container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}

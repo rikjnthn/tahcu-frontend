@@ -1,0 +1,31 @@
+.chat_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--primary);
+  color: var(--white);
+
+  & > div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+
+    & > div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 90%;
+
+      span {
+        font-size: 18px;
+        font-weight: 700;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 90%;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.group_photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid;
+  border-radius: 100%;
+  background-color: #fff;
+  color: #000;
+  user-select: none;
+}
