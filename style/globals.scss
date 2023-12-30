@@ -150,12 +150,12 @@ textarea:focus {
   transform: translateX(0);
 }
 
-.-translateX-100 {
-  transform: translateX(-100%);
-}
-
 .translateX-100 {
   transform: translateX(100%);
+}
+
+.-translateX-100 {
+  transform: translateX(-100%);
 }
 
 .grid {
