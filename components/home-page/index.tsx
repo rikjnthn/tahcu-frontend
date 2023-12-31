@@ -7,10 +7,15 @@ import CreateGroupPage from "@/components/create-group-page";
 import CreatePrivateChat from "@/components/create-private-chat";
 import style from "./home-page.module.scss";
 import { useHomePage } from "@/context/home-page-context";
+import UserPage from "../user-page";
 
 const HomePage = () => {
-  const { isOpenChatContact, isOpenCreateGroup, isOpenCreatePrivateChat } =
-    useHomePage();
+  const {
+    isOpenChatContact,
+    isOpenCreateGroup,
+    isOpenCreatePrivateChat,
+    isOpenUserProfile,
+  } = useHomePage();
 
   return (
     <div className={style.home}>
@@ -30,6 +35,11 @@ const HomePage = () => {
         }`}
       >
         <CreatePrivateChat />
+      </div>
+      <div
+        className={`${isOpenUserProfile ? "translateX-0" : "translateX-100"}`}
+      >
+        <UserPage />
       </div>
     </div>
   );

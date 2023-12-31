@@ -15,7 +15,7 @@ const ChatHomePage = () => {
 
   return (
     <div>
-      <Navigation isOpenNav={isOpenNav} />
+      <Navigation setIsOpenNav={setIsOpenNav} isOpenNav={isOpenNav} />
       <div className={`${isOpenChatContact ? "" : "scale-90"}`}>
         <ChatContactHeader setIsOpenNav={setIsOpenNav} />
         <ChatContactList />

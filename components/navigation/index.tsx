@@ -1,14 +1,25 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import NavOption from "../nav-option";
 import PhotoProfile from "../photo-profile";
 import style from "./navigation.module.scss";
 import DarkModeToggle from "../dark-mode-toggle";
+import { useHomePageDispatch } from "@/context/home-page-context";
+import { SetStateType } from "@/interface";
 
-const Navigation = ({ isOpenNav }: { isOpenNav: boolean }) => {
-  const router = useRouter();
+const Navigation = ({
+  isOpenNav,
+  setIsOpenNav,
+}: {
+  isOpenNav: boolean;
+  setIsOpenNav: SetStateType<boolean>;
+}) => {
+  const dispatch = useHomePageDispatch();
+
+  const openUserProfile = () => {
+    setIsOpenNav(false);
+    dispatch({ type: "SET_OPEN_PROFILE" });
+  };
 
   return (
     <nav
@@ -16,7 +27,7 @@ const Navigation = ({ isOpenNav }: { isOpenNav: boolean }) => {
         !isOpenNav ? `${style.close_nav}` : ""
       }`}
     >
-      <div onClick={() => router.push("/user")}>
+      <div onClick={openUserProfile}>
         <PhotoProfile name="name" size="md" />
         <div>
           <span>User</span>
