@@ -1,0 +1,9 @@
+.user_datas {
+  padding-block: 1rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
