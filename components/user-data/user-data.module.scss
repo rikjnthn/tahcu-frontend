@@ -1,0 +1,13 @@
+.user_data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-inline: 2.5rem;
+
+  & > div {
+    &:first-child {
+      font-size: 14px;
+      color: #757575;
+    }
+  }
+}
