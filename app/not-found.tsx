@@ -29,6 +29,7 @@ export default function NotFound() {
           />
         </g>
       </svg>
+      <div>Not Found</div>
     </div>
   );
 }

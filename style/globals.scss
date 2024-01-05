@@ -220,6 +220,7 @@ textarea:focus {
 
 .not-found {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -228,6 +229,11 @@ textarea:focus {
   width: 100%;
   height: 100%;
   background-color: #fff;
+
+  & > div {
+    font-size: 2rem;
+    font-weight: 600;
+  }
 }
 
 #not-found-svg {
