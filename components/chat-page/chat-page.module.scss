@@ -1,11 +1,28 @@
-.chat_profile_container,
-.chat_page_container {
-  --transition-duration: 100ms;
+@use "../../style/breakpoint.scss";
 
-  position: absolute;
-  width: 100%;
-  height: 100%;
+.chat_page {
+  --translate-x: -30rem;
 
-  background: #fff;
-  transition: transform var(--transition-duration);
+  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  transform: translateX(var(--translate-x));
+
+  & > div {
+    --transition-duration: 200ms;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transition: transform var(--transition-duration);
+
+    @include breakpoint.desktop {
+      width: calc(100% - 30rem);
+    }
+  }
+
+  @include breakpoint.desktop {
+    transform: none;
+  }
 }

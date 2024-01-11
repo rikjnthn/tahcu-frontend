@@ -1,3 +1,5 @@
+@use "./breakpoint.scss";
+
 :root {
   --primary: #08a045;
   --secondary: #6bbf59;
@@ -38,6 +40,10 @@ main {
   background-color: #0000004d;
   top: 0;
   z-index: 1;
+
+  @include breakpoint.tablet {
+    // display: none;
+  }
 }
 
 .margin-left-auto {
@@ -131,6 +137,10 @@ textarea:focus {
   z-index: -1;
 }
 
+.z-0 {
+  z-index: 0;
+}
+
 .z-1 {
   z-index: 1;
 }
@@ -153,17 +163,6 @@ textarea:focus {
 
 .opacity-50 {
   opacity: 0.5;
-}
-
-.chat-profile-container,
-.chat-page-container {
-  --transition-duration: 100ms;
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  transition: transform var(--transition-duration);
 }
 
 .translateX-0 {
@@ -230,9 +229,30 @@ textarea:focus {
   height: 100%;
   background-color: #fff;
 
+  & > svg {
+    scale: 0.5;
+
+    @include breakpoint.tablet {
+      scale: 1;
+    }
+
+    @include breakpoint.desktop {
+      scale: 1.5;
+    }
+  }
+
   & > div {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
+
+    @include breakpoint.tablet {
+      font-size: 2rem;
+    }
+
+    @include breakpoint.desktop {
+      font-size: 4rem;
+      margin-top: 5rem;
+    }
   }
 }
 
@@ -250,6 +270,31 @@ textarea:focus {
     &:nth-child(3) {
       animation-delay: 1s;
     }
+  }
+}
+
+.main-page {
+  display: flex;
+  position: relative;
+}
+
+.chat-page-container {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+
+  @include breakpoint.tablet {
+    position: static;
+    width: calc(100% - 30rem);
+    background-color: #fff;
+  }
+}
+
+.home-page-container {
+  @include breakpoint.tablet {
+    position: relative;
+    width: 30rem;
+    z-index: 0;
   }
 }
 

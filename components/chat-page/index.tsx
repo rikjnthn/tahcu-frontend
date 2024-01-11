@@ -18,25 +18,19 @@ const ChatPage = ({ params }: { params: { contact: string } }) => {
   }, [contact]);
 
   return (
-    <main>
-      <div
-        className={`${style.chat_profile_container} z-1 ${
-          openHeader ? "translateX-0" : "translateX-100"
-        }`}
-      >
+    <div className={style.chat_page}>
+      <div className={`z-1 ${openHeader ? "translateX-0" : "translateX-100"}`}>
         <ChatProfile setOpenHeader={setOpenHeader} />
       </div>
       <div
-        className={`${style.chat_page_container} ${
-          routeChangeComplete ? "translateX-0" : "translateX-100"
-        }`}
+        className={`${routeChangeComplete ? "translateX-0" : "translateX-100"}`}
       >
         <Chat
           setChangeRouteComplete={setRouteChangeComplete}
           setOpenHeader={setOpenHeader}
         />
       </div>
-    </main>
+    </div>
   );
 };
 

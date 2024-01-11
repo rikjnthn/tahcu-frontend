@@ -5,10 +5,10 @@ import NewContactOption from "../new-contact-option";
 
 const CreatePrivateChat = () => {
   return (
-    <>
+    <div>
       <CreatePrivateChatHeader />
       <NewContactOption />
-    </>
+    </div>
   );
 };
 

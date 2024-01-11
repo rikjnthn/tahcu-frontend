@@ -1,3 +1,5 @@
+@use "../../style/breakpoint.scss";
+
 .chat_contact {
   display: flex;
   align-items: center;
@@ -35,7 +37,7 @@
 .name_message {
   display: flex;
   flex-direction: column;
-  width: calc(100vw - 12rem);
+  width: calc(100% - 10rem);
 
   & > span {
     overflow: hidden;

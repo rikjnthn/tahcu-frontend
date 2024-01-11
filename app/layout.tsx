@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import { poppins } from "@/font";
 import "../style/globals.scss";
@@ -6,6 +6,10 @@ import "../style/globals.scss";
 export const metadata: Metadata = {
   title: "Tahcu",
   description: "Tahcu is free and simple to chat",
+};
+
+export const viewport: Viewport = {
+  userScalable: false,
 };
 
 export default function RootLayout({

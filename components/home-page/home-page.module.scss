@@ -1,11 +1,22 @@
+@use "../../style/breakpoint.scss";
+
 .home {
   & > div {
-    --transition-duration: 100ms;
+    --transition-duration: 200ms;
 
     position: absolute;
+    top: 0;
     width: 100%;
     height: 100%;
     background-color: #fff;
-    transition: transform linear var(--transition-duration);
+    transition: transform var(--transition-duration);
+
+    @include breakpoint.tablet {
+      z-index: -10;
+
+      &:first-child {
+        border-inline-end: 1px solid #88888880;
+      }
+    }
   }
 }

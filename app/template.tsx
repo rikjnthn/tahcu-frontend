@@ -5,13 +5,13 @@ import HomePage from "@/components/home-page";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
-    <main>
-      <div>
+    <main className="main-page">
+      <div className="home-page-container">
         <HomePageProvider>
           <HomePage />
         </HomePageProvider>
       </div>
-      <div>{children}</div>
+      <div className="chat-page-container">{children}</div>
     </main>
   );
 }

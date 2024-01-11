@@ -1,5 +1,7 @@
+@use "../../style/breakpoint.scss";
+
 .navigation {
-  --transition-duration: 100ms;
+  --transition-duration: 200ms;
 
   display: flex;
   flex-direction: column;
@@ -9,7 +11,7 @@
   left: 0;
   top: 0;
   background-color: var(--white);
-  transition: transform linear var(--transition-duration);
+  transition: transform var(--transition-duration);
   z-index: 10;
   user-select: none;
 
@@ -35,6 +37,11 @@
         font-size: 14px;
       }
     }
+
+    @include breakpoint.tablet {
+      // border-start-start-radius: 10px;
+      // border-start-end-radius: 10px;
+    }
   }
 
   & > div:nth-child(2) {
@@ -42,6 +49,15 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 1rem;
+  }
+
+  @include breakpoint.tablet {
+    // left: 2rem;
+    // top: 4rem;
+    // width: 15rem;
+    // height: fit-content;
+    // border-radius: 10px;
+    // box-shadow: 0 0 10px 0 #b3b3b3;
   }
 }
 
