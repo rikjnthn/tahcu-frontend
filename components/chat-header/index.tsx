@@ -24,10 +24,11 @@ const ChatHeader = ({
     e.stopPropagation();
     setRouteChangeComplete(false);
 
+    //To wait the transition and change the route
     let done = false;
 
     const id = setTimeout(() => {
-      router.replace("/");
+      router.replace("/a");
       done = true;
     }, 100);
 
