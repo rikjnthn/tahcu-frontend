@@ -1,15 +1,10 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 
-import { poppins } from "@/font";
 import "../style/globals.scss";
 
 export const metadata: Metadata = {
   title: "Tahcu",
   description: "Tahcu is free and simple to chat",
-};
-
-export const viewport: Viewport = {
-  userScalable: false,
 };
 
 export default function RootLayout({
@@ -19,9 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} user-select-none`}>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
