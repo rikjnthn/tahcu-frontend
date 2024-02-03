@@ -8,24 +8,10 @@
   --white: #fff;
 }
 
-// @media (prefers-color-scheme: dark) {
-//   :root {
-//     --primary: #067432;
-//     --secondary: #2c5822;
-//     --tertiary: #11a777;
-//     --quaternary: #36e7e4;
-//   }
-// }
-
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-}
-
-html,
-body {
-  overflow: hidden;
 }
 
 main {
@@ -40,10 +26,6 @@ main {
   background-color: #0000004d;
   top: 0;
   z-index: 1;
-
-  @include breakpoint.tablet {
-    // display: none;
-  }
 }
 
 .margin-left-auto {
