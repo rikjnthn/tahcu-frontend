@@ -9,9 +9,7 @@ export const viewport: Viewport = {
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${poppins.className} user-select-none overflow-hidden`}>
-      {children}
-    </div>
+    <div className={`${poppins.className} user-select-none`}>{children}</div>
   );
 }
 
