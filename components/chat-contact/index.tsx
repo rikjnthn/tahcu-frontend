@@ -16,7 +16,7 @@ const ChatContact = ({
 }) => {
   return (
     <li className={style.chat_contact}>
-      <Link href={`a/chat/${to}`}>
+      <Link href={`/a/chat/${to}`}>
         <PhotoProfile name={name} size="md" />
 
         <div className={style.name_message}>
