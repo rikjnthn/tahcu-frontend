@@ -24,7 +24,11 @@ const ChatPage = ({ params }: { params: { contact: string } }) => {
           openHeader ? "translateX-0" : "translateX-100"
         }`}
       >
-        <ChatProfile setOpenHeader={setOpenHeader} />
+        <ChatProfile
+          name="John"
+          isGroup={false}
+          setOpenHeader={setOpenHeader}
+        />
       </div>
       <div
         className={`${style.chat_page_container} ${
