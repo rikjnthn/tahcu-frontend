@@ -14,6 +14,13 @@
     background-color: #fff;
     transition: transform var(--transition-duration);
 
+    @include breakpoint.tablet {
+      &:first-child {
+        width: 30rem;
+        right: 0;
+      }
+    }
+
     @include breakpoint.desktop {
       width: calc(100% - 30rem);
     }
