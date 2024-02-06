@@ -20,7 +20,11 @@ const ChatPage = ({ params }: { params: { contact: string } }) => {
   return (
     <div className={style.chat_page}>
       <div className={`z-1 ${openHeader ? "translateX-0" : "translateX-100"}`}>
-        <ChatProfile setOpenHeader={setOpenHeader} />
+        <ChatProfile
+          name="John"
+          isGroup={false}
+          setOpenHeader={setOpenHeader}
+        />
       </div>
       <div
         className={`${routeChangeComplete ? "translateX-0" : "translateX-100"}`}
