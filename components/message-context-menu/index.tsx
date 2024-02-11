@@ -2,30 +2,29 @@ import React, { useEffect, useRef } from "react";
 
 import style from "./message-context-menu.module.scss";
 import { MessageMenuCoordinateType, SetStateType } from "@/interface";
+import { useChat, useChatDispatch } from "@/context/chat-context";
 
 const MessageContextMenu = ({
   id,
   message,
   menuCoordinate,
-  chatPageRef,
-  setIsEditMessage,
   isSender,
-  setMessageObject,
 }: {
   id: string;
   message: string;
   menuCoordinate: MessageMenuCoordinateType;
-  chatPageRef: React.RefObject<HTMLDivElement>;
-  setIsEditMessage: SetStateType<boolean>;
   isSender: boolean;
-  setMessageObject: SetStateType<any>;
 }) => {
   const messageContextRef = useRef<HTMLDivElement>(null);
+
+  const { chatRef } = useChat();
+  const { setEditMessage, setEditMessageId, setIsEditMessage } =
+    useChatDispatch();
 
   useEffect(() => {
     if (messageContextRef.current) {
       const messageContext = messageContextRef.current;
-      const chatPageElement = chatPageRef.current;
+      const chatPageElement = chatRef.current;
 
       const chatPageWidth = chatPageElement?.clientWidth ?? 0;
       const chatPageHeight = chatPageElement?.clientHeight ?? 0;
@@ -62,11 +61,8 @@ const MessageContextMenu = ({
 
   const handleEditMessage = () => {
     setIsEditMessage(true);
-
-    setMessageObject({
-      id,
-      message,
-    });
+    setEditMessage(message);
+    setEditMessageId(id);
   };
 
   return (

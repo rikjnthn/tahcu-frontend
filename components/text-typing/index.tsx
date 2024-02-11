@@ -3,25 +3,20 @@
 import React, { forwardRef, useRef } from "react";
 
 import style from "./text-typing.module.scss";
-import { SetStateType } from "@/interface";
+import { useChat, useChatDispatch } from "@/context/chat-context";
 
 const TextTyping = (
   {
     onInput,
-    isEditMessage,
-    setIsEditMessage,
-    messageObject,
-    setMessageObject,
   }: {
     onInput?: React.FormEventHandler<HTMLTextAreaElement>;
-    isEditMessage: boolean;
-    setIsEditMessage: SetStateType<boolean>;
-    setMessageObject: SetStateType<any>;
-    messageObject: any;
   },
   ref: React.Ref<HTMLTextAreaElement>
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { isEditMessage } = useChat();
+  const { setIsEditMessage } = useChatDispatch();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {

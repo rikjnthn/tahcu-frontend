@@ -4,22 +4,15 @@ import { useEffect, useRef } from "react";
 
 import style from "./send-message-place.module.scss";
 import TextTyping from "../text-typing";
-import { SetStateType } from "@/interface";
 import CloseButton from "../close-button";
+import { useChat, useChatDispatch } from "@/context/chat-context";
 
-const SendMessagePlace = ({
-  isEditMessage,
-  setIsEditMessage,
-  setMessageObject,
-  messageObject,
-}: {
-  isEditMessage: boolean;
-  setIsEditMessage: SetStateType<boolean>;
-  setMessageObject: SetStateType<any>;
-  messageObject: any;
-}) => {
+const SendMessagePlace = () => {
   const sendMassagePlaceRef = useRef<HTMLDivElement>(null);
   const textTypingRef = useRef<HTMLTextAreaElement>(null);
+
+  const { isEditMessage, editMessage, editMessageId } = useChat();
+  const { setIsEditMessage } = useChatDispatch();
 
   const handleInput = () => {
     if (textTypingRef.current && sendMassagePlaceRef.current) {
@@ -43,7 +36,7 @@ const SendMessagePlace = ({
         <div className={style.message_to_edit}>
           <div>
             <span>Editting</span>
-            <span>{messageObject.message}</span>
+            <span>{editMessage}</span>
           </div>
           <div>
             <CloseButton
@@ -54,14 +47,7 @@ const SendMessagePlace = ({
         </div>
       )}
       <div ref={sendMassagePlaceRef} className={style.send_message_place}>
-        <TextTyping
-          messageObject={messageObject}
-          setMessageObject={setMessageObject}
-          isEditMessage={isEditMessage}
-          setIsEditMessage={setIsEditMessage}
-          onInput={handleInput}
-          ref={textTypingRef}
-        />
+        <TextTyping onInput={handleInput} ref={textTypingRef} />
       </div>
     </div>
   );

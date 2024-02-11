@@ -8,16 +8,13 @@ import ChatProfileHeader from "../chat-profile-header";
 import GroupMember from "../group-member";
 import GroupDescription from "../group-description";
 import ChangeGroupInformationModal from "../change-group-information-modal";
-import { SetStateType } from "@/interface";
 
 const ChatProfile = ({
   name,
   isGroup,
-  setOpenHeader,
 }: {
   name: string;
   isGroup?: boolean;
-  setOpenHeader: SetStateType<boolean>;
 }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -26,12 +23,7 @@ const ChatProfile = ({
   if (isGroup) {
     return (
       <div>
-        <ChatProfileHeader
-          isGroup
-          name={name}
-          setOpenModal={setOpenModal}
-          setOpenHeader={setOpenHeader}
-        />
+        <ChatProfileHeader isGroup name={name} setOpenModal={setOpenModal} />
 
         {openModal && (
           <ChangeGroupInformationModal setOpenModal={setOpenModal} />
@@ -52,7 +44,7 @@ const ChatProfile = ({
 
   return (
     <div>
-      <ChatProfileHeader name={name} setOpenHeader={setOpenHeader} />
+      <ChatProfileHeader name={name} />
 
       <form className={style.change_name}>
         <input
