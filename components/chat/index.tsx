@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
 
 import ChatHeader from "@/components/chat-header";
 import MessageContainer from "@/components/message-container";
@@ -14,15 +14,36 @@ const Chat = ({
   setOpenHeader: SetStateType<boolean>;
   setChangeRouteComplete: SetStateType<boolean>;
 }) => {
+  const [isEditMessage, setIsEditMessage] = useState<boolean>(false);
+  const [messageObject, setMessageObject] = useState<{
+    id: string;
+    message: string;
+  }>({
+    id: "",
+    message: "",
+  });
+
+  const chatPageRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className={style.chat}>
+    <div ref={chatPageRef} className={style.chat}>
       <ChatHeader
         setRouteChangeComplete={setChangeRouteComplete}
         setOpenHeader={setOpenHeader}
         name="John"
       />
-      <MessageContainer />
-      <SendMessagePlace />
+      <MessageContainer
+        edittedMessage={messageObject.message}
+        setMessageObject={setMessageObject}
+        setIsEditMessage={setIsEditMessage}
+        chatPageRef={chatPageRef}
+      />
+      <SendMessagePlace
+        messageObject={messageObject}
+        setMessageObject={setMessageObject}
+        setIsEditMessage={setIsEditMessage}
+        isEditMessage={isEditMessage}
+      />
     </div>
   );
 };

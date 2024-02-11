@@ -7,4 +7,8 @@
   max-height: calc(100dvh - 4rem - 3.5rem);
   padding: 1rem 1.875rem;
   overflow: scroll;
+
+  & > li:first-child {
+    margin-top: auto;
+  }
 }

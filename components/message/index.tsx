@@ -4,14 +4,24 @@ import { useState } from "react";
 
 import style from "./message.module.scss";
 import MessageContextMenu from "../message-context-menu";
-import { MessageMenuCoordinateType } from "@/interface";
+import { MessageMenuCoordinateType, SetStateType } from "@/interface";
 
 const Message = ({
   message,
+  time,
   isSender,
+  chatPageRef,
+  setIsEditMessage,
+  edittedMessage,
+  setMessageObject,
 }: {
   message: string;
+  time: string;
   isSender: boolean;
+  chatPageRef: React.RefObject<HTMLDivElement>;
+  edittedMessage: string;
+  setIsEditMessage: SetStateType<boolean>;
+  setMessageObject: SetStateType<any>;
 }) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);
   const [menuCoordinate, setMenuCoordinate] =
@@ -41,7 +51,7 @@ const Message = ({
     >
       <div>
         <span>{message}</span>
-        <span className={style.time}>17.59</span>
+        <span className={style.time}>{time}</span>
       </div>
 
       {openMessageMenu && (
@@ -50,8 +60,13 @@ const Message = ({
           className={`${style.message_context_container}`}
         >
           <MessageContextMenu
+            id=""
+            setMessageObject={setIsEditMessage}
+            setIsEditMessage={setMessageObject}
+            chatPageRef={chatPageRef}
             message={message}
             menuCoordinate={menuCoordinate}
+            isSender={isSender}
           />
         </div>
       )}
