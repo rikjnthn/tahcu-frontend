@@ -5,7 +5,7 @@ export async function POST(req: Request) {
 
   try {
     const { data, headers } = await axios.post(
-      "http://localhost:3001/auth/sign-up",
+      `${process.env.API_URL}/auth/sign-up`,
       {
         ...signUpData,
         is_active: true,
