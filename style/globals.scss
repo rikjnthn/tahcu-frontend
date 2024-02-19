@@ -53,6 +53,12 @@ main {
   height: 2rem;
 }
 
+input {
+  &:invalid {
+    border-color: red !important;
+  }
+}
+
 input:focus,
 textarea:focus {
   outline: none;

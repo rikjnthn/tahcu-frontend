@@ -1,0 +1,42 @@
+.input_container {
+  height: 5rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & > label {
+      font-weight: 500;
+    }
+
+    & > input {
+      font-size: inherit;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid;
+
+      &[aria-invalid="true"] {
+        border-color: #ff0000;
+      }
+    }
+  }
+}
+
+.error_message {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  color: #ff0000;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.input_only {
+  font-size: inherit;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid;
+}

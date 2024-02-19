@@ -1,0 +1,10 @@
+.spinner {
+  fill: #fff;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
