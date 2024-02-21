@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 
 import { SetStateType } from "@/interface";
 
@@ -29,24 +29,17 @@ export const useChatPageDispatch = () => {
 };
 
 export const ChatPageProvider = ({
-  contact,
+  stateContext,
+  dispatchContext,
   children,
 }: {
-  contact: string;
+  stateContext: ChatPageStateType;
+  dispatchContext: ChatPageSetStateType;
   children: React.ReactNode;
 }) => {
-  const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
-  const [isRouteChangeComplete, setIsRouteChangeComplete] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    setIsRouteChangeComplete(true);
-  }, [contact]);
   return (
-    <ChatPageContext.Provider value={{ isOpenHeader, isRouteChangeComplete }}>
-      <ChatPageDispatchContext.Provider
-        value={{ setIsOpenHeader, setIsRouteChangeComplete }}
-      >
+    <ChatPageContext.Provider value={stateContext}>
+      <ChatPageDispatchContext.Provider value={dispatchContext}>
         {children}
       </ChatPageDispatchContext.Provider>
     </ChatPageContext.Provider>

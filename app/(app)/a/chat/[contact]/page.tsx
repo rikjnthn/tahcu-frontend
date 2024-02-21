@@ -1,14 +1,19 @@
-"use client";
+import { redirect } from "next/navigation";
 
+import { isTahcuTokenVerified } from "@/action/auth";
 import ChatPage from "@/components/chat-page";
-import { ChatPageProvider } from "@/context/chat-page-context";
 
-export default function Page({ params }: { params: { contact: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: { contact: string };
+}) {
+  const isValid = await isTahcuTokenVerified();
+  if (!isValid) redirect("/login");
+
   return (
     <div>
-      <ChatPageProvider contact={params.contact}>
-        <ChatPage />
-      </ChatPageProvider>
+      <ChatPage contact={params.contact} />
     </div>
   );
 }

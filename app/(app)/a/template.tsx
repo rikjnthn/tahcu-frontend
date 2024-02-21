@@ -1,6 +1,6 @@
 "use client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { HomePageProvider } from "@/context/home-page-context";
 import HomePage from "@/components/home-page";

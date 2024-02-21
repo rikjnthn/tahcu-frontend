@@ -8,7 +8,8 @@ import LandingPageFooter from "@/components/landing-page-footer";
 import { isTahcuTokenVerified } from "@/action/auth";
 
 export default async function Page() {
-  if (await isTahcuTokenVerified()) redirect("/a");
+  const isValid = await isTahcuTokenVerified();
+  if (isValid) redirect("/a");
 
   return (
     <main>
