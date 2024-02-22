@@ -36,11 +36,15 @@ export default function Page() {
 
       if (isAxiosError(e)) {
         const errorMessage = e.response?.data.message;
-        for (const name in errorMessage) {
-          if (name === "user_idOrEmail")
-            setError(name, { message: "User id or email should not be empty" });
-          else setError(name, { message: errorMessage[name] });
-        }
+
+        if (typeof errorMessage === "object")
+          for (const name in errorMessage) {
+            if (name === "user_idOrEmail")
+              setError(name, {
+                message: "User id or email should not be empty",
+              });
+            else setError(name, { message: errorMessage[name] });
+          }
       }
     } finally {
       setIsLoading(false);
