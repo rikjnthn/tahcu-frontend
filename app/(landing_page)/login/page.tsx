@@ -101,8 +101,8 @@ export default function Page() {
               value: true,
               message: "Please enter your password",
             },
-            min: {
-              value: 8,
+            minLength: {
+              value: 0,
               message: "Password should contain a minimal of 8 letters",
             },
           })}

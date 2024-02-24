@@ -14,6 +14,9 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     if (!isAxiosError(error)) return;
-    return Response.json(error.response?.data, { status: 400 });
+
+    return Response.json(error.response?.data, {
+      status: error.response?.status,
+    });
   }
 }
