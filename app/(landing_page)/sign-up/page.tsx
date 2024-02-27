@@ -33,11 +33,11 @@ export default function Page() {
       await axios.post("/api/sign-up", bodyData);
 
       router.push("/a");
-    } catch (e) {
+    } catch (error) {
       setSignupError(true);
 
-      if (isAxiosError(e)) {
-        const errorMessage = e.response?.data.message;
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
 
         if (errorMessage) {
           ["user_id", "username", "password", "email"].forEach((name) => {
@@ -75,7 +75,7 @@ export default function Page() {
         </header>
 
         <Input
-          withLabel
+          noTransition
           labelName="User Id"
           errorMessage={errors.user_id?.message?.toString()}
           type="text"
@@ -93,7 +93,7 @@ export default function Page() {
         />
 
         <Input
-          withLabel
+          noTransition
           labelName="Username"
           errorMessage={errors.username?.message?.toString()}
           type="text"
@@ -107,7 +107,7 @@ export default function Page() {
         />
 
         <Input
-          withLabel
+          noTransition
           labelName="Email"
           errorMessage={errors.email?.message?.toString()}
           type="email"
@@ -129,7 +129,7 @@ export default function Page() {
         />
 
         <Input
-          withLabel
+          noTransition
           labelName="Password"
           errorMessage={errors.password?.message?.toString()}
           type="password"
@@ -147,7 +147,7 @@ export default function Page() {
         />
 
         <Input
-          withLabel
+          noTransition
           labelName="Confirm password"
           errorMessage={errors.confirm_password?.message?.toString()}
           type="password"

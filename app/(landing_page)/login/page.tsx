@@ -31,11 +31,11 @@ export default function Page() {
       await axios.post("/api/login", data);
 
       router.push("/a");
-    } catch (e) {
+    } catch (error) {
       setLoginError(true);
 
-      if (isAxiosError(e)) {
-        const errorMessage = e.response?.data.message;
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data.message;
 
         if (typeof errorMessage === "object")
           for (const name in errorMessage) {
@@ -63,7 +63,7 @@ export default function Page() {
         </header>
 
         <Input
-          withLabel
+          noTransition
           labelName="Email / User Id"
           errorMessage={errors.user_idOrEmail?.message?.toString()}
           type="text"
@@ -91,7 +91,7 @@ export default function Page() {
         />
 
         <Input
-          withLabel
+          noTransition
           labelName="Password"
           errorMessage={errors.password?.message?.toString()}
           type="password"

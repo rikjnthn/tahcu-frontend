@@ -29,7 +29,7 @@ const UserPage = () => {
   });
 
   return (
-    <div onScroll={() => console.log("first")} className="h-full-dvh">
+    <div>
       <UserProfileHeader setIsOpenModal={setIsOpenModal} />
       <div className="overflow-scroll user-profile-photo">
         <PhotoProfile name={data?.username} size="xl" />

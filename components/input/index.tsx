@@ -4,13 +4,13 @@ import style from "./input.module.scss";
 
 const Input = (
   {
-    withLabel,
+    noTransition,
     labelName,
     className,
     errorMessage,
     ...props
   }: {
-    withLabel?: boolean;
+    noTransition?: boolean;
     labelName?: string;
     errorMessage?: string;
   } & React.InputHTMLAttributes<HTMLInputElement>,
@@ -18,30 +18,25 @@ const Input = (
 ) => {
   const id = useId();
 
-  const isError = typeof errorMessage?.length !== "undefined";
-
-  if (withLabel) {
-    return (
-      <div className={`${style.input_container} ${className}`}>
-        <div>
-          <input ref={ref} id={id} aria-invalid={isError} {...props} />
-          <label htmlFor={id}>{labelName}</label>
-        </div>
-        {errorMessage ? (
-          <em className={style.error_message} title={errorMessage}>
-            {errorMessage}
-          </em>
-        ) : null}
-      </div>
-    );
-  }
+  const isError =
+    typeof errorMessage !== "undefined" && errorMessage.length > 0;
 
   return (
-    <input
-      ref={ref}
-      className={`${style.input_only} ${className}`}
-      {...props}
-    />
+    <div
+      className={`${
+        noTransition ? style.input_no_transition : style.input_with_transition
+      } ${className}`}
+    >
+      <div>
+        <input ref={ref} id={id} aria-invalid={isError} {...props} />
+        <label htmlFor={id}>{labelName}</label>
+      </div>
+      {isError ? (
+        <em className={style.error_message} title={errorMessage}>
+          {errorMessage}
+        </em>
+      ) : null}
+    </div>
   );
 };
 

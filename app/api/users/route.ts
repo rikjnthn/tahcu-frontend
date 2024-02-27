@@ -13,3 +13,24 @@ export async function GET(req: Request) {
     }
   }
 }
+
+export async function PATCH(req: Request) {
+  const updateData = await req.json();
+  try {
+    const { data } = await axios.patch(
+      `${process.env.API_URL}/users`,
+      updateData,
+      {
+        headers: Object.fromEntries(req.headers),
+      }
+    );
+
+    return Response.json(data);
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return Response.json(error.response?.data, {
+        status: error.response?.status,
+      });
+    }
+  }
+}

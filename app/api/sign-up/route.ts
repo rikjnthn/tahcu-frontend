@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     const newHeader = headers as HeadersInit;
 
-    const response = new Response(JSON.stringify(data), {
+    const response = new Response(data, {
       headers: newHeader,
     });
     return response;
