@@ -21,7 +21,6 @@ const EditProfileModalBody = ({
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
     setError,
     clearErrors,
   } = useForm<UpdateUserDataType>();
@@ -45,14 +44,6 @@ const EditProfileModalBody = ({
   const userData = queryClient.getQueryData<unknown, string[], UserDataType>([
     "userData",
   ]);
-
-  useEffect(() => {
-    setValue("username", userData?.username);
-    setValue("user_id", userData?.user_id);
-    setValue("email", userData?.email);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!isError) {
@@ -80,28 +71,48 @@ const EditProfileModalBody = ({
         errorMessage={errors.username?.message?.toString()}
         labelName="Username"
         {...register("username", {
-          required: true,
-          minLength: 4,
+          required: {
+            value: true,
+            message: "Please enter the username",
+          },
+          minLength: {
+            value: 4,
+            message: "Username should contain a minimum of 4 letters",
+          },
+          value: userData?.username,
         })}
       />
       <Input
         errorMessage={errors.user_id?.message?.toString()}
         labelName="User Id"
         {...register("user_id", {
-          required: true,
+          required: {
+            value: true,
+            message: "Please enter the user id",
+          },
+          minLength: {
+            value: 4,
+            message: "User id should contain a minimum of 4 letters",
+          },
+          value: userData?.user_id,
         })}
       />
       <Input
         errorMessage={errors.email?.message?.toString()}
         labelName="Email"
         {...register("email", {
-          required: true,
+          required: {
+            value: true,
+            message: "Please enter the email",
+          },
           validate: {
             isEmail: (v?: string) => {
               const domain = v?.split("@")[1];
-              return domain === "gmail.com";
+              if (domain === "gmail.com") return true;
+              return "Please use gmail.com domain";
             },
           },
+          value: userData?.email,
         })}
       />
 
