@@ -27,6 +27,7 @@ const EditProfileModalBody = ({
   } = useForm<UpdateUserDataType>();
 
   const { isPending, isError, mutate } = useMutation({
+    mutationKey: ["updateUserData"],
     mutationFn: (newData: UpdateUserDataType) =>
       axios.patch<any, AxiosResponse<UpdateUserDataType>>(
         "api/users",
