@@ -2,7 +2,6 @@ import React from "react";
 
 import BackButton from "../back-button";
 import style from "./create-private-chat-header.module.scss";
-import SearchAndCreatePrivateChat from "../search-and-create-private-chat";
 import { useHomePageDispatch } from "@/context/home-page-context";
 
 const CreatePrivateChatHeader = () => {
@@ -14,7 +13,6 @@ const CreatePrivateChatHeader = () => {
   return (
     <header className={style.header}>
       <BackButton onClick={openChatContact} fill="#000" />
-      <SearchAndCreatePrivateChat />
     </header>
   );
 };
