@@ -13,6 +13,7 @@ const CreatePrivateChatHeader = () => {
   return (
     <header className={style.header}>
       <BackButton onClick={openChatContact} fill="#000" />
+      <span>Add Contact</span>
     </header>
   );
 };

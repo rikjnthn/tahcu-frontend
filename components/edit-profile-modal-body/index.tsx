@@ -68,8 +68,8 @@ const EditProfileModalBody = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={style.body}>
       <Input
-        errorMessage={errors.username?.message?.toString()}
         labelName="Username"
+        errorMessage={errors.username?.message?.toString()}
         {...register("username", {
           required: {
             value: true,
@@ -83,8 +83,8 @@ const EditProfileModalBody = ({
         })}
       />
       <Input
-        errorMessage={errors.user_id?.message?.toString()}
         labelName="User Id"
+        errorMessage={errors.user_id?.message?.toString()}
         {...register("user_id", {
           required: {
             value: true,
@@ -98,8 +98,8 @@ const EditProfileModalBody = ({
         })}
       />
       <Input
-        errorMessage={errors.email?.message?.toString()}
         labelName="Email"
+        errorMessage={errors.email?.message?.toString()}
         {...register("email", {
           required: {
             value: true,

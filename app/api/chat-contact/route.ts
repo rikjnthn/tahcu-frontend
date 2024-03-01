@@ -1,5 +1,4 @@
 import axios, { isAxiosError } from "axios";
-import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
   try {
@@ -7,10 +6,10 @@ export async function GET(req: Request) {
       headers: Object.fromEntries(req.headers),
     });
 
-    return NextResponse.json(data);
+    return Response.json(data);
   } catch (error) {
     if (isAxiosError(error)) {
-      return NextResponse.json(error.response?.data, {
+      return Response.json(error.response?.data, {
         status: error.response?.status,
       });
     }

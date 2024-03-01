@@ -15,21 +15,39 @@ const getContactList = async (): Promise<Array<any>> => {
   return data;
 };
 
+const getUserData = async () => {
+  const { data } = await axios.get("/api/users", {
+    withCredentials: true,
+    withXSRFToken: true,
+    xsrfCookieName: "CSRF_TOKEN",
+    xsrfHeaderName: "x-csrf-token",
+  });
+
+  return data;
+};
+
 const ChatContactList = () => {
-  const { data } = useQuery({
+  const { data: contact } = useQuery({
     queryKey: ["contactList"],
     queryFn: getContactList,
   });
 
+  const { data: userData } = useQuery({
+    queryKey: ["userData"],
+    queryFn: getUserData,
+  });
+
   return (
     <ul className={style.chat_contact_list}>
-      {data
-        ? data.map((val) => (
+      {contact
+        ? contact.map(({ id, user_id, friends, user }) => (
             <ChatContact
-              key={val.id}
-              to="t"
-              message="lorem"
-              name="John"
+              key={id}
+              to={id}
+              message=""
+              name={
+                user_id === userData?.user_id ? friends.username : user.username
+              }
               unread={0}
             />
           ))
