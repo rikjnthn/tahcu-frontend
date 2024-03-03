@@ -55,6 +55,7 @@ const ChatProfile = ({
           maxLength={20}
           autoComplete="off"
           autoCorrect="off"
+          readOnly
         />
         <label htmlFor={nameId}>Name</label>
       </form>

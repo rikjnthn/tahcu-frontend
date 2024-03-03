@@ -17,7 +17,7 @@ export default async function Page({
 
   return (
     <div>
-      <ChatPage contact={params.contact} />
+      <ChatPage contactId={params.contact} />
     </div>
   );
 }

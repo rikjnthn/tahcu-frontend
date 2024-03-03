@@ -22,7 +22,7 @@ const AddNewContactModal = ({
     handleSubmit,
   } = useForm();
 
-  const { mutate, isPending, data } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["addContact"],
     mutationFn: (user_id?: string) =>
       axios.post(`api/chat-contact/${user_id}`, null, {
@@ -36,8 +36,7 @@ const AddNewContactModal = ({
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
     mutate(user_id, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
         queryClient.refetchQueries({ queryKey: ["contactList"] });
       },
     });

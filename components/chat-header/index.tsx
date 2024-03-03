@@ -7,7 +7,6 @@ import BackButton from "../back-button";
 import PhotoProfile from "../photo-profile";
 import GroupPhoto from "../group-photo";
 import style from "./chat-header.module.scss";
-import { SetStateType } from "@/interface";
 import { useChatPageDispatch } from "@/context/chat-page-context";
 
 const ChatHeader = ({ name }: { name: string }) => {
