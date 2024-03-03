@@ -27,12 +27,11 @@ const MemberList = ({
     return (
       <ul className={style.member_list}>
         {addedMembers
-          ? addedMembers.map(({ user_id, contact_id, name }) => (
+          ? addedMembers.map(({ user_id, name }) => (
               <Member
-                key={contact_id}
+                key={user_id}
                 name={name}
                 user_id={user_id}
-                contact_id={contact_id}
                 addedMembers={addedMembers}
               />
             ))
@@ -51,7 +50,6 @@ const MemberList = ({
                 user_id === userData.user_id ? friends.username : user.username
               }
               user_id={user_id}
-              contact_id={id}
               checkbox
               addedMembers={addedMembers}
               setAddedMembers={setAddedMembers}

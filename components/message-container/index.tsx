@@ -1,7 +1,10 @@
+"use client";
 import { useEffect, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import Message from "../message";
 import style from "./message-container.module.scss";
+import { UserDataType } from "@/interface";
 
 const MessageContainer = () => {
   const messageContainerRef = useRef<HTMLUListElement>(null);
@@ -13,7 +16,11 @@ const MessageContainer = () => {
     }
   }, []);
 
-  const messages = new Array(10).fill(1).map((_, idx) => idx);
+  const queryClient = useQueryClient();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
+
+  const messages = new Array(1).fill(1).map((_, idx) => idx);
 
   return (
     <ul ref={messageContainerRef} className={style.message_container}>

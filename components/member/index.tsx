@@ -5,14 +5,12 @@ import style from "./member.module.scss";
 import { AddedMembersType, SetStateType } from "@/interface";
 
 const Member = ({
-  contact_id,
   name,
   checkbox,
   user_id,
   addedMembers,
   setAddedMembers,
 }: {
-  contact_id: string;
   name: string;
   checkbox?: boolean;
   user_id: string;
@@ -26,8 +24,7 @@ const Member = ({
 
     if (!setAddedMembers) return;
 
-    if (checked)
-      setAddedMembers((prev) => [...prev, { name, user_id, contact_id }]);
+    if (checked) setAddedMembers((prev) => [...prev, { name, user_id }]);
     else
       setAddedMembers((prev) => prev.filter((val) => val.user_id !== user_id));
   };

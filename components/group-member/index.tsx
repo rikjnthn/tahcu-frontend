@@ -2,15 +2,18 @@ import React from "react";
 
 import Member from "../member";
 import style from "./group-member.module.scss";
+import { GroupMemberShipType } from "@/interface";
 
-const GroupMember = () => {
+const GroupMember = ({ members }: { members?: GroupMemberShipType[] }) => {
   return (
     <div className={style.group_member}>
       <span>Member</span>
       <ul>
-        <Member name="User" checkbox={false} />
-        <Member name="User" checkbox={false} />
-        <Member name="User" checkbox={false} />
+        {members
+          ? members.map(({ id, user, user_id }) => (
+              <Member key={id} name={user.username} user_id={user_id} />
+            ))
+          : null}
       </ul>
     </div>
   );

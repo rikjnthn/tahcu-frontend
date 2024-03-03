@@ -41,7 +41,6 @@ export interface ContactType {
 }
 
 export interface AddedMembersType {
-  contact_id: string;
   name: string;
   user_id: string;
 }
@@ -51,6 +50,9 @@ export interface GroupMemberShipType {
   user_id: string;
   group_id: string;
   joined_at: Date;
+  user: {
+    username: string;
+  };
 }
 
 export interface GroupType {
@@ -60,4 +62,14 @@ export interface GroupType {
   created_at: Date;
   admin_id: string;
   created_by_id: string;
+}
+
+export interface GroupWithMembershipType {
+  id: string;
+  name: string;
+  description: string;
+  created_at: Date;
+  admin_id: string;
+  created_by_id: string;
+  group_membership: GroupMemberShipType[];
 }

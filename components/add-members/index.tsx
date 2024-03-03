@@ -15,7 +15,7 @@ const AddMembers = ({
     <div className={style.add_members}>
       {addedMembers.map((addedMember) => (
         <AddedMember
-          key={addedMember.contact_id}
+          key={addedMember.user_id}
           name={addedMember.name}
           user_id={addedMember.user_id}
           setAddedMembers={setAddedMembers}

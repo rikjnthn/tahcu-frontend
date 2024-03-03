@@ -11,11 +11,11 @@ import { useChatPageDispatch } from "@/context/chat-page-context";
 const ChatProfileHeader = ({
   name,
   isGroup,
-  setOpenModal,
+  setIsOpenModal,
 }: {
   name: string;
   isGroup?: boolean;
-  setOpenModal?: SetStateType<boolean>;
+  setIsOpenModal?: SetStateType<boolean>;
 }) => {
   const { setIsOpenHeader } = useChatPageDispatch();
 
@@ -23,8 +23,8 @@ const ChatProfileHeader = ({
     <header className={style.header}>
       <BackButton onClick={() => setIsOpenHeader(false)} fill="#000" />
       <span>{name}</span>
-      {isGroup && setOpenModal ? (
-        <EditButton onClick={() => setOpenModal(true)} stroke="#000" />
+      {isGroup && setIsOpenModal ? (
+        <EditButton onClick={() => setIsOpenModal(true)} stroke="#000" />
       ) : null}
     </header>
   );
