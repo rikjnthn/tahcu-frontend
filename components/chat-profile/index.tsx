@@ -22,15 +22,9 @@ const ChatProfile = ({
 }) => {
   const [openModal, setIsOpenModal] = useState<boolean>(false);
 
-  const { contact: contactId } = useParams<{ contact: string }>();
-
   const queryClient = useQueryClient();
 
-  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
-    "groupList",
-  ]);
-
-  const currentGroup = groups?.find((group) => group.id === contactId);
+  const group = queryClient.getQueryData<GroupWithMembershipType>(["group"]);
 
   if (isGroup) {
     return (
@@ -44,14 +38,14 @@ const ChatProfile = ({
         {openModal && (
           <ChangeGroupInformationModal
             name={name}
-            description=""
+            description={group?.description ?? ""}
             setIsOpenModal={setIsOpenModal}
           />
         )}
 
-        <GroupDescription />
+        <GroupDescription description={group?.description} />
 
-        <GroupMember members={currentGroup?.group_membership} />
+        <GroupMember members={group?.group_membership} />
 
         {true && (
           <div className={style.float_button}>

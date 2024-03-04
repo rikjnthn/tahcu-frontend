@@ -70,6 +70,19 @@
             color: var(--label-green-focus);
           }
         }
+
+        &[aria-invalid="true"] {
+          --ring-error-color: #ff0000;
+
+          border-color: var(--ring-error-color);
+          outline-color: var(--ring-error-color);
+
+          & + label {
+            --label-error-color: #ff0000;
+
+            color: var(--label-error-color);
+          }
+        }
       }
 
       & > textarea {

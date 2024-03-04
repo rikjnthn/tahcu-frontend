@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 import Chat from "@/components/chat";
 import ChatProfile from "@/components/chat-profile";
@@ -10,9 +11,26 @@ import { ChatProvider } from "@/context/chat-context";
 import {
   ContactType,
   GroupType,
+  GroupWithMembershipType,
   SetStateType,
   UserDataType,
 } from "@/interface";
+
+const getGroup = async ({ queryKey }: { queryKey: string[] }) => {
+  const [_, contactId] = queryKey;
+
+  const { data } = await axios.get<GroupWithMembershipType>(
+    `/api/group/${contactId}`,
+    {
+      withCredentials: true,
+      withXSRFToken: true,
+      xsrfCookieName: "CSRF_TOKEN",
+      xsrfHeaderName: "x-csrf-token",
+    }
+  );
+
+  return data;
+};
 
 const handlePrivateChat = ({
   contactId,
@@ -62,20 +80,21 @@ const ChatPage = ({ contactId }: { contactId: string }) => {
     setIsRouteChangeComplete(true);
   }, [contactId]);
 
+  const { data: group } = useQuery({
+    queryKey: ["group", contactId],
+    queryFn: getGroup,
+    retry: false,
+  });
+
   const queryClient = useQueryClient();
 
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const groups = queryClient.getQueryData<GroupType[]>(["groupList"]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
-    if (!groups) return;
-
-    const group = groups.find(({ id }) => id === contactId);
-
     if (group) handleGroupChat({ setIsGroup, group, setName });
     else handlePrivateChat({ contacts, userData, setName, contactId });
-  }, [contactId, contacts, userData, groups]);
+  }, [contactId, contacts, userData, group]);
 
   return (
     <ChatPageProvider

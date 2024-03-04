@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useId } from "react";
+import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
 import { SetStateType } from "@/interface";
-import Input from "../input";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../submit-button";
 
@@ -19,18 +19,21 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
+  const nameId = useId();
   const descriptionId = useId();
+
+  const { contact: groupId } = useParams();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm({ reValidateMode: "onChange" });
+  } = useForm();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
     mutationFn: (updateData) =>
-      axios.patch("api/group", updateData, {
+      axios.patch(`/api/group/${groupId}`, updateData, {
         withCredentials: true,
         withXSRFToken: true,
         xsrfCookieName: "CSRF_TOKEN",
@@ -55,7 +58,7 @@ const ChangeGroupInformationModal = ({
   const onSubmit = (updateData: any) => {
     mutate(updateData, {
       onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["groupInformation"] });
+        queryClient.refetchQueries({ queryKey: ["group"] });
         setIsOpenModal(false);
       },
     });
@@ -64,24 +67,33 @@ const ChangeGroupInformationModal = ({
     <div className={style.modal}>
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <CloseButton onClick={handleCloseModal} stroke="#000" title="Close" />
-        <Input
-          labelName="Name"
-          errorMessage={errors.name?.message?.toString()}
-          {...register("name", {
-            required: {
-              value: true,
-              message: "Please enter your group name",
-            },
-            value: name,
-          })}
-        />
+        <div>
+          <input
+            id={nameId}
+            type="text"
+            placeholder="Group"
+            aria-invalid={!!errors.name?.message?.toString()}
+            {...register("name", {
+              required: {
+                value: true,
+                message: "Please enter your group name",
+              },
+              maxLength: {
+                value: 30,
+                message: "Group name too long",
+              },
+              value: name,
+            })}
+          />
+          <label htmlFor={nameId}>Name</label>
+        </div>
         <div>
           <textarea
             id={descriptionId}
             autoComplete="off"
             placeholder="No Description"
             rows={8}
-            aria-invalid={!errors.description?.message?.toString()}
+            aria-invalid={!!errors.description?.message?.toString()}
             {...register("description", {
               maxLength: {
                 value: 600,
