@@ -15,7 +15,8 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.50.1"
+    "react-hook-form": "^7.50.1",
+    "socket.io": "^4.7.4"
   },
   "devDependencies": {
     "@types/node": "^20",
