@@ -5,6 +5,7 @@ const initialHomePageState = {
   isOpenCreateGroup: false,
   isOpenCreatePrivateChat: false,
   isOpenUserProfile: false,
+  isOpenSetting: false,
 };
 
 const reducer = (
@@ -18,6 +19,7 @@ const reducer = (
         isOpenCreateGroup: false,
         isOpenCreatePrivateChat: false,
         isOpenUserProfile: false,
+        isOpenSetting: false,
       };
     case "SET_OPEN_CREATE_GROUP":
       return {
@@ -25,6 +27,7 @@ const reducer = (
         isOpenCreateGroup: true,
         isOpenCreatePrivateChat: false,
         isOpenUserProfile: false,
+        isOpenSetting: false,
       };
     case "SET_OPEN_CREATE_PRIVATE_CHAT":
       return {
@@ -32,6 +35,7 @@ const reducer = (
         isOpenCreateGroup: false,
         isOpenCreatePrivateChat: true,
         isOpenUserProfile: false,
+        isOpenSetting: false,
       };
     case "SET_OPEN_PROFILE":
       return {
@@ -39,6 +43,16 @@ const reducer = (
         isOpenCreateGroup: false,
         isOpenCreatePrivateChat: false,
         isOpenUserProfile: true,
+        isOpenSetting: false,
+      };
+
+    case "SET_OPEN_SETTING":
+      return {
+        isOpenChatContact: false,
+        isOpenCreateGroup: false,
+        isOpenCreatePrivateChat: false,
+        isOpenUserProfile: false,
+        isOpenSetting: true,
       };
 
     default:
@@ -89,7 +103,8 @@ interface ActionType {
     | "SET_OPEN_CHAT_CONTACT"
     | "SET_OPEN_CREATE_GROUP"
     | "SET_OPEN_CREATE_PRIVATE_CHAT"
-    | "SET_OPEN_PROFILE";
+    | "SET_OPEN_PROFILE"
+    | "SET_OPEN_SETTING";
 }
 
 interface HomePageStateType {
@@ -97,4 +112,5 @@ interface HomePageStateType {
   isOpenCreateGroup: boolean;
   isOpenCreatePrivateChat: boolean;
   isOpenUserProfile: boolean;
+  isOpenSetting: boolean;
 }

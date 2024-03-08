@@ -1,0 +1,23 @@
+.user_setting {
+  padding: 1rem 2rem;
+
+  & > span {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  & > div {
+    padding-block: 1rem;
+  }
+}
+
+.delete_account {
+  font-weight: 500;
+  width: fit-content;
+  color: rgb(255, 0, 0);
+
+  &:hover {
+    color: rgb(255, 53, 46);
+    text-decoration: underline;
+  }
+}

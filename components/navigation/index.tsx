@@ -21,6 +21,10 @@ const Navigation = ({
     dispatch({ type: "SET_OPEN_PROFILE" });
   };
 
+  const openSetting = () => {
+    setIsOpenNav(false), dispatch({ type: "SET_OPEN_SETTING" });
+  };
+
   return (
     <nav
       className={`${style.navigation} ${
@@ -36,7 +40,7 @@ const Navigation = ({
       </div>
       <div>
         <DarkModeToggle />
-        <NavOption icon="setting.svg" name="Setting" />
+        <NavOption onClick={openSetting} icon="setting.svg" name="Setting" />
       </div>
     </nav>
   );
