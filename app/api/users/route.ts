@@ -34,3 +34,19 @@ export async function PATCH(req: Request) {
     }
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { data } = await axios.delete(`${process.env.API_URL}/users`, {
+      headers: Object.fromEntries(req.headers),
+    });
+
+    return Response.json(data);
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return Response.json(error.response?.data, {
+        status: error.response?.status,
+      });
+    }
+  }
+}
