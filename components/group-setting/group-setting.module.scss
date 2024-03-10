@@ -1,0 +1,26 @@
+.setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  top: 4.5rem;
+  right: 1rem;
+  width: 8rem;
+  border-radius: 5px;
+  overflow: hidden;
+  color: #000;
+  z-index: 10;
+
+  & > button {
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 400;
+    padding: 0.5rem;
+    border: none;
+    background-color: #fff;
+  }
+
+  & > button:hover {
+    background-color: rgba(128, 128, 128, 0.3);
+  }
+}

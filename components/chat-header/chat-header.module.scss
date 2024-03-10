@@ -6,7 +6,7 @@
   background-color: var(--primary);
   color: var(--white);
 
-  & > div {
+  & > div:first-child {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -24,6 +24,10 @@
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+    }
+
+    & > button:last-child {
+      margin-inline-start: auto;
     }
   }
 }

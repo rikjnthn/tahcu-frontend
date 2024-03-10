@@ -113,7 +113,7 @@ const ChatPage = ({ contactId }: { contactId: string }) => {
           }`}
         >
           <ChatProvider>
-            <Chat name={name} />
+            <Chat name={name} isGroup={isGroup} />
           </ChatProvider>
         </div>
       </div>

@@ -7,12 +7,12 @@ import SendMessagePlace from "@/components/send-message-place";
 import style from "./chat.module.scss";
 import { useChat } from "@/context/chat-context";
 
-const Chat = ({ name }: { name: string }) => {
+const Chat = ({ name, isGroup }: { name: string; isGroup: boolean }) => {
   const { chatRef } = useChat();
 
   return (
     <div ref={chatRef} className={style.chat}>
-      <ChatHeader name={name} />
+      <ChatHeader name={name} isGroup={isGroup} />
       <MessageContainer />
       <SendMessagePlace />
     </div>
