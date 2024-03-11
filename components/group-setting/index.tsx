@@ -16,10 +16,40 @@ const GroupSetting = ({
 
   const router = useRouter();
 
+  const { mutate: addMembers } = useMutation({
+    mutationKey: ["add-members"],
+    mutationFn: async () =>
+      axios.patch(
+        "/api/group/member/add-member",
+        {},
+        {
+          withCredentials: true,
+          withXSRFToken: true,
+          xsrfCookieName: "CSRF_TOKEN",
+          xsrfHeaderName: "x-csrf-token",
+        }
+      ),
+  });
+
+  const { mutate: removeMembers } = useMutation({
+    mutationKey: ["remove-members"],
+    mutationFn: async () =>
+      axios.patch(
+        "/api/group/member/remove-member",
+        {},
+        {
+          withCredentials: true,
+          withXSRFToken: true,
+          xsrfCookieName: "CSRF_TOKEN",
+          xsrfHeaderName: "x-csrf-token",
+        }
+      ),
+  });
+
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],
     mutationFn: async () =>
-      axios.delete(`/api/group/exit-group/${param.contactId}`, {
+      axios.delete(`/api/group/exit-group/${param.contact}`, {
         withCredentials: true,
         withXSRFToken: true,
         xsrfCookieName: "CSRF_TOKEN",
@@ -30,7 +60,7 @@ const GroupSetting = ({
   const { mutate: deleteGroup } = useMutation({
     mutationKey: ["exitGroup"],
     mutationFn: async () =>
-      axios.delete(`/api/group/${param.contactId}`, {
+      axios.delete(`/api/group/${param.contact}`, {
         withCredentials: true,
         withXSRFToken: true,
         xsrfCookieName: "CSRF_TOKEN",

@@ -11,7 +11,7 @@ import GroupMember from "../group-member";
 import GroupDescription from "../group-description";
 import ChangeGroupInformationModal from "../change-group-information-modal";
 import Input from "../input";
-import { GroupWithMembershipType } from "@/interface";
+import { GroupWithMembershipType, UserDataType } from "@/interface";
 
 const ChatProfile = ({
   name,
@@ -20,11 +20,20 @@ const ChatProfile = ({
   name: string;
   isGroup?: boolean;
 }) => {
-  const [openModal, setIsOpenModal] = useState<boolean>(false);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [] = useState<boolean>(false);
+
+  const param = useParams();
 
   const queryClient = useQueryClient();
 
-  const group = queryClient.getQueryData<GroupWithMembershipType>(["group"]);
+  const group = queryClient.getQueryData<GroupWithMembershipType>([
+    "group",
+    param.contact,
+  ]);
+  const user = queryClient.getQueryData<UserDataType>(["userData"]);
+
+  const isGroupAdmin = group?.admin_id === user?.user_id;
 
   if (isGroup) {
     return (
@@ -35,7 +44,7 @@ const ChatProfile = ({
           setIsOpenModal={setIsOpenModal}
         />
 
-        {openModal && (
+        {isOpenModal && (
           <ChangeGroupInformationModal
             name={name}
             description={group?.description ?? ""}
@@ -47,7 +56,7 @@ const ChatProfile = ({
 
         <GroupMember members={group?.group_membership} />
 
-        {true && (
+        {isGroupAdmin && (
           <div className={style.float_button}>
             <PlusButton fill="#fff" />
           </div>

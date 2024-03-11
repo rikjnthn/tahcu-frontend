@@ -2,15 +2,11 @@ import React from "react";
 
 import style from "./add-members.module.scss";
 import AddedMember from "../added-member";
-import { AddedMembersType, SetStateType } from "@/interface";
+import { useCreateGroup } from "@/context/create-group-context";
 
-const AddMembers = ({
-  addedMembers,
-  setAddedMembers,
-}: {
-  addedMembers: AddedMembersType[];
-  setAddedMembers: SetStateType<AddedMembersType[]>;
-}) => {
+const AddMembers = () => {
+  const { addedMembers } = useCreateGroup();
+
   return (
     <div className={style.add_members}>
       {addedMembers.map((addedMember) => (
@@ -18,7 +14,6 @@ const AddMembers = ({
           key={addedMember.user_id}
           name={addedMember.name}
           user_id={addedMember.user_id}
-          setAddedMembers={setAddedMembers}
         />
       ))}
       <input type="text" placeholder="Add members" />
