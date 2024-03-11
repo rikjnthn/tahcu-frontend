@@ -6,44 +6,30 @@ import AddingMembersHeader from "../adding-members-header";
 import AddMembers from "../add-members";
 import MemberList from "../member-list";
 import NextButton from "../next-button";
+import { ContactType, UserDataType } from "@/interface";
 import {
-  AddedMembersType,
-  ContactType,
-  SetStateType,
-  UserDataType,
-} from "@/interface";
+  useCreateGroup,
+  useCreateGroupDispatch,
+} from "@/context/create-group-context";
 
-const AddingMembers = ({
-  addedMembers,
-  setAddedMembers,
-  setIsCreateGroup,
-}: {
-  addedMembers: AddedMembersType[];
-  setAddedMembers: SetStateType<AddedMembersType[]>;
-  setIsCreateGroup: SetStateType<boolean>;
-}) => {
+const AddingMembers = () => {
   const queryClient = useQueryClient();
 
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
+  const { addedMembers } = useCreateGroup();
+  const { setIsCreateGroup } = useCreateGroupDispatch();
+
   const next = () => {
-    if (addedMembers.length > 0) setIsCreateGroup(false);
+    if (addedMembers.length > 0) setIsCreateGroup(true);
   };
 
   return (
     <div>
       <AddingMembersHeader />
-      <AddMembers
-        addedMembers={addedMembers}
-        setAddedMembers={setAddedMembers}
-      />
-      <MemberList
-        contacts={contacts}
-        userData={userData}
-        addedMembers={addedMembers}
-        setAddedMembers={setAddedMembers}
-      />
+      <AddMembers />
+      <MemberList contacts={contacts} userData={userData} />
       <NextButton onClick={next} type="button" fill="#fff" title="Next" />
     </div>
   );

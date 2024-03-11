@@ -36,6 +36,7 @@ export interface FriendsContactType {
 export interface ContactType {
   id: string;
   user_id: string;
+  friends_id: string;
   user: UserContactType;
   friends: FriendsContactType;
 }

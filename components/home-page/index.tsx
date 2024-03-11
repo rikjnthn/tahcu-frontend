@@ -9,6 +9,7 @@ import style from "./home-page.module.scss";
 import { useHomePage } from "@/context/home-page-context";
 import UserPage from "../user-page";
 import SettingPage from "../setting-page";
+import { CreateGroupProvider } from "@/context/create-group-context";
 
 const HomePage = () => {
   const {
@@ -29,7 +30,9 @@ const HomePage = () => {
       <div
         className={`${isOpenCreateGroup ? "translateX-0" : "translateX-100"}`}
       >
-        <CreateGroupPage />
+        <CreateGroupProvider>
+          <CreateGroupPage />
+        </CreateGroupProvider>
       </div>
       <div
         className={`${
