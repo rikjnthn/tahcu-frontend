@@ -12,6 +12,7 @@ const Member = ({
   name,
   checkbox,
   isAdmin,
+  showDelete,
   user_id,
   addedMembers,
   setAddedMembers,
@@ -19,6 +20,7 @@ const Member = ({
   name: string;
   checkbox?: boolean;
   isAdmin?: boolean;
+  showDelete?: boolean;
   user_id: string;
   addedMembers?: AddedMembersType[];
   setAddedMembers?: SetStateType<AddedMembersType[]>;
@@ -90,7 +92,7 @@ const Member = ({
         </div>
       )}
 
-      {!isAdmin && !checkbox ? (
+      {!isAdmin && showDelete ? (
         <div className={style.delete_member}>
           <DeleteButton onClick={deleteMember} stroke="#000" />
         </div>

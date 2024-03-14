@@ -1,9 +1,8 @@
 import React from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
 import Member from "../member";
 import style from "./group-member.module.scss";
-import { GroupMemberShipType, UserDataType } from "@/interface";
+import { GroupMemberShipType } from "@/interface";
 
 const GroupMember = ({
   members,
@@ -12,10 +11,6 @@ const GroupMember = ({
   members?: GroupMemberShipType[];
   adminId?: string;
 }) => {
-  const queryClient = useQueryClient();
-
-  const user = queryClient.getQueryData<UserDataType>(["userData"]);
-
   return (
     <div className={style.group_member}>
       <span>Member</span>
@@ -27,6 +22,7 @@ const GroupMember = ({
                 name={user.username}
                 user_id={user_id}
                 isAdmin={adminId === user_id}
+                showDelete
               />
             ))
           : null}
