@@ -74,9 +74,12 @@ const EditMembers = ({
         <div>
           {contacts
             ? contacts.map(({ id, friends, friends_id, user, user_id }) => {
-                const isInGroup = currentMembers.find(
-                  (currentMember) => currentMember.user_id === user_id
-                );
+                const isInGroup = currentMembers.find((currentMember) => {
+                  const memberId =
+                    userData?.user_id === user_id ? friends_id : user_id;
+
+                  return currentMember.user_id === memberId;
+                });
 
                 if (isInGroup) return;
 
