@@ -1,12 +1,12 @@
 import axios, { isAxiosError } from "axios";
 
 export async function PATCH(req: Request) {
-  const updateMembers = await req.json();
+  const deleteMembersData = await req.json();
 
   try {
     const { data } = await axios.patch(
-      `${process.env.API_URL}/`,
-      updateMembers,
+      `${process.env.API_URL}/group/delete-members`,
+      deleteMembersData,
       {
         headers: Object.fromEntries(req.headers),
       }
@@ -15,6 +15,7 @@ export async function PATCH(req: Request) {
     return Response.json(data);
   } catch (error) {
     if (isAxiosError(error)) {
+      console.log(error.response?.data);
       return Response.json(error.response?.data, {
         status: error.response?.status,
       });
