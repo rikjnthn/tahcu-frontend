@@ -1,11 +1,11 @@
 import axios, { isAxiosError } from "axios";
 
 export async function PATCH(req: Request) {
-  const addMembers = await req.json();
+  const addMembersData = await req.json();
   try {
     const { data } = await axios.patch(
-      `${process.env.API_URL}/add-members`,
-      addMembers,
+      `${process.env.API_URL}/group/add-members`,
+      addMembersData,
       {
         headers: Object.fromEntries(req.headers),
       }

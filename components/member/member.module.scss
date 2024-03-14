@@ -9,4 +9,18 @@
     scale: 1.5;
     accent-color: skyblue;
   }
+
+  .delete_member {
+    margin-inline-start: auto;
+    visibility: hidden;
+  }
+
+  &:hover > .delete_member {
+    visibility: visible;
+  }
+}
+
+.admin {
+  font-size: 12px;
+  margin-inline-start: auto;
 }

@@ -73,7 +73,7 @@ const ChatPage = ({ contactId }: { contactId: string }) => {
   const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
   const [isRouteChangeComplete, setIsRouteChangeComplete] =
     useState<boolean>(false);
-  const [name, setName] = useState<string>("tes");
+  const [name, setName] = useState<string>("");
   const [isGroup, setIsGroup] = useState<boolean>(false);
 
   useEffect(() => {

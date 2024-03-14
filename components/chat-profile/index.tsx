@@ -12,6 +12,7 @@ import GroupDescription from "../group-description";
 import ChangeGroupInformationModal from "../change-group-information-modal";
 import Input from "../input";
 import { GroupWithMembershipType, UserDataType } from "@/interface";
+import EditMembers from "../edit-members";
 
 const ChatProfile = ({
   name,
@@ -21,7 +22,7 @@ const ChatProfile = ({
   isGroup?: boolean;
 }) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [] = useState<boolean>(false);
+  const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
 
   const param = useParams();
 
@@ -35,32 +36,48 @@ const ChatProfile = ({
 
   const isGroupAdmin = group?.admin_id === user?.user_id;
 
+  const editMembers = () => {
+    setIsEditMembers(true);
+  };
+
   if (isGroup) {
     return (
       <div>
-        <ChatProfileHeader
-          isGroup
-          name={name}
-          setIsOpenModal={setIsOpenModal}
-        />
-
-        {isOpenModal && (
-          <ChangeGroupInformationModal
+        <div>
+          <ChatProfileHeader
+            isGroup
             name={name}
-            description={group?.description ?? ""}
             setIsOpenModal={setIsOpenModal}
           />
-        )}
 
-        <GroupDescription description={group?.description} />
+          {isOpenModal && (
+            <ChangeGroupInformationModal
+              name={name}
+              description={group?.description ?? ""}
+              setIsOpenModal={setIsOpenModal}
+            />
+          )}
 
-        <GroupMember members={group?.group_membership} />
+          <GroupDescription description={group?.description} />
 
-        {isGroupAdmin && (
-          <div className={style.float_button}>
-            <PlusButton fill="#fff" />
-          </div>
-        )}
+          <GroupMember
+            members={group?.group_membership}
+            adminId={group?.admin_id}
+          />
+
+          {isEditMembers && (
+            <EditMembers
+              currentMembers={group?.group_membership ?? []}
+              setIsEditMembers={setIsEditMembers}
+            />
+          )}
+
+          {isGroupAdmin && (
+            <div className={style.float_button}>
+              <PlusButton onClick={editMembers} fill="#fff" />
+            </div>
+          )}
+        </div>
       </div>
     );
   }

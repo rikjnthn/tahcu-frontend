@@ -16,36 +16,6 @@ const GroupSetting = ({
 
   const router = useRouter();
 
-  const { mutate: addMembers } = useMutation({
-    mutationKey: ["add-members"],
-    mutationFn: async () =>
-      axios.patch(
-        "/api/group/member/add-member",
-        {},
-        {
-          withCredentials: true,
-          withXSRFToken: true,
-          xsrfCookieName: "CSRF_TOKEN",
-          xsrfHeaderName: "x-csrf-token",
-        }
-      ),
-  });
-
-  const { mutate: removeMembers } = useMutation({
-    mutationKey: ["remove-members"],
-    mutationFn: async () =>
-      axios.patch(
-        "/api/group/member/remove-member",
-        {},
-        {
-          withCredentials: true,
-          withXSRFToken: true,
-          xsrfCookieName: "CSRF_TOKEN",
-          xsrfHeaderName: "x-csrf-token",
-        }
-      ),
-  });
-
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],
     mutationFn: async () =>
