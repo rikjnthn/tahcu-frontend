@@ -1,12 +1,15 @@
 import axios, { isAxiosError } from "axios";
 
-export async function DELETE(
+export async function PATCH(
   req: Request,
   { params }: { params: { groupId: string } }
 ) {
+  const exitGroupData = await req.json();
+
   try {
-    const { data } = await axios.delete(
+    const { data } = await axios.patch(
       `${process.env.API_URL}/group/exit-group/${params.groupId}`,
+      exitGroupData,
       {
         headers: Object.fromEntries(req.headers),
       }

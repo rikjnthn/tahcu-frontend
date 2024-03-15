@@ -5,7 +5,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import style from "./group-setting.module.scss";
-import { GroupType, SetStateType, UserDataType } from "@/interface";
+import {
+  GroupWithMembershipType,
+  SetStateType,
+  UserDataType,
+} from "@/interface";
 
 const GroupSetting = ({
   setIsOpenSetting,
@@ -18,17 +22,21 @@ const GroupSetting = ({
 
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],
-    mutationFn: async () =>
-      axios.delete(`/api/group/exit-group/${param.contact}`, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    mutationFn: async (newAdmin: string) =>
+      axios.patch(
+        `/api/group/exit-group/${param.contact}`,
+        { new_admin: newAdmin },
+        {
+          withCredentials: true,
+          withXSRFToken: true,
+          xsrfCookieName: "CSRF_TOKEN",
+          xsrfHeaderName: "x-csrf-token",
+        }
+      ),
   });
 
   const { mutate: deleteGroup } = useMutation({
-    mutationKey: ["exitGroup"],
+    mutationKey: ["deleteGroup"],
     mutationFn: async () =>
       axios.delete(`/api/group/${param.contact}`, {
         withCredentials: true,
@@ -40,7 +48,10 @@ const GroupSetting = ({
 
   const queryClient = useQueryClient();
 
-  const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
+  const group = queryClient.getQueryData<GroupWithMembershipType>([
+    "group",
+    param.contact,
+  ]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const isGroupAdmin = group?.admin_id === user?.user_id;
@@ -48,7 +59,12 @@ const GroupSetting = ({
   const handleExitGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    exitGroup();
+    const groupMemberships = group?.group_membership ?? [];
+
+    const randomIndex = Math.floor(Math.random() * groupMemberships?.length);
+    const newAdmin = groupMemberships[randomIndex];
+
+    exitGroup(newAdmin.user_id);
     router.push("/a");
 
     setIsOpenSetting(false);
