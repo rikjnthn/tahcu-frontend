@@ -22,28 +22,15 @@ const GroupSetting = ({
 
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],
-    mutationFn: async (newAdmin: string) =>
-      axios.patch(
-        `/api/group/exit-group/${param.contact}`,
-        { new_admin: newAdmin },
-        {
-          withCredentials: true,
-          withXSRFToken: true,
-          xsrfCookieName: "CSRF_TOKEN",
-          xsrfHeaderName: "x-csrf-token",
-        }
-      ),
+    mutationFn: async (new_admin: string) =>
+      axios.patch(`/api/group/exit-group/${param.contact}`, {
+        new_admin,
+      }),
   });
 
   const { mutate: deleteGroup } = useMutation({
     mutationKey: ["deleteGroup"],
-    mutationFn: async () =>
-      axios.delete(`/api/group/${param.contact}`, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    mutationFn: async () => axios.delete(`/api/group/${param.contact}`),
   });
 
   const queryClient = useQueryClient();

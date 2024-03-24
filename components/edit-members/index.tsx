@@ -35,13 +35,7 @@ const EditMembers = ({
     mutationFn: async (addMembersData: {
       group_id: string;
       members: string[];
-    }) =>
-      axios.patch("/api/group/member/add-member", addMembersData, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    }) => axios.patch("/api/group/member/add-member", addMembersData),
   });
 
   const handleSubmit = (e: FormEvent) => {

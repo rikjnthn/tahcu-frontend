@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import style from "./message-context-menu.module.scss";
-import { MessageMenuCoordinateType, SetStateType } from "@/interface";
+import { MessageMenuCoordinateType } from "@/interface";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 
 const MessageContextMenu = ({

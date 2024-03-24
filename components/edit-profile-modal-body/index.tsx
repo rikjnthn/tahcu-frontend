@@ -28,16 +28,7 @@ const EditProfileModalBody = ({
   const { isPending, isError, mutate } = useMutation({
     mutationKey: ["updateUserData"],
     mutationFn: (newData: UpdateUserDataType) =>
-      axios.patch<any, AxiosResponse<UpdateUserDataType>>(
-        "api/users",
-        newData,
-        {
-          withCredentials: true,
-          withXSRFToken: true,
-          xsrfCookieName: "CSRF_TOKEN",
-          xsrfHeaderName: "x-csrf-token",
-        }
-      ),
+      axios.patch<any, AxiosResponse<UpdateUserDataType>>("api/users", newData),
     retry: false,
   });
 

@@ -16,23 +16,12 @@ import { ContactType, GroupType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 
 const getContactList = async (): Promise<Array<any>> => {
-  const { data } = await axios.get<ContactType[]>("/api/chat-contact", {
-    withCredentials: true,
-    withXSRFToken: true,
-    xsrfCookieName: "CSRF_TOKEN",
-    xsrfHeaderName: "x-csrf-token",
-  });
+  const { data } = await axios.get<ContactType[]>("/api/chat-contact");
   return data;
 };
 
 const getGroupList = async () => {
-  const { data } = await axios.get<GroupType[]>("/api/group", {
-    withCredentials: true,
-    withXSRFToken: true,
-    xsrfCookieName: "CSRF_TOKEN",
-    xsrfHeaderName: "x-csrf-token",
-  });
-
+  const { data } = await axios.get<GroupType[]>("/api/group");
   return data;
 };
 

@@ -46,13 +46,7 @@ const Member = ({
     mutationFn: async (deleteMemberData: {
       group_id: string;
       members: string[];
-    }) =>
-      axios.patch("/api/group/member/remove-member", deleteMemberData, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    }) => axios.patch("/api/group/member/remove-member", deleteMemberData),
   });
 
   const group = queryClient.getQueryData<GroupType>(["group", param.contact]);

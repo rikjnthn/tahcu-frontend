@@ -16,12 +16,7 @@ const PrivateChatSetting = ({
   const { mutate } = useMutation({
     mutationKey: ["deleteContact", param.contact],
     mutationFn: async (contactId: string) =>
-      axios.delete(`/api/chat-contact/${contactId}`, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+      axios.delete(`/api/chat-contact/${contactId}`),
   });
 
   const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -31,12 +31,7 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
   const { mutate } = useMutation({
     mutationKey: ["createGroup"],
     mutationFn: (groupData: GroupDataType) =>
-      axios.post("api/group", groupData, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+      axios.post("api/group", groupData),
   });
 
   const dispatch = useHomePageDispatch();

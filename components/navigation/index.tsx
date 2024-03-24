@@ -10,13 +10,7 @@ import { useHomePageDispatch } from "@/context/home-page-context";
 import { SetStateType } from "@/interface";
 
 const getUserData = async () => {
-  const { data } = await axios.get("/api/users", {
-    withCredentials: true,
-    withXSRFToken: true,
-    xsrfCookieName: "CSRF_TOKEN",
-    xsrfHeaderName: "x-csrf-token",
-  });
-
+  const { data } = await axios.get("/api/users");
   return data;
 };
 
@@ -40,7 +34,8 @@ const Navigation = ({
   };
 
   const openSetting = () => {
-    setIsOpenNav(false), dispatch({ type: "SET_OPEN_SETTING" });
+    setIsOpenNav(false);
+    dispatch({ type: "SET_OPEN_SETTING" });
   };
 
   return (

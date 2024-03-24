@@ -7,13 +7,7 @@ import style from "./chat-contact.module.scss";
 import { ContactType, GroupType, UserDataType } from "@/interface";
 
 const getUserData = async () => {
-  const { data } = await axios.get<UserDataType>("/api/users", {
-    withCredentials: true,
-    withXSRFToken: true,
-    xsrfCookieName: "CSRF_TOKEN",
-    xsrfHeaderName: "x-csrf-token",
-  });
-
+  const { data } = await axios.get<UserDataType>("/api/users");
   return data;
 };
 

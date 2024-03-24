@@ -24,13 +24,8 @@ const AddNewContactModal = ({
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["addContact"],
-    mutationFn: (user_id?: string) =>
-      axios.post(`api/chat-contact/${user_id}`, null, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    mutationFn: async (user_id?: string) =>
+      axios.post(`api/chat-contact/${user_id}`),
     retry: false,
   });
 

@@ -20,13 +20,7 @@ const getGroup = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, contactId] = queryKey;
 
   const { data } = await axios.get<GroupWithMembershipType>(
-    `/api/group/${contactId}`,
-    {
-      withCredentials: true,
-      withXSRFToken: true,
-      xsrfCookieName: "CSRF_TOKEN",
-      xsrfHeaderName: "x-csrf-token",
-    }
+    `/api/group/${contactId}`
   );
 
   return data;

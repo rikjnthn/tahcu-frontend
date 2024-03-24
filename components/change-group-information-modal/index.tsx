@@ -33,12 +33,7 @@ const ChangeGroupInformationModal = ({
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
     mutationFn: (updateData) =>
-      axios.patch(`/api/group/${groupId}`, updateData, {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+      axios.patch(`/api/group/${groupId}`, updateData),
   });
 
   useEffect(() => {

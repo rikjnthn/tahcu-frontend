@@ -11,13 +11,7 @@ const UserSetting = () => {
 
   const { mutate } = useMutation({
     mutationKey: ["deleteAccount"],
-    mutationFn: async () =>
-      axios.delete("/api/users", {
-        withCredentials: true,
-        withXSRFToken: true,
-        xsrfCookieName: "CSRF_TOKEN",
-        xsrfHeaderName: "x-csrf-token",
-      }),
+    mutationFn: async () => axios.delete("/api/users"),
   });
 
   const deleteAccount = () => {
