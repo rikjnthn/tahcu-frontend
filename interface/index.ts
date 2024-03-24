@@ -74,3 +74,13 @@ export interface GroupWithMembershipType {
   created_by_id: string;
   group_membership: GroupMemberShipType[];
 }
+
+export interface MessageType {
+  id: string;
+  message: string;
+  group_id: string;
+  sender_id: string;
+  receiver_id: string;
+  sent_at: Date;
+  updated_at: Date;
+}

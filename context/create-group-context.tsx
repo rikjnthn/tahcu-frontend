@@ -1,5 +1,6 @@
-import { AddedMembersType, SetStateType } from "@/interface";
 import React, { createContext, useContext, useState } from "react";
+
+import { AddedMembersType, SetStateType } from "@/interface";
 
 const CreateGroupContext = createContext<CreateGroupStateType | null>(null);
 

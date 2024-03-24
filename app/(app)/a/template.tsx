@@ -11,20 +11,30 @@ const ReactQueryDevtools = dynamic(() =>
   }))
 );
 
+const SocketProvider = dynamic(
+  () =>
+    import("@/context/socket-connection-context").then((d) => ({
+      default: d.SocketProvider,
+    })),
+  { ssr: false }
+);
+
 const queryClient = new QueryClient();
 
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
-      <main className="main-page">
-        <div className="home-page-container">
-          <HomePageProvider>
-            <HomePage />
-          </HomePageProvider>
-        </div>
-        <div className="chat-page-container">{children}</div>
-      </main>
+      <SocketProvider>
+        <main className="main-page">
+          <div className="home-page-container">
+            <HomePageProvider>
+              <HomePage />
+            </HomePageProvider>
+          </div>
+          <div className="chat-page-container">{children}</div>
+        </main>
+      </SocketProvider>
     </QueryClientProvider>
   );
 }

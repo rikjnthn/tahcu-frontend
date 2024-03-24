@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import ChatHomePage from "@/components/chat-home-page";
 import CreateGroupPage from "@/components/create-group-page";
@@ -10,6 +12,29 @@ import { useHomePage } from "@/context/home-page-context";
 import UserPage from "../user-page";
 import SettingPage from "../setting-page";
 import { CreateGroupProvider } from "@/context/create-group-context";
+import { ContactType, GroupType } from "@/interface";
+import { useSocket } from "@/context/socket-connection-context";
+
+const getContactList = async (): Promise<Array<any>> => {
+  const { data } = await axios.get<ContactType[]>("/api/chat-contact", {
+    withCredentials: true,
+    withXSRFToken: true,
+    xsrfCookieName: "CSRF_TOKEN",
+    xsrfHeaderName: "x-csrf-token",
+  });
+  return data;
+};
+
+const getGroupList = async () => {
+  const { data } = await axios.get<GroupType[]>("/api/group", {
+    withCredentials: true,
+    withXSRFToken: true,
+    xsrfCookieName: "CSRF_TOKEN",
+    xsrfHeaderName: "x-csrf-token",
+  });
+
+  return data;
+};
 
 const HomePage = () => {
   const {
@@ -19,6 +44,31 @@ const HomePage = () => {
     isOpenUserProfile,
     isOpenSetting,
   } = useHomePage();
+
+  const { groupChatIo, privateChatIo } = useSocket();
+
+  const { data: contacts } = useQuery<ContactType[]>({
+    queryKey: ["contactList"],
+    queryFn: getContactList,
+  });
+
+  const { data: groups } = useQuery<GroupType[]>({
+    queryKey: ["groupList"],
+    queryFn: getGroupList,
+  });
+
+  useEffect(() => {
+    if (privateChatIo.connected && groupChatIo.connected) return;
+
+    privateChatIo.connect();
+    groupChatIo.connect();
+
+    const contactIds = contacts?.map(({ id }) => id) ?? [];
+    const groupIds = groups?.map(({ id }) => id) ?? [];
+
+    privateChatIo.emit("join-room", contactIds);
+    groupChatIo.emit("join-room", groupIds);
+  }, [contacts, groups, privateChatIo, groupChatIo]);
 
   return (
     <div className={style.home}>

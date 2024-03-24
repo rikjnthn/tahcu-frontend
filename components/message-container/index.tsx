@@ -4,10 +4,14 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import Message from "../message";
 import style from "./message-container.module.scss";
-import { UserDataType } from "@/interface";
+import { MessageType, UserDataType } from "@/interface";
 
-const MessageContainer = () => {
+const MessageContainer = ({ messages }: { messages: MessageType[] }) => {
   const messageContainerRef = useRef<HTMLUListElement>(null);
+
+  const queryClient = useQueryClient();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
     if (messageContainerRef.current) {
@@ -16,20 +20,14 @@ const MessageContainer = () => {
     }
   }, []);
 
-  const queryClient = useQueryClient();
-
-  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
-
-  const messages = new Array(1).fill(1).map((_, idx) => idx);
-
   return (
     <ul ref={messageContainerRef} className={style.message_container}>
-      {messages.map((v) => (
+      {messages.map(({ id, message, sent_at, sender_id }) => (
         <Message
-          key={v}
-          isSender={Math.floor(Math.random() * 10) > 2}
-          message={"message " + v.toString()}
-          time="17.59"
+          key={id}
+          isSender={sender_id === userData?.user_id}
+          message={message}
+          time={sent_at.getTime().toString()}
         />
       ))}
     </ul>
