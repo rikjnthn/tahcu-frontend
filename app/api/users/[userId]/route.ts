@@ -15,12 +15,9 @@ export async function GET(
     return Response.json(data);
   } catch (error) {
     if (isAxiosError(error)) {
-      console.log(error);
       return Response.json(error.response?.data, {
         status: error.response?.status,
       });
     }
-
-    return Response.json("");
   }
 }
