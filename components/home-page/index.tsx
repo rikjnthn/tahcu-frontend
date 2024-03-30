@@ -47,17 +47,28 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    if (privateChatIo.connected && groupChatIo.connected) return;
-
-    privateChatIo.connect();
-    groupChatIo.connect();
+    if (!privateChatIo.connected || !groupChatIo.connected!) {
+      privateChatIo.connect();
+      groupChatIo.connect();
+    }
 
     const contactIds = contacts?.map(({ id }) => id) ?? [];
     const groupIds = groups?.map(({ id }) => id) ?? [];
 
-    privateChatIo.emit("join-room", contactIds);
-    groupChatIo.emit("join-room", groupIds);
+    privateChatIo.emit("join-room", { contact_ids: contactIds });
+    groupChatIo.emit("join-room", { group_ids: groupIds });
   }, [contacts, groups, privateChatIo, groupChatIo]);
+
+  useEffect(() => {
+    const disconnectSocket = () => {
+      privateChatIo.disconnect();
+      groupChatIo.disconnect();
+    };
+
+    window.addEventListener("beforeunload", disconnectSocket);
+
+    return () => window.removeEventListener("beforeunload", disconnectSocket);
+  }, [groupChatIo, privateChatIo]);
 
   return (
     <div className={style.home}>

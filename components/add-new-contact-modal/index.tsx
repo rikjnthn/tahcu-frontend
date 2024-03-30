@@ -5,15 +5,19 @@ import axios from "axios";
 
 import style from "./add-new-contact-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType } from "@/interface";
+import { ContactType, SetStateType } from "@/interface";
 import Input from "../input";
 import SubmitButton from "../submit-button";
+import { useSocket } from "@/context/socket-connection-context";
+import { useHomePageDispatch } from "@/context/home-page-context";
 
 const AddNewContactModal = ({
   setIsOpenModal,
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
+  const { privateChatIo } = useSocket();
+  const dispatch = useHomePageDispatch();
   const queryClient = useQueryClient();
 
   const {
@@ -22,10 +26,10 @@ const AddNewContactModal = ({
     handleSubmit,
   } = useForm();
 
-  const { mutate, isPending } = useMutation({
+  const { data, mutate, isPending } = useMutation({
     mutationKey: ["addContact"],
     mutationFn: async (user_id?: string) =>
-      axios.post(`api/chat-contact/${user_id}`),
+      axios.post<ContactType>(`api/chat-contact/${user_id}`),
     retry: false,
   });
 
@@ -33,6 +37,9 @@ const AddNewContactModal = ({
     mutate(user_id, {
       onSuccess: () => {
         queryClient.refetchQueries({ queryKey: ["contactList"] });
+        privateChatIo.emit("join-room", { contact_ids: [data?.data.id] });
+        setIsOpenModal(false);
+        dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
       },
     });
   };

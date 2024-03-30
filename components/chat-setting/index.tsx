@@ -4,14 +4,15 @@ import style from "./chat-setting.module.scss";
 import { SetStateType } from "@/interface";
 import PrivateChatSetting from "../private-chat-setting";
 import GroupSetting from "../group-setting";
+import { useChatPage } from "@/context/chat-page-context";
 
 const ChatSetting = ({
-  isGroup,
   setIsOpenSetting,
 }: {
-  isGroup: boolean;
   setIsOpenSetting: SetStateType<boolean>;
 }) => {
+  const { isGroup } = useChatPage();
+
   const closeChatSetting = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setIsOpenSetting(false);

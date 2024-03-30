@@ -7,15 +7,16 @@ import BackButton from "../back-button";
 import PhotoProfile from "../photo-profile";
 import GroupPhoto from "../group-photo";
 import style from "./chat-header.module.scss";
-import { useChatPageDispatch } from "@/context/chat-page-context";
+import { useChatPage, useChatPageDispatch } from "@/context/chat-page-context";
 import ThreeDots from "../three-dots";
 import ChatSetting from "../chat-setting";
 
-const ChatHeader = ({ name, isGroup }: { name: string; isGroup: boolean }) => {
+const ChatHeader = () => {
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
 
   const router = useRouter();
 
+  const { isGroup, name } = useChatPage();
   const { setIsRouteChangeComplete, setIsOpenHeader } = useChatPageDispatch();
 
   const backToMain = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,9 +54,7 @@ const ChatHeader = ({ name, isGroup }: { name: string; isGroup: boolean }) => {
         <ThreeDots onClick={openChatSetting} fill="#fff" />
       </div>
 
-      {isOpenSetting && (
-        <ChatSetting isGroup={isGroup} setIsOpenSetting={setIsOpenSetting} />
-      )}
+      {isOpenSetting && <ChatSetting setIsOpenSetting={setIsOpenSetting} />}
     </header>
   );
 };

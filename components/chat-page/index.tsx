@@ -92,14 +92,14 @@ const ChatPage = ({ contactId }: { contactId: string }) => {
 
   return (
     <ChatPageProvider
-      stateContext={{ isOpenHeader, isRouteChangeComplete }}
+      stateContext={{ isOpenHeader, isRouteChangeComplete, isGroup, name }}
       dispatchContext={{ setIsOpenHeader, setIsRouteChangeComplete }}
     >
       <div className={style.chat_page}>
         <div
           className={`z-1 ${isOpenHeader ? "translateX-0" : "translateX-100"}`}
         >
-          <ChatProfile name={name} isGroup={isGroup} />
+          <ChatProfile />
         </div>
         <div
           className={`${
@@ -107,7 +107,7 @@ const ChatPage = ({ contactId }: { contactId: string }) => {
           }`}
         >
           <ChatProvider>
-            <Chat name={name} isGroup={isGroup} />
+            <Chat />
           </ChatProvider>
         </div>
       </div>

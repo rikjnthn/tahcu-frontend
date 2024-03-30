@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import PhotoProfile from "../photo-profile";
 import style from "./chat-contact.module.scss";
@@ -14,8 +17,14 @@ const ChatContact = ({
   message: string;
   unread: number;
 }) => {
+  const path = usePathname();
+
+  const contactId = path.split("/")[3];
+
+  const isOpen = contactId === to;
+
   return (
-    <li className={style.chat_contact}>
+    <li className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}>
       <Link href={`/a/chat/${to}`}>
         <PhotoProfile name={name} size="md" />
 

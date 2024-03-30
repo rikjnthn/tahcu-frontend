@@ -6,17 +6,14 @@ import BackButton from "../back-button";
 import EditButton from "../edit-button";
 import style from "./chat-profile-header.module.scss";
 import { SetStateType } from "@/interface";
-import { useChatPageDispatch } from "@/context/chat-page-context";
+import { useChatPage, useChatPageDispatch } from "@/context/chat-page-context";
 
 const ChatProfileHeader = ({
-  name,
-  isGroup,
   setIsOpenModal,
 }: {
-  name: string;
-  isGroup?: boolean;
   setIsOpenModal?: SetStateType<boolean>;
 }) => {
+  const { isGroup, name } = useChatPage();
   const { setIsOpenHeader } = useChatPageDispatch();
 
   return (

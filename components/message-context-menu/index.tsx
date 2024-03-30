@@ -1,25 +1,81 @@
 import React, { useEffect, useRef } from "react";
+import { Socket } from "socket.io-client";
 
 import style from "./message-context-menu.module.scss";
-import { MessageMenuCoordinateType } from "@/interface";
+import {
+  MessageMenuCoordinateType,
+  MessageType,
+  SetStateType,
+  UserDataType,
+} from "@/interface";
 import { useChat, useChatDispatch } from "@/context/chat-context";
+import { useSocket } from "@/context/socket-connection-context";
+import { useChatPage } from "@/context/chat-page-context";
+import { useParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+
+const handleGroup = ({
+  io,
+  messageId,
+  groupId,
+  senderId,
+}: {
+  io: Socket;
+  messageId: string;
+  groupId: string;
+  senderId?: string;
+}) => {
+  io.emit("delete", {
+    chat_id: groupId,
+    data: {
+      ids: [messageId],
+      group_id: groupId,
+      sender_id: senderId,
+    },
+  });
+};
+
+const handlePrivateChat = ({
+  io,
+  messageId,
+  contactId,
+}: {
+  io: Socket;
+  messageId: string;
+  contactId: string;
+}) => {
+  io.emit("remove", {
+    chat_id: contactId,
+    data: {
+      ids: [messageId],
+    },
+  });
+};
 
 const MessageContextMenu = ({
   id,
   message,
   menuCoordinate,
   isSender,
+  setMessages,
 }: {
   id: string;
   message: string;
   menuCoordinate: MessageMenuCoordinateType;
   isSender: boolean;
+  setMessages: SetStateType<MessageType[]>;
 }) => {
   const messageContextRef = useRef<HTMLDivElement>(null);
 
+  const param = useParams<{ contact: string }>();
   const { chatRef } = useChat();
+  const { isGroup } = useChatPage();
   const { setEditMessage, setEditMessageId, setIsEditMessage } =
     useChatDispatch();
+  const { groupChatIo, privateChatIo } = useSocket();
+  const queryClient = useQueryClient();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
     if (messageContextRef.current) {
@@ -57,7 +113,22 @@ const MessageContextMenu = ({
     }
   };
 
-  const handleDeleteMessage = () => {};
+  const handleDeleteMessage = () => {
+    isGroup
+      ? handleGroup({
+          io: groupChatIo,
+          groupId: param.contact,
+          messageId: id,
+          senderId: userData?.user_id,
+        })
+      : handlePrivateChat({
+          io: privateChatIo,
+          messageId: id,
+          contactId: param.contact,
+        });
+
+    setMessages((prev) => prev.filter((val) => val.id !== id));
+  };
 
   const handleEditMessage = () => {
     setIsEditMessage(true);
@@ -68,7 +139,7 @@ const MessageContextMenu = ({
   return (
     <div ref={messageContextRef} className={`${style.message_context}`}>
       <button onClick={handleCopyMessage}>Copy</button>
-      <button onClick={handleDeleteMessage}>Delete</button>
+      {isSender && <button onClick={handleDeleteMessage}>Delete</button>}
       {isSender && <button onClick={handleEditMessage}>Edit</button>}
     </div>
   );

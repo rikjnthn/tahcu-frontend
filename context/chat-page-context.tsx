@@ -49,6 +49,8 @@ export const ChatPageProvider = ({
 interface ChatPageStateType {
   isOpenHeader: boolean;
   isRouteChangeComplete: boolean;
+  isGroup: boolean;
+  name: string;
 }
 
 interface ChatPageSetStateType {

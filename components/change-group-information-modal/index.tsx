@@ -9,13 +9,12 @@ import CloseButton from "../close-button";
 import { SetStateType } from "@/interface";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../submit-button";
+import { useChatPage } from "@/context/chat-page-context";
 
 const ChangeGroupInformationModal = ({
-  name,
   description,
   setIsOpenModal,
 }: {
-  name: string;
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
@@ -46,6 +45,7 @@ const ChangeGroupInformationModal = ({
     return () => document.removeEventListener("keyup", closeModalOnEsc);
   }, [setIsOpenModal]);
 
+  const { name } = useChatPage();
   const queryClient = useQueryClient();
 
   const handleCloseModal = () => setIsOpenModal(false);

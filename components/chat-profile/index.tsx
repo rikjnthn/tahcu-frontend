@@ -13,19 +13,15 @@ import ChangeGroupInformationModal from "../change-group-information-modal";
 import Input from "../input";
 import { GroupWithMembershipType, UserDataType } from "@/interface";
 import EditMembers from "../edit-members";
+import { useChatPage } from "@/context/chat-page-context";
 
-const ChatProfile = ({
-  name,
-  isGroup,
-}: {
-  name: string;
-  isGroup?: boolean;
-}) => {
+const ChatProfile = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
 
   const param = useParams();
 
+  const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
   const group = queryClient.getQueryData<GroupWithMembershipType>([
@@ -44,15 +40,10 @@ const ChatProfile = ({
     return (
       <div>
         <div>
-          <ChatProfileHeader
-            isGroup
-            name={name}
-            setIsOpenModal={setIsOpenModal}
-          />
+          <ChatProfileHeader setIsOpenModal={setIsOpenModal} />
 
           {isOpenModal && (
             <ChangeGroupInformationModal
-              name={name}
               description={group?.description ?? ""}
               setIsOpenModal={setIsOpenModal}
             />
@@ -84,7 +75,7 @@ const ChatProfile = ({
 
   return (
     <div>
-      <ChatProfileHeader name={name} />
+      <ChatProfileHeader />
 
       <form className={style.change_name}>
         <Input

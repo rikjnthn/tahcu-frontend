@@ -4,16 +4,24 @@ import { useState } from "react";
 
 import style from "./message.module.scss";
 import MessageContextMenu from "../message-context-menu";
-import { MessageMenuCoordinateType } from "@/interface";
+import {
+  MessageMenuCoordinateType,
+  MessageType,
+  SetStateType,
+} from "@/interface";
 
 const Message = ({
+  id,
   message,
   time,
   isSender,
+  setMessages,
 }: {
+  id: string;
   message: string;
   time: string;
   isSender: boolean;
+  setMessages: SetStateType<MessageType[]>;
 }) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);
   const [menuCoordinate, setMenuCoordinate] =
@@ -52,10 +60,11 @@ const Message = ({
           className={`${style.message_context_container}`}
         >
           <MessageContextMenu
-            id=""
+            id={id}
             message={message}
             menuCoordinate={menuCoordinate}
             isSender={isSender}
+            setMessages={setMessages}
           />
         </div>
       )}
