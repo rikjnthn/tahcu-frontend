@@ -12,7 +12,7 @@ const Chat = () => {
 
   return (
     <div ref={chatRef} className={style.chat}>
-      <ChatHeader name="John" />
+      <ChatHeader />
       <MessageContainer />
       <SendMessagePlace />
     </div>

@@ -4,11 +4,6 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  border-bottom: 2px solid #cecece;
-
-  &:last-child {
-    border: none;
-  }
 
   & > a {
     display: flex;
@@ -31,6 +26,10 @@
       margin-left: auto;
       background-color: var(--tertiary);
     }
+  }
+
+  &:hover {
+    background-color: #dbdbdb;
   }
 }
 
@@ -55,4 +54,8 @@
     text-overflow: ellipsis;
     color: #363636;
   }
+}
+
+.open_link {
+  background-color: rgba(128, 128, 128, 0.15);
 }

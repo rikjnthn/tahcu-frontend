@@ -4,16 +4,27 @@ import { useState } from "react";
 
 import style from "./message.module.scss";
 import MessageContextMenu from "../message-context-menu";
-import { MessageMenuCoordinateType } from "@/interface";
+import {
+  MessageMenuCoordinateType,
+  MessageType,
+  SetStateType,
+} from "@/interface";
+import { useChatPage } from "@/context/chat-page-context";
 
 const Message = ({
+  id,
   message,
   time,
   isSender,
+  name,
+  setMessages,
 }: {
+  id: string;
   message: string;
   time: string;
   isSender: boolean;
+  name?: string;
+  setMessages: SetStateType<MessageType[]>;
 }) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);
   const [menuCoordinate, setMenuCoordinate] =
@@ -21,6 +32,8 @@ const Message = ({
       left: 0,
       top: 0,
     });
+
+  const { isGroup } = useChatPage();
 
   const handleMessageContext = (e: React.MouseEvent) => {
     if (!openMessageMenu) {
@@ -42,8 +55,11 @@ const Message = ({
       }`}
     >
       <div>
-        <span>{message}</span>
-        <span className={style.time}>{time}</span>
+        {!isSender && isGroup ? <span>{name}</span> : null}
+        <div>
+          <span>{message}</span>
+          <span className={style.time}>{time}</span>
+        </div>
       </div>
 
       {openMessageMenu && (
@@ -52,10 +68,11 @@ const Message = ({
           className={`${style.message_context_container}`}
         >
           <MessageContextMenu
-            id=""
+            id={id}
             message={message}
             menuCoordinate={menuCoordinate}
             isSender={isSender}
+            setMessages={setMessages}
           />
         </div>
       )}

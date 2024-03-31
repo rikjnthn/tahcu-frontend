@@ -47,7 +47,11 @@ const SendMessagePlace = () => {
         </div>
       )}
       <div ref={sendMassagePlaceRef} className={style.send_message_place}>
-        <TextTyping onInput={handleInput} ref={textTypingRef} />
+        <TextTyping
+          onInput={handleInput}
+          textareaRef={textTypingRef}
+          ref={textTypingRef}
+        />
       </div>
     </div>
   );

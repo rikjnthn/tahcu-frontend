@@ -12,11 +12,9 @@
     transition: transform var(--transition-duration);
 
     @include breakpoint.tablet {
-      z-index: -10;
+      --border-color: #88888880;
 
-      &:first-child {
-        border-inline-end: 1px solid #88888880;
-      }
+      border-inline-end: 1px solid var(--border-color);
     }
   }
 }

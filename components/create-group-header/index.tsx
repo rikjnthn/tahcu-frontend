@@ -2,17 +2,15 @@ import React from "react";
 
 import BackButton from "../back-button";
 import style from "./create-group-header.module.scss";
-import { SetStateType } from "@/interface";
+import { useCreateGroupDispatch } from "@/context/create-group-context";
 
-const CreateGroupHeader = ({
-  setIsCreateGroup,
-}: {
-  setIsCreateGroup: SetStateType<boolean>;
-}) => {
+const CreateGroupHeader = () => {
+  const { setIsCreateGroup } = useCreateGroupDispatch();
+
   return (
     <header className={style.header}>
       <BackButton
-        onClick={() => setIsCreateGroup(true)}
+        onClick={() => setIsCreateGroup(false)}
         fill="#000"
         title="Back"
       />

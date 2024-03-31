@@ -21,39 +21,18 @@
       }
     }
 
-    & > div {
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 1rem;
-
-      & > label {
-        font-weight: 500;
-      }
-
-      & > input {
-        font-size: inherit;
-        padding: 0.5rem;
-        border-radius: 5px;
-        border: 1px solid;
-      }
-    }
-
     & > footer {
       display: flex;
       justify-content: space-between;
+      align-items: center;
 
       & > a {
         color: #000;
       }
-
-      & > button {
-        padding: 0.5rem 1rem;
-        font-size: inherit;
-        border: none;
-        border-radius: 5px;
-        color: var(--white);
-        background-color: var(--primary);
-      }
     }
   }
+}
+
+.sign_up_error {
+  color: #ff0000;
 }

@@ -36,7 +36,7 @@ yarn-error.log*
 next-env.d.ts
 .vscode
 
-#env
+#env 
 .env
-.env.production
 .env.development
+.env.production

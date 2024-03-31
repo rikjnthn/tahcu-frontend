@@ -11,12 +11,7 @@ const EditProfileModalHeader = ({
 }) => {
   return (
     <header className={style.header}>
-      <CloseButton
-        onClick={() => {
-          setIsOpenModal(false);
-        }}
-        stroke="#000"
-      />
+      <CloseButton onClick={() => setIsOpenModal(false)} stroke="#000" />
       <span>Edit Profile</span>
     </header>
   );

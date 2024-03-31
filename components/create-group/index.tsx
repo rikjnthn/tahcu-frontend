@@ -1,20 +1,19 @@
 import React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import CreateGroupInformation from "../create-group-information";
 import CreateGroupHeader from "../create-group-header";
-import NextButton from "../next-button";
-import { SetStateType } from "@/interface";
+import { UserDataType } from "@/interface";
 
-const CreateGroup = ({
-  setIsCreateGroup,
-}: {
-  setIsCreateGroup: SetStateType<boolean>;
-}) => {
+const CreateGroup = () => {
+  const queryClient = useQueryClient();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
+
   return (
     <div>
-      <CreateGroupHeader setIsCreateGroup={setIsCreateGroup} />
-      <CreateGroupInformation />
-      <NextButton title="Create" fill="#fff" />
+      <CreateGroupHeader />
+      <CreateGroupInformation userData={userData} />
     </div>
   );
 };

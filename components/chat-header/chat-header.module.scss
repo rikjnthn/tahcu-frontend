@@ -6,7 +6,7 @@
   background-color: var(--primary);
   color: var(--white);
 
-  & > div {
+  & > div:first-child {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -16,16 +16,18 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      width: 90%;
 
       span {
         font-size: 18px;
-        font-weight: 700;
+        font-weight: 600;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        width: 90%;
       }
+    }
+
+    & > button:last-child {
+      margin-inline-start: auto;
     }
   }
 }

@@ -1,14 +1,23 @@
-"use client";
+import { redirect } from "next/navigation";
+import dynamic from "next/dynamic";
 
-import ChatPage from "@/components/chat-page";
-import { ChatPageProvider } from "@/context/chat-page-context";
+import { isTahcuTokenVerified } from "@/action/auth";
 
-export default function Page({ params }: { params: { contact: string } }) {
+const ChatPage = dynamic(() => import("@/components/chat-page"), {
+  ssr: false,
+});
+
+export default async function Page({
+  params,
+}: {
+  params: { contact: string };
+}) {
+  const isValid = await isTahcuTokenVerified();
+  if (!isValid) redirect("/login");
+
   return (
     <div>
-      <ChatPageProvider contact={params.contact}>
-        <ChatPage />
-      </ChatPageProvider>
+      <ChatPage contactId={params.contact} />
     </div>
   );
 }

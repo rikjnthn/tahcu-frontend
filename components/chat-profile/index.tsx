@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./chat-profile.module.scss";
 import PlusButton from "../plus-button";
@@ -8,55 +10,84 @@ import ChatProfileHeader from "../chat-profile-header";
 import GroupMember from "../group-member";
 import GroupDescription from "../group-description";
 import ChangeGroupInformationModal from "../change-group-information-modal";
+import Input from "../input";
+import { GroupWithMembershipType, UserDataType } from "@/interface";
+import EditMembers from "../edit-members";
+import { useChatPage } from "@/context/chat-page-context";
 
-const ChatProfile = ({
-  name,
-  isGroup,
-}: {
-  name: string;
-  isGroup?: boolean;
-}) => {
-  const [openModal, setOpenModal] = useState<boolean>(false);
+const ChatProfile = () => {
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
 
-  const nameId = useId();
+  const param = useParams();
+
+  const { isGroup, name } = useChatPage();
+  const queryClient = useQueryClient();
+
+  const group = queryClient.getQueryData<GroupWithMembershipType>([
+    "group",
+    param.contact,
+  ]);
+  const user = queryClient.getQueryData<UserDataType>(["userData"]);
+
+  const isGroupAdmin = group?.admin_id === user?.user_id;
+
+  const editMembers = () => {
+    setIsEditMembers(true);
+  };
 
   if (isGroup) {
     return (
       <div>
-        <ChatProfileHeader isGroup name={name} setOpenModal={setOpenModal} />
+        <div>
+          <ChatProfileHeader setIsOpenModal={setIsOpenModal} />
 
-        {openModal && (
-          <ChangeGroupInformationModal setOpenModal={setOpenModal} />
-        )}
+          {isOpenModal && (
+            <ChangeGroupInformationModal
+              description={group?.description ?? ""}
+              setIsOpenModal={setIsOpenModal}
+            />
+          )}
 
-        <GroupDescription />
+          <GroupDescription description={group?.description} />
 
-        <GroupMember />
+          <GroupMember
+            members={group?.group_membership}
+            adminId={group?.admin_id}
+          />
 
-        {true && (
-          <div className={style.float_button}>
-            <PlusButton fill="#fff" />
-          </div>
-        )}
+          {isEditMembers && (
+            <EditMembers
+              currentMembers={group?.group_membership ?? []}
+              setIsEditMembers={setIsEditMembers}
+            />
+          )}
+
+          {isGroupAdmin && (
+            <div className={style.float_button}>
+              <PlusButton onClick={editMembers} fill="#fff" />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
 
   return (
     <div>
-      <ChatProfileHeader name={name} />
+      <ChatProfileHeader />
 
       <form className={style.change_name}>
-        <input
+        <Input
+          labelName="Name"
           type="text"
-          id={nameId}
           defaultValue={name}
           minLength={4}
           maxLength={20}
           autoComplete="off"
           autoCorrect="off"
+          readOnly
         />
-        <label htmlFor={nameId}>Name</label>
       </form>
     </div>
   );

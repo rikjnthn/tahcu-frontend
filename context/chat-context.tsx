@@ -1,5 +1,6 @@
-import { SetStateType } from "@/interface";
 import { createContext, useContext, useRef, useState } from "react";
+
+import { SetStateType } from "@/interface";
 
 const ChatContext = createContext<ChatStateType | null>(null);
 

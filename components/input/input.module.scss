@@ -1,0 +1,107 @@
+.input_no_transition {
+  height: 5rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & > label {
+      font-weight: 500;
+    }
+
+    & > input {
+      font-size: inherit;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid;
+
+      &[aria-invalid="true"] {
+        border-color: #ff0000;
+      }
+    }
+  }
+}
+
+.input_with_transition {
+  & > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & > label {
+      --label-gray: #838383;
+      --label-background-color: #fff;
+
+      font-size: 14px;
+      width: fit-content;
+      padding-inline: 0.5rem;
+      transform: translate(10px, 12px);
+      background-color: var(--label-background-color);
+      color: var(--label-gray);
+      transition: color 250ms;
+    }
+
+    & > input {
+      --ring-gray: #b8b8b8;
+      --transition-duration: 250ms;
+
+      font-family: inherit;
+      font-size: 16px;
+      padding: 0.5rem;
+      border: 1px solid var(--ring-gray);
+      outline: 1px solid transparent;
+      border-radius: 5px;
+      transition: border-color var(--transition-duration),
+        outline var(--transition-duration);
+
+      &:hover {
+        --ring-green-hover: #29a74e;
+
+        border-color: var(--ring-green-hover);
+
+        & + label {
+          --label-green-hover: #29a74e;
+
+          color: var(--label-green-hover);
+        }
+      }
+
+      &:focus {
+        --ring-green-focus: #1f8a3f;
+
+        border-color: var(--ring-green-focus);
+        outline-color: var(--ring-green-focus);
+
+        & + label {
+          --label-green-focus: #1f8a3f;
+
+          color: var(--label-green-focus);
+        }
+      }
+
+      &[aria-invalid="true"] {
+        --ring-error-color: #ff0000;
+
+        border-color: var(--ring-error-color);
+        outline-color: var(--ring-error-color);
+
+        & + label {
+          --label-error-color: #ff0000;
+
+          color: var(--label-error-color);
+        }
+      }
+    }
+  }
+}
+
+.error_message {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  color: #ff0000;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

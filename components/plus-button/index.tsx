@@ -3,9 +3,14 @@ import React from "react";
 import style from "./plus-button.module.scss";
 import { ButtonType } from "@/interface";
 
-const PlusButton = ({ fill, title }: ButtonType) => {
+const PlusButton = ({ fill, title, onClick }: ButtonType) => {
   return (
-    <button type="button" className={`icon ${style.plus_button}`} title={title}>
+    <button
+      onClick={onClick}
+      type="button"
+      className={`icon ${style.plus_button}`}
+      title={title}
+    >
       <svg
         width="14"
         height="15"

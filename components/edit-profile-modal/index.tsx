@@ -21,7 +21,7 @@ const EditProfileModal = ({
       <div>
         <EditProfileModalHeader setIsOpenModal={setIsOpenModal} />
 
-        <EditProfileModalBody />
+        <EditProfileModalBody setIsOpenModal={setIsOpenModal} />
       </div>
     </div>
   );

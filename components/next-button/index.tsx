@@ -3,13 +3,18 @@ import React from "react";
 import style from "./next-button.module.scss";
 import { ButtonType } from "@/interface";
 
-const NextButton = ({ fill, onClick, title }: ButtonType) => {
+const NextButton = ({
+  fill,
+  onClick,
+  title,
+  type,
+}: ButtonType & { type: "button" | "submit" }) => {
   return (
     <button
       onClick={onClick}
       className={style.next_button}
       title={title}
-      type="button"
+      type={type}
     >
       <svg
         width="20"

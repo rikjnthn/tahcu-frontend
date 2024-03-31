@@ -6,8 +6,8 @@ const GroupDescription = ({ description }: { description?: string }) => {
   return (
     <div className={style.description}>
       <span>Description</span>
-      <div className={typeof description === "undefined" ? "opacity-50" : ""}>
-        {typeof description === "undefined" ? "No description" : description}
+      <div className={!description ? "opacity-50" : ""}>
+        {!description ? "No description" : description}
       </div>
     </div>
   );
