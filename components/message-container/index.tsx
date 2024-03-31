@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Socket } from "socket.io-client";
 import { useParams } from "next/navigation";
 
 import Message from "../message";
@@ -9,10 +8,6 @@ import style from "./message-container.module.scss";
 import { ContactType, MessageType, UserDataType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
-
-const handlePrivateChat = (io: Socket) => {};
-
-const handleGroupChat = (io: Socket) => {};
 
 const MessageContainer = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -142,19 +137,22 @@ const MessageContainer = () => {
 
   return (
     <ul ref={messageContainerRef} className={style.message_container}>
-      {messages.map(({ id, message, sent_at, sender_id }) => (
-        <Message
-          key={id}
-          id={id}
-          isSender={sender_id === userData?.user_id}
-          message={message}
-          time={new Date(sent_at).toLocaleTimeString("en-En", {
-            timeStyle: "short",
-            hour12: false,
-          })}
-          setMessages={setMessages}
-        />
-      ))}
+      {messages.map(
+        ({ id, message, sent_at, sender_id, sender: { username } }) => (
+          <Message
+            key={id}
+            id={id}
+            isSender={sender_id === userData?.user_id}
+            message={message}
+            time={new Date(sent_at).toLocaleTimeString("en-En", {
+              timeStyle: "short",
+              hour12: false,
+            })}
+            name={username}
+            setMessages={setMessages}
+          />
+        )
+      )}
     </ul>
   );
 };

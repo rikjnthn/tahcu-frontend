@@ -9,18 +9,21 @@ import {
   MessageType,
   SetStateType,
 } from "@/interface";
+import { useChatPage } from "@/context/chat-page-context";
 
 const Message = ({
   id,
   message,
   time,
   isSender,
+  name,
   setMessages,
 }: {
   id: string;
   message: string;
   time: string;
   isSender: boolean;
+  name?: string;
   setMessages: SetStateType<MessageType[]>;
 }) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);
@@ -29,6 +32,8 @@ const Message = ({
       left: 0,
       top: 0,
     });
+
+  const { isGroup } = useChatPage();
 
   const handleMessageContext = (e: React.MouseEvent) => {
     if (!openMessageMenu) {
@@ -50,8 +55,11 @@ const Message = ({
       }`}
     >
       <div>
-        <span>{message}</span>
-        <span className={style.time}>{time}</span>
+        {!isSender && isGroup ? <span>{name}</span> : null}
+        <div>
+          <span>{message}</span>
+          <span className={style.time}>{time}</span>
+        </div>
       </div>
 
       {openMessageMenu && (
