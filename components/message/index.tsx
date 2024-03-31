@@ -50,14 +50,16 @@ const Message = ({
   return (
     <li
       onContextMenu={handleMessageContext}
-      className={`${style.message} ${
+      className={`${style.message_container} ${
         isSender ? "margin-left-auto flex-row-reversed" : ""
       }`}
     >
-      <div>
-        {!isSender && isGroup ? <span>{name}</span> : null}
+      <div className={style.message}>
+        {!isSender && isGroup ? (
+          <span className={style.username}>{name}</span>
+        ) : null}
         <div>
-          <span>{message}</span>
+          <span className={style.message_text}>{message}</span>
           <span className={style.time}>{time}</span>
         </div>
       </div>

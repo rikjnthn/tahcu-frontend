@@ -10,6 +10,8 @@ import { SetStateType } from "@/interface";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
+import Modal from "@/components/modal";
+import Input from "../input";
 
 const ChangeGroupInformationModal = ({
   description,
@@ -59,29 +61,29 @@ const ChangeGroupInformationModal = ({
     });
   };
   return (
-    <div className={style.modal}>
-      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+    <Modal>
+      <form
+        className={style.form}
+        onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
+      >
         <CloseButton onClick={handleCloseModal} stroke="#000" title="Close" />
-        <div>
-          <input
-            id={nameId}
-            type="text"
-            placeholder="Group"
-            aria-invalid={!!errors.name?.message?.toString()}
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Please enter your group name",
-              },
-              maxLength: {
-                value: 30,
-                message: "Group name too long",
-              },
-              value: name,
-            })}
-          />
-          <label htmlFor={nameId}>Name</label>
-        </div>
+
+        <Input
+          labelName="Name"
+          errorMessage={errors.name?.message?.toString()}
+          {...register("name", {
+            required: {
+              value: true,
+              message: "Please enter your group name",
+            },
+            maxLength: {
+              value: 30,
+              message: "Group name too long",
+            },
+            value: name,
+          })}
+        />
         <div>
           <textarea
             id={descriptionId}
@@ -99,10 +101,14 @@ const ChangeGroupInformationModal = ({
           />
           <label htmlFor={descriptionId}>Description</label>
         </div>
-        <SubmitButton name="Confirm" isLoading={isPending} />
+        <SubmitButton
+          className={style.submit}
+          name="Confirm"
+          isLoading={isPending}
+        />
       </form>
       <div onClick={handleCloseModal} className="dark_overlay -z-1" />
-    </div>
+    </Modal>
   );
 };
 

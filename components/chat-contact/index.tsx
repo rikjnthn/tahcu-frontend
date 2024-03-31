@@ -29,8 +29,8 @@ const ChatContact = ({
         <PhotoProfile name={name} size="md" />
 
         <div className={style.name_message}>
-          <span>{name}</span>
-          <p>{message}</p>
+          <span className={style.contact_name}>{name}</span>
+          <p className={style.message_snippet}>{message}</p>
         </div>
 
         {unread > 0 && <span>{unread}</span>}

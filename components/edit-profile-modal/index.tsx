@@ -5,6 +5,7 @@ import { SetStateType } from "@/interface";
 import style from "./edit-profile-modal.module.scss";
 import EditProfileModalHeader from "../edit-profile-modal-header";
 import EditProfileModalBody from "../edit-profile-modal-body";
+import Modal from "@/components/modal";
 
 const EditProfileModal = ({
   setIsOpenModal,
@@ -12,18 +13,17 @@ const EditProfileModal = ({
   setIsOpenModal: SetStateType<boolean>;
 }) => {
   return (
-    <div
+    <Modal
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsOpenModal(false);
       }}
-      className={style.modal}
     >
-      <div>
+      <div className={style.wrapper}>
         <EditProfileModalHeader setIsOpenModal={setIsOpenModal} />
 
         <EditProfileModalBody setIsOpenModal={setIsOpenModal} />
       </div>
-    </div>
+    </Modal>
   );
 };
 

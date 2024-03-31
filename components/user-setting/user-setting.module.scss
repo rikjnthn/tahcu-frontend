@@ -12,12 +12,16 @@
 }
 
 .delete_account {
+  --delete-account-base: rgb(255, 0, 0);
+
   font-weight: 500;
   width: fit-content;
-  color: rgb(255, 0, 0);
+  color: var(--delete-account-base);
 
   &:hover {
-    color: rgb(255, 53, 46);
+    --delete-account-hover: rgb(255, 100, 100);
+
+    color: var(--delete-account-hover);
     text-decoration: underline;
   }
 }

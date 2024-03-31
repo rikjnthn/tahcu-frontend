@@ -1,4 +1,4 @@
-.message {
+.message_container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,57 +6,49 @@
   max-width: 85%;
   list-style: none;
   cursor: default;
+}
 
-  @media (pointer: coarse) {
-    &:active {
-      & > div:first {
-        background: #999;
-      }
-    }
+.message {
+  --message-background-color: #fff;
+
+  border-radius: 10px;
+  padding-block: 0.25rem;
+  background-color: var(--message-background-color);
+
+  & > div {
+    position: relative;
+    width: 100%;
+    font-size: 14px;
+    padding-inline: 0.75rem 1.5rem;
   }
+}
 
-  @media (pointer: fine) {
-    &:focus {
-      background: #000;
-    }
-  }
+.username {
+  --message-username-font-color: #0b6e4f;
 
-  & > div:first-child {
-    border-radius: 10px;
-    padding-block: 0.25rem;
-    background-color: var(--white);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--message-username-font-color);
+  padding-inline: 0.75rem;
+}
 
-    & > span:first-child {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--tertiary);
-      padding-inline: 0.75rem;
-    }
+.message_text {
+  position: relative;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding-inline-end: 1.25rem;
+}
 
-    & > div {
-      position: relative;
-      width: 100%;
-      font-size: 14px;
-      padding-inline: 0.75rem 1.5rem;
+.time {
+  --message-time-font-color: #7e7e7e;
 
-      & > span:first-child {
-        position: relative;
-        word-break: break-word;
-        white-space: pre-wrap;
-        padding-inline-end: 1.25rem;
-      }
-
-      .time {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        padding: 0 5px;
-        font-size: 12px;
-        color: #7e7e7e;
-        z-index: 1;
-      }
-    }
-  }
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 5px;
+  font-size: 12px;
+  color: var(--message-time-font-color);
+  z-index: 1;
 }
 
 .message_context_container {

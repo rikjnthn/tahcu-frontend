@@ -34,7 +34,6 @@ const MessageContainer = () => {
     if (!isGroup) return;
 
     const io = groupChatIo;
-    console.log("group");
 
     io.emit(
       "find-all",
@@ -59,7 +58,6 @@ const MessageContainer = () => {
     });
 
     io.on("deleted-message", (deletedMessageId: string[]) => {
-      console.log(deletedMessageId);
       setMessages((prev) =>
         prev.filter((val) => !deletedMessageId.includes(val.id))
       );
@@ -84,7 +82,6 @@ const MessageContainer = () => {
     if (isGroup) return;
 
     const io = privateChatIo;
-    console.log("private");
 
     io.emit(
       "find-all",

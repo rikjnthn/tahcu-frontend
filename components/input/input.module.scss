@@ -17,7 +17,9 @@
       border: 1px solid;
 
       &[aria-invalid="true"] {
-        border-color: #ff0000;
+        --ring-error-color: #ff0000;
+
+        border-color: var(--ring-error-color);
       }
     }
   }

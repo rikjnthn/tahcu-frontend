@@ -3,11 +3,11 @@
   flex-direction: column;
   gap: 0.25rem;
   padding-inline: 2.5rem;
+}
 
-  & > div {
-    &:first-child {
-      font-size: 14px;
-      color: #757575;
-    }
-  }
+.name {
+  --font-grey: #757575;
+
+  font-size: 14px;
+  color: var(--font-grey);
 }

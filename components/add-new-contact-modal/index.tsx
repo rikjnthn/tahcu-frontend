@@ -10,6 +10,7 @@ import Input from "../input";
 import SubmitButton from "../submit-button";
 import { useSocket } from "@/context/socket-connection-context";
 import { useHomePageDispatch } from "@/context/home-page-context";
+import Modal from "@/components/modal";
 
 const AddNewContactModal = ({
   setIsOpenModal,
@@ -45,9 +46,9 @@ const AddNewContactModal = ({
   };
 
   return (
-    <div className={style.modal}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <header>
+    <Modal>
+      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        <header className={style.header}>
           <CloseButton
             onClick={() => setIsOpenModal(false)}
             stroke="#000"
@@ -86,7 +87,7 @@ const AddNewContactModal = ({
 
         <SubmitButton name="Add" isLoading={isPending} />
       </form>
-    </div>
+    </Modal>
   );
 };
 

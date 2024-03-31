@@ -33,12 +33,12 @@ const SendMessagePlace = () => {
   return (
     <div>
       {isEditMessage && (
-        <div className={style.message_to_edit}>
-          <div>
+        <div className={style.edit_message_container}>
+          <div className={style.edit_message}>
             <span>Editting</span>
-            <span>{editMessage}</span>
+            <span className={style.message}>{editMessage}</span>
           </div>
-          <div>
+          <div className={style.close}>
             <CloseButton
               onClick={() => setIsEditMessage(false)}
               stroke="#000"

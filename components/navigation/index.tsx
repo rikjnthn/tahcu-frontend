@@ -44,14 +44,14 @@ const Navigation = ({
         !isOpenNav ? `${style.close_nav}` : ""
       }`}
     >
-      <div onClick={openUserProfile}>
+      <div className={style.user_data} onClick={openUserProfile}>
         <PhotoProfile name={data?.username} size="md" />
         <div>
-          <span>{data?.username}</span>
-          <span>{data?.email}</span>
+          <span className={style.username}>{data?.username}</span>
+          <span className={style.email}>{data?.email}</span>
         </div>
       </div>
-      <div>
+      <div className={style.nav_option}>
         <DarkModeToggle />
         <NavOption onClick={openSetting} icon="setting.svg" name="Setting" />
       </div>

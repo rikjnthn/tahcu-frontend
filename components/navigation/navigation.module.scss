@@ -2,6 +2,7 @@
 
 .navigation {
   --transition-duration: 200ms;
+  --navigation-background-color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -10,55 +11,44 @@
   position: absolute;
   left: 0;
   top: 0;
-  background-color: var(--white);
+  background-color: var(--navigation-background-color);
   transition: transform var(--transition-duration);
   z-index: 10;
   user-select: none;
+}
 
-  & > div:first-child {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 7rem;
-    padding: 1rem;
-    color: var(--white);
-    background-color: var(--tertiary);
+.nav_option {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
 
-    & > div {
-      display: flex;
-      flex-direction: column;
+.user_data {
+  --user-data-font-color: #fff;
+  --user-data-background-color: #0b6e4f;
 
-      span:first-child {
-        font-size: 16px;
-        font-weight: 600;
-      }
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 7rem;
+  padding: 1rem;
+  color: var(--user-data-font-color);
+  background-color: var(--user-data-background-color);
 
-      span {
-        font-size: 14px;
-      }
-    }
-
-    @include breakpoint.tablet {
-      // border-start-start-radius: 10px;
-      // border-start-end-radius: 10px;
-    }
-  }
-
-  & > div:nth-child(2) {
+  & > div {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 1rem;
   }
+}
 
-  @include breakpoint.tablet {
-    // left: 2rem;
-    // top: 4rem;
-    // width: 15rem;
-    // height: fit-content;
-    // border-radius: 10px;
-    // box-shadow: 0 0 10px 0 #b3b3b3;
-  }
+.username {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.email {
+  font-size: 14px;
 }
 
 .close_nav {

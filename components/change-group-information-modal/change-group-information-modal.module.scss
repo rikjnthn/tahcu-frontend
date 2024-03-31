@@ -1,117 +1,80 @@
-.modal {
+.form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding-inline: 1rem;
-  z-index: 1;
-  user-select: none;
+  flex-direction: column;
+  width: 25rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  background-color: var(--white);
 
-  & > form {
+  & > div {
     display: flex;
-    flex-direction: column;
-    width: 25rem;
-    padding: 1rem 2rem;
-    border-radius: 10px;
-    background-color: #fff;
+    flex-direction: column-reverse;
 
-    & > div {
-      display: flex;
-      flex-direction: column-reverse;
+    & > label {
+      --label-gray: #838383;
 
-      & > label {
-        --label-gray: #838383;
-
-        font-size: 14px;
-        width: fit-content;
-        padding-inline: 0.5rem;
-        transform: translate(10px, 12px);
-        background-color: #fff;
-        color: var(--label-gray);
-        transition: color 250ms;
-      }
-
-      & > input,
-      & > textarea {
-        --ring-gray: #b8b8b8;
-        --ring-green-hover: #29a74e;
-        --ring-green-focus: #1f8a3f;
-
-        font-size: 16px;
-        font-family: inherit;
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid var(--ring-gray);
-        outline: 1px solid transparent;
-        border-radius: 5px;
-        transition: border-color 250ms, outline 250ms;
-
-        &:hover {
-          border-color: var(--ring-green-hover);
-
-          & + label {
-            --label-green-hover: #29a74e;
-
-            color: var(--label-green-hover);
-          }
-        }
-
-        &:focus {
-          border-color: var(--ring-green-focus);
-          outline-color: var(--ring-green-focus);
-
-          & + label {
-            --label-green-focus: #1f8a3f;
-
-            color: var(--label-green-focus);
-          }
-        }
-
-        &[aria-invalid="true"] {
-          --ring-error-color: #ff0000;
-
-          border-color: var(--ring-error-color);
-          outline-color: var(--ring-error-color);
-
-          & + label {
-            --label-error-color: #ff0000;
-
-            color: var(--label-error-color);
-          }
-        }
-      }
-
-      & > textarea {
-        resize: none;
-      }
+      font-size: 14px;
+      width: fit-content;
+      padding-inline: 0.5rem;
+      transform: translate(10px, 12px);
+      background-color: #fff;
+      color: var(--label-gray);
+      transition: color 250ms;
     }
 
-    & > button:last-child {
-      --button-green: #08a045;
-      --button-green-hover: #0cad4c;
-      --button-green-active: #078037;
+    & > textarea {
+      --ring-gray: #b8b8b8;
+      --ring-green-hover: #29a74e;
+      --ring-green-focus: #1f8a3f;
 
       font-size: 16px;
       font-family: inherit;
-      padding: 0.5rem 1rem;
-      margin-left: auto;
-      margin-top: 1rem;
-      border: none;
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--ring-gray);
+      outline: 1px solid transparent;
       border-radius: 5px;
-      color: #fff;
-      background-color: var(--button-green);
+      transition: border-color 250ms, outline 250ms;
+      resize: none;
 
       &:hover {
-        background-color: var(--button-green-hover);
+        border-color: var(--ring-green-hover);
+
+        & + label {
+          --label-green-hover: #29a74e;
+
+          color: var(--label-green-hover);
+        }
       }
 
-      &:active {
-        background-color: var(--button-green-active);
+      &:focus {
+        border-color: var(--ring-green-focus);
+        outline-color: var(--ring-green-focus);
+
+        & + label {
+          --label-green-focus: #1f8a3f;
+
+          color: var(--label-green-focus);
+        }
+      }
+
+      &[aria-invalid="true"] {
+        --ring-error-color: #ff0000;
+
+        border-color: var(--ring-error-color);
+        outline-color: var(--ring-error-color);
+
+        & + label {
+          --label-error-color: #ff0000;
+
+          color: var(--label-error-color);
+        }
       }
     }
   }
+}
+
+.submit {
+  margin-left: auto;
+  margin-top: 1rem;
 }
