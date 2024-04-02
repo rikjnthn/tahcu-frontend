@@ -23,7 +23,7 @@ const ChatHeader = () => {
     e.stopPropagation();
     setIsRouteChangeComplete(false);
 
-    //To wait the transition and change the route
+    //To wait the transition and then change the route
     let done = false;
 
     const id = setTimeout(() => {
