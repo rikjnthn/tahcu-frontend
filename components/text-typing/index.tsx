@@ -173,7 +173,7 @@ const TextTyping = (
         ref={submitButtonRef}
         className={`icon ${style.plane_button}`}
         type="submit"
-        title="send"
+        title="Send message"
       >
         <svg
           width="20"

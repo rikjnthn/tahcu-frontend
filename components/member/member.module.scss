@@ -5,19 +5,21 @@
   padding: 0.5rem;
 
   & > input {
+    --checkbox-accent-color: #87ceeb;
+
     margin-right: 0.5rem;
     scale: 1.5;
-    accent-color: skyblue;
+    accent-color: var(--checkbox-accent-color);
   }
+}
 
-  .delete_member {
-    margin-inline-start: auto;
-    visibility: hidden;
-  }
+.delete_member {
+  margin-inline-start: auto;
+  visibility: hidden;
+}
 
-  &:hover > .delete_member {
-    visibility: visible;
-  }
+.member:hover > .delete_member {
+  visibility: visible;
 }
 
 .admin {

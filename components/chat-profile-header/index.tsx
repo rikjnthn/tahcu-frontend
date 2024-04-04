@@ -18,10 +18,18 @@ const ChatProfileHeader = ({
 
   return (
     <header className={style.header}>
-      <BackButton onClick={() => setIsOpenHeader(false)} fill="#000" />
+      <BackButton
+        onClick={() => setIsOpenHeader(false)}
+        fill="#000"
+        title="Close"
+      />
       <span>{name}</span>
       {isGroup && setIsOpenModal ? (
-        <EditButton onClick={() => setIsOpenModal(true)} stroke="#000" />
+        <EditButton
+          onClick={() => setIsOpenModal(true)}
+          stroke="#000"
+          title="Edit group"
+        />
       ) : null}
     </header>
   );

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
-import style from "@/style/login.module.scss";
+import style from "@/style/auth.module.scss";
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 
@@ -56,7 +56,7 @@ export default function Page() {
   };
 
   return (
-    <div className={`${style.login} h-full-dvh`}>
+    <div className={`${style.auth} h-full-dvh`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <header>
           <span>Login</span>
@@ -109,7 +109,7 @@ export default function Page() {
         />
 
         {loginError && (
-          <em className={style.login_error}>
+          <em className={style.auth_error}>
             Failed to login. User id or password is wrong
           </em>
         )}

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 import style from "./message-context-menu.module.scss";
 import {
@@ -11,8 +13,6 @@ import {
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
-import { useParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
 
 const handleGroup = ({
   io,
@@ -138,9 +138,19 @@ const MessageContextMenu = ({
 
   return (
     <div ref={messageContextRef} className={`${style.message_context}`}>
-      <button onClick={handleCopyMessage}>Copy</button>
-      {isSender && <button onClick={handleDeleteMessage}>Delete</button>}
-      {isSender && <button onClick={handleEditMessage}>Edit</button>}
+      <button onClick={handleCopyMessage} title="Copy message">
+        Copy
+      </button>
+      {isSender && (
+        <button onClick={handleDeleteMessage} title="Delete message">
+          Delete
+        </button>
+      )}
+      {isSender && (
+        <button onClick={handleEditMessage} title="Edit message">
+          Edit
+        </button>
+      )}
     </div>
   );
 };

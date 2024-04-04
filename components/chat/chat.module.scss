@@ -1,6 +1,8 @@
 .chat {
+  --chat-background-color: #f6eddb;
+
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #f6eddb;
+  background-color: var(--chat-background-color);
 }

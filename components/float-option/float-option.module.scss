@@ -1,17 +1,16 @@
 .float_option {
+  --float-option-background-color: #fff;
+  --float-option-shadow-color: #6464647a;
+
   width: 10rem;
   position: absolute;
   right: 2rem;
   bottom: 120%;
   border-radius: 10px;
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0 0 10px -2px #999999;
+  background-color: var(--float-option-background-color);
+  box-shadow: 0 0 10px -2px var(--float-option-shadow-color);
 
   & > div {
     padding: 0.75rem;
   }
-
-  // & > div:not(:last-child) {
-  //   border-bottom: 1px solid #999;
-  // }
 }

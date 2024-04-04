@@ -6,7 +6,7 @@ import TahcuLogo from "../tahcu-logo";
 const LandingPageFooter = () => {
   return (
     <footer className={style.footer}>
-      <div>
+      <div className={style.logo}>
         <TahcuLogo white />
         <span>Tahcu</span>
       </div>
@@ -18,7 +18,7 @@ const LandingPageFooter = () => {
         <li>Help Center</li>
       </ul>
 
-      <div>
+      <div className={style.copyright}>
         <span>2024 &#169; Tahcu</span>
       </div>
     </footer>

@@ -38,43 +38,41 @@ const ChatProfile = () => {
 
   if (isGroup) {
     return (
-      <div>
-        <div>
-          <ChatProfileHeader setIsOpenModal={setIsOpenModal} />
+      <div className={style.chat_profile}>
+        <ChatProfileHeader setIsOpenModal={setIsOpenModal} />
 
-          {isOpenModal && (
-            <ChangeGroupInformationModal
-              description={group?.description ?? ""}
-              setIsOpenModal={setIsOpenModal}
-            />
-          )}
-
-          <GroupDescription description={group?.description} />
-
-          <GroupMember
-            members={group?.group_membership}
-            adminId={group?.admin_id}
+        {isOpenModal && (
+          <ChangeGroupInformationModal
+            description={group?.description ?? ""}
+            setIsOpenModal={setIsOpenModal}
           />
+        )}
 
-          {isEditMembers && (
-            <EditMembers
-              currentMembers={group?.group_membership ?? []}
-              setIsEditMembers={setIsEditMembers}
-            />
-          )}
+        <GroupDescription description={group?.description} />
 
-          {isGroupAdmin && (
-            <div className={style.float_button}>
-              <PlusButton onClick={editMembers} fill="#fff" />
-            </div>
-          )}
-        </div>
+        <GroupMember
+          members={group?.group_membership}
+          adminId={group?.admin_id}
+        />
+
+        {isEditMembers && (
+          <EditMembers
+            currentMembers={group?.group_membership ?? []}
+            setIsEditMembers={setIsEditMembers}
+          />
+        )}
+
+        {isGroupAdmin && (
+          <div className={style.float_button}>
+            <PlusButton onClick={editMembers} fill="#fff" title="Add member" />
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div>
+    <div className={style.chat_profile}>
       <ChatProfileHeader />
 
       <form className={style.change_name}>

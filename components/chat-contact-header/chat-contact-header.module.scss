@@ -3,20 +3,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
+}
 
-  & > .logo_and_hamburger {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 8rem;
-    height: 2rem;
+.logo_and_hamburger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 8rem;
+  height: 2rem;
 
-    & > span {
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 16.5px;
-      user-select: none;
-    }
+  & > span {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 16.5px;
+    user-select: none;
   }
 }
 

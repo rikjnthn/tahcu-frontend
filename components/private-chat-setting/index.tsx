@@ -34,7 +34,9 @@ const PrivateChatSetting = ({
   };
   return (
     <div className={style.setting}>
-      <button onClick={deleteChat}>Delete</button>
+      <button onClick={deleteChat} title="Delete chat">
+        Delete
+      </button>
     </div>
   );
 };

@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import ChatContactSearch from "../chat-contact-search";
 import HamburgerButton from "../hamburger-button";
-import SearchButton from "../search-button";
 import BackButton from "../back-button";
 import style from "./chat-contact-header.module.scss";
 import { SetStateType } from "@/interface";
@@ -15,10 +14,6 @@ const ChatContactHeader = ({
   setIsOpenNav: SetStateType<boolean>;
 }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
-
-  const handleSearchClick = () => {
-    setIsSearch((prev) => !prev);
-  };
 
   return (
     <header className={style.header}>
@@ -48,11 +43,6 @@ const ChatContactHeader = ({
             <ChatContactSearch />
           </div>
         )}
-        <SearchButton
-          onClick={handleSearchClick}
-          fill={isSearch ? "#000" : "#000000"}
-          title="Search"
-        />
       </div>
     </header>
   );

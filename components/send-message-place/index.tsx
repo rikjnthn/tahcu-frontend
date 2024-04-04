@@ -11,7 +11,7 @@ const SendMessagePlace = () => {
   const sendMassagePlaceRef = useRef<HTMLDivElement>(null);
   const textTypingRef = useRef<HTMLTextAreaElement>(null);
 
-  const { isEditMessage, editMessage, editMessageId } = useChat();
+  const { isEditMessage, editMessage } = useChat();
   const { setIsEditMessage } = useChatDispatch();
 
   const handleInput = () => {
@@ -26,6 +26,14 @@ const SendMessagePlace = () => {
     }
   };
 
+  const handleEditMessage = () => {
+    setIsEditMessage(false);
+
+    if (!textTypingRef.current) return;
+
+    textTypingRef.current.value = "";
+  };
+
   useEffect(() => {
     if (isEditMessage) textTypingRef.current?.focus();
   }, [isEditMessage]);
@@ -33,15 +41,16 @@ const SendMessagePlace = () => {
   return (
     <div>
       {isEditMessage && (
-        <div className={style.message_to_edit}>
-          <div>
+        <div className={style.edit_message_container}>
+          <div className={style.edit_message}>
             <span>Editting</span>
-            <span>{editMessage}</span>
+            <span className={style.message}>{editMessage}</span>
           </div>
-          <div>
+          <div className={style.close}>
             <CloseButton
-              onClick={() => setIsEditMessage(false)}
+              onClick={handleEditMessage}
               stroke="#000"
+              title="Cancel edit message"
             />
           </div>
         </div>

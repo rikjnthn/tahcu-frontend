@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
-import style from "@/style/sign-up.module.scss";
+import style from "@/style/auth.module.scss";
 import SubmitButton from "@/components/submit-button";
 import Input from "@/components/input";
 
@@ -68,7 +68,7 @@ export default function Page() {
   };
 
   return (
-    <div className={`${style.sign_up} h-full-dvh`}>
+    <div className={`${style.auth} h-full-dvh`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <header>
           <span>Sign Up</span>
@@ -170,7 +170,7 @@ export default function Page() {
         />
 
         {signupError && (
-          <em className={style.sign_up_error}>Failed to create account</em>
+          <em className={style.auth_error}>Failed to create account</em>
         )}
 
         <footer>

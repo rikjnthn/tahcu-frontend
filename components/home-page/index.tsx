@@ -57,18 +57,12 @@ const HomePage = () => {
 
     privateChatIo.emit("join-room", { contact_ids: contactIds });
     groupChatIo.emit("join-room", { group_ids: groupIds });
-  }, [contacts, groups, privateChatIo, groupChatIo]);
 
-  useEffect(() => {
-    const disconnectSocket = () => {
+    return () => {
       privateChatIo.disconnect();
       groupChatIo.disconnect();
     };
-
-    window.addEventListener("beforeunload", disconnectSocket);
-
-    return () => window.removeEventListener("beforeunload", disconnectSocket);
-  }, [groupChatIo, privateChatIo]);
+  }, [contacts, groups, privateChatIo, groupChatIo]);
 
   return (
     <div className={style.home}>

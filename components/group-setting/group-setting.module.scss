@@ -8,19 +8,24 @@
   width: 8rem;
   border-radius: 5px;
   overflow: hidden;
-  color: #000;
   z-index: 10;
 
   & > button {
+    --setting-button-font-color: #000;
+    --setting-button-background-color: #fff;
+
     font-size: 14px;
     font-family: inherit;
     font-weight: 400;
     padding: 0.5rem;
     border: none;
-    background-color: #fff;
+    color: var(--setting-button-font-color);
+    background-color: var(--setting-button-background-color);
   }
 
   & > button:hover {
-    background-color: rgba(128, 128, 128, 0.3);
+    --setting-button-background-color-hover: #cccccc;
+
+    background-color: var(--setting-button-background-color-hover);
   }
 }

@@ -13,6 +13,8 @@ import {
   UserDataType,
 } from "@/interface";
 import Member from "../member";
+import SubmitButton from "../submit-button";
+import Modal from "@/components/modal";
 
 const EditMembers = ({
   currentMembers,
@@ -30,7 +32,7 @@ const EditMembers = ({
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
 
-  const { mutate: addMembers } = useMutation({
+  const { mutate: addMembers, isPending } = useMutation({
     mutationKey: ["add-members"],
     mutationFn: async (addMembersData: {
       group_id: string;
@@ -58,10 +60,18 @@ const EditMembers = ({
   };
 
   return (
-    <div className={style.modal}>
-      <div>
-        <header>
-          <CloseButton onClick={() => setIsEditMembers(false)} stroke="#000" />
+    <Modal
+      onClick={(e) => {
+        if (e.currentTarget === e.target) setIsEditMembers(false);
+      }}
+    >
+      <div className={style.contact_container}>
+        <header className={style.header}>
+          <CloseButton
+            onClick={() => setIsEditMembers(false)}
+            stroke="#000"
+            title="Close"
+          />
           <span>Add Members</span>
         </header>
 
@@ -98,10 +108,14 @@ const EditMembers = ({
         </div>
 
         <form onSubmit={handleSubmit}>
-          <button type="submit">Add</button>
+          <SubmitButton
+            className={style.submit}
+            name="Add"
+            isLoading={isPending}
+          />
         </form>
       </div>
-    </div>
+    </Modal>
   );
 };
 

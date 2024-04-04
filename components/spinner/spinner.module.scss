@@ -1,5 +1,7 @@
 .spinner {
-  fill: #fff;
+  --spinner-fill: #fff;
+
+  fill: var(--spinner-fill);
   animation: spin 1s linear infinite;
 }
 

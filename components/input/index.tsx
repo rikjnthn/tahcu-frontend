@@ -18,8 +18,7 @@ const Input = (
 ) => {
   const id = useId();
 
-  const isError =
-    typeof errorMessage !== "undefined" && errorMessage.length > 0;
+  const isError = typeof errorMessage === "string" && errorMessage.length > 0;
 
   return (
     <div

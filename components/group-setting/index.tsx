@@ -72,9 +72,13 @@ const GroupSetting = ({
 
   return (
     <div className={style.setting}>
-      <button onClick={handleExitGroup}>Exit</button>
+      <button onClick={handleExitGroup} title="Exit group">
+        Exit
+      </button>
       {isGroupAdmin && (
-        <button onClick={handleDeleteGroup}>Delete Group</button>
+        <button onClick={handleDeleteGroup} title="Delete group">
+          Delete Group
+        </button>
       )}
     </div>
   );

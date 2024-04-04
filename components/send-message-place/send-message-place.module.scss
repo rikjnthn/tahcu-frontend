@@ -1,5 +1,7 @@
 .send_message_place {
   --transition-duration: 100ms;
+  --border-top-color: #000;
+  --send-message-place-background-color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -9,12 +11,14 @@
   min-height: 3.5rem;
   max-height: 22rem;
   padding: 1rem 2rem;
-  border-top: 1px solid #000;
-  background-color: var(--white);
+  border-top: 1px solid var(--border-top-color);
+  background-color: var(--send-message-place-background-color);
   transition: height var(--transition-duration);
 }
 
-.message_to_edit {
+.edit_message_container {
+  --edit-message-background-color: #fff;
+
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -23,29 +27,39 @@
   padding: 0.5rem 1rem;
   margin: 1rem auto;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: var(--edit-message-background-color);
+}
 
-  & > div:first-child {
-    display: flex;
-    flex-direction: column;
-    background-color: #e9e9e9;
-    width: 100%;
-    padding-inline: 0.5rem;
-    border-radius: 3px;
+.edit_message {
+  --message-to-edit-background-color: #e9e9e9;
 
-    & > span {
-      font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-inline: 0.5rem;
+  border-radius: 3px;
+  background-color: var(--message-to-edit-background-color);
 
-      &:first-child {
-        font-weight: 500;
-        color: var(--tertiary);
-      }
+  & > span {
+    font-size: 14px;
+
+    &:first-child {
+      --dark-green: #0b6e4f;
+
+      font-weight: 500;
+      color: var(--dark-green);
     }
   }
+}
 
-  & > div:last-child {
-    & > button {
-      scale: 1.5;
-    }
+.message {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.close {
+  & > button {
+    scale: 1.25;
   }
 }

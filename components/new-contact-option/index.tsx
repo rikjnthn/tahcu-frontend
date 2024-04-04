@@ -15,7 +15,7 @@ const NewContactOption = () => {
       <div className={style.new_contact}>
         <PlusButton
           onClick={() => setIsOpenModal(true)}
-          title="New Contact"
+          title="New contact"
           fill="#fff"
         />
       </div>
