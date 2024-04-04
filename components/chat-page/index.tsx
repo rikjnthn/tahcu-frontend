@@ -37,8 +37,7 @@ const handlePrivateChat = ({
   userData?: UserDataType;
   setName: SetStateType<string>;
 }) => {
-  if (!contacts) return;
-  if (!userData) return;
+  if (!contacts || !userData) return;
 
   const contact = contacts.find((val) => val.id === contactId);
 

@@ -12,6 +12,7 @@ const SettingHeader = () => {
       <BackButton
         onClick={() => dispatch({ type: "SET_OPEN_CHAT_CONTACT" })}
         fill="#000"
+        title="Back"
       />
       <span>Setting</span>
     </header>

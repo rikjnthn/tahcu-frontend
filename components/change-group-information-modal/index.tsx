@@ -20,10 +20,9 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const nameId = useId();
   const descriptionId = useId();
 
-  const { contact: groupId } = useParams();
+  const { contact } = useParams();
 
   const {
     register,
@@ -34,7 +33,7 @@ const ChangeGroupInformationModal = ({
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
     mutationFn: (updateData) =>
-      axios.patch(`/api/group/${groupId}`, updateData),
+      axios.patch(`/api/group/${contact}`, updateData),
   });
 
   useEffect(() => {
@@ -60,8 +59,13 @@ const ChangeGroupInformationModal = ({
       },
     });
   };
+
   return (
-    <Modal>
+    <Modal
+      onClick={(e) => {
+        if (e.currentTarget === e.target) setIsOpenModal(false);
+      }}
+    >
       <form
         className={style.form}
         onSubmit={handleSubmit(onSubmit)}
@@ -105,9 +109,9 @@ const ChangeGroupInformationModal = ({
           className={style.submit}
           name="Confirm"
           isLoading={isPending}
+          title="Confirm"
         />
       </form>
-      <div onClick={handleCloseModal} className="dark_overlay -z-1" />
     </Modal>
   );
 };

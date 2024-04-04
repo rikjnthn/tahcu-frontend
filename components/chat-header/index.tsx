@@ -42,7 +42,7 @@ const ChatHeader = () => {
   return (
     <header onClick={() => setIsOpenHeader(true)} className={style.chat_header}>
       <div>
-        <BackButton onClick={backToMain} fill="#fff" title="Back" />
+        <BackButton onClick={backToMain} fill="#fff" title="Close" />
         <div>
           {isGroup ? (
             <GroupPhoto groupName={name} />

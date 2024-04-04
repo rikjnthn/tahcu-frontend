@@ -10,9 +10,9 @@ const UserDatas = ({
   username,
   email,
 }: {
-  username: string;
-  userId: string;
-  email: string;
+  username?: string;
+  userId?: string;
+  email?: string;
 }) => {
   return (
     <div className={style.user_datas}>

@@ -1,18 +1,12 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 import NavOption from "../nav-option";
 import PhotoProfile from "../photo-profile";
 import style from "./navigation.module.scss";
 import DarkModeToggle from "../dark-mode-toggle";
 import { useHomePageDispatch } from "@/context/home-page-context";
-import { SetStateType } from "@/interface";
-
-const getUserData = async () => {
-  const { data } = await axios.get("/api/users");
-  return data;
-};
+import { SetStateType, UserDataType } from "@/interface";
 
 const Navigation = ({
   isOpenNav,
@@ -21,12 +15,10 @@ const Navigation = ({
   isOpenNav: boolean;
   setIsOpenNav: SetStateType<boolean>;
 }) => {
-  const { data } = useQuery({
-    queryKey: ["userData"],
-    queryFn: getUserData,
-  });
-
+  const queryClient = useQueryClient();
   const dispatch = useHomePageDispatch();
+
+  const data = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const openUserProfile = () => {
     setIsOpenNav(false);

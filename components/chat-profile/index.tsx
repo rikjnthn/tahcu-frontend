@@ -64,7 +64,7 @@ const ChatProfile = () => {
 
         {isGroupAdmin && (
           <div className={style.float_button}>
-            <PlusButton onClick={editMembers} fill="#fff" />
+            <PlusButton onClick={editMembers} fill="#fff" title="Add member" />
           </div>
         )}
       </div>

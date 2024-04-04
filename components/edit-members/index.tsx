@@ -60,10 +60,18 @@ const EditMembers = ({
   };
 
   return (
-    <Modal>
+    <Modal
+      onClick={(e) => {
+        if (e.currentTarget === e.target) setIsEditMembers(false);
+      }}
+    >
       <div className={style.contact_container}>
         <header className={style.header}>
-          <CloseButton onClick={() => setIsEditMembers(false)} stroke="#000" />
+          <CloseButton
+            onClick={() => setIsEditMembers(false)}
+            stroke="#000"
+            title="Close"
+          />
           <span>Add Members</span>
         </header>
 

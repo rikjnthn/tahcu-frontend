@@ -34,7 +34,11 @@ const UserSetting = () => {
       <span>Account</span>
 
       <div>
-        <div onClick={deleteAccount} className={style.delete_account}>
+        <div
+          onClick={deleteAccount}
+          className={style.delete_account}
+          title="Delete account"
+        >
           Delete account
         </div>
       </div>

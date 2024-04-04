@@ -46,7 +46,11 @@ const AddNewContactModal = ({
   };
 
   return (
-    <Modal>
+    <Modal
+      onClick={(e) => {
+        if (e.currentTarget === e.target) setIsOpenModal(false);
+      }}
+    >
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <header className={style.header}>
           <CloseButton
@@ -85,7 +89,7 @@ const AddNewContactModal = ({
           })}
         />
 
-        <SubmitButton name="Add" isLoading={isPending} />
+        <SubmitButton name="Add" isLoading={isPending} title="Add contact" />
       </form>
     </Modal>
   );

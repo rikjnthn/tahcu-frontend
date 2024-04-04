@@ -6,7 +6,7 @@ const Modal = ({
   onClick,
   children,
 }: {
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
   children: React.ReactNode | React.ReactNode[];
 }) => {
   return (

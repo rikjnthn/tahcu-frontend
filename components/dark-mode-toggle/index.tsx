@@ -15,7 +15,7 @@ const DarkModeToggle = () => {
   }, [toggle]);
 
   return (
-    <div className={style.dark_mode_toggle}>
+    <div className={style.dark_mode_toggle} title={toggle ? "Dark" : "Light"}>
       <div>
         <svg
           width="15"

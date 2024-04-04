@@ -24,7 +24,10 @@ const ChatContact = ({
   const isOpen = contactId === to;
 
   return (
-    <li className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}>
+    <li
+      className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}
+      title={name}
+    >
       <Link href={`/a/chat/${to}`}>
         <PhotoProfile name={name} size="md" />
 
