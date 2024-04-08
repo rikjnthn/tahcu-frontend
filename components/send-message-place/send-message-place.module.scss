@@ -1,7 +1,5 @@
 .send_message_place {
   --transition-duration: 100ms;
-  --border-top-color: #000;
-  --send-message-place-background-color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -11,14 +9,12 @@
   min-height: 3.5rem;
   max-height: 22rem;
   padding: 1rem 2rem;
-  border-top: 1px solid var(--border-top-color);
-  background-color: var(--send-message-place-background-color);
+  border-top: 1px solid var(--send-message-place-border-top-color);
+  background-color: var(--send-message-place-bg-color);
   transition: height var(--transition-duration);
 }
 
 .edit_message_container {
-  --edit-message-background-color: #fff;
-
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -27,27 +23,23 @@
   padding: 0.5rem 1rem;
   margin: 1rem auto;
   border-radius: 5px;
-  background-color: var(--edit-message-background-color);
+  background-color: var(--edit-message-bg-color);
 }
 
 .edit_message {
-  --message-to-edit-background-color: #e9e9e9;
-
   display: flex;
   flex-direction: column;
   width: 100%;
   padding-inline: 0.5rem;
   border-radius: 3px;
-  background-color: var(--message-to-edit-background-color);
+  background-color: var(--message-to-edit-bg-color);
 
   & > span {
     font-size: 14px;
 
     &:first-child {
-      --dark-green: #0b6e4f;
-
       font-weight: 500;
-      color: var(--dark-green);
+      color: var(--editting-font-color);
     }
   }
 }

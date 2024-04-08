@@ -4,21 +4,25 @@
   align-items: center;
 
   & > form {
+    --border-color: #08a045;
+
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: min(25rem, 80%);
     padding: 2rem;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--border-color);
     border-radius: 5px;
 
     & > header {
       margin-inline: auto;
 
       & > span {
+        --font-color: #0b6e4f;
+
         font-size: 2rem;
         font-weight: 600;
-        color: var(--tertiary);
+        color: var(--font-color);
       }
     }
 
@@ -28,12 +32,16 @@
       align-items: center;
 
       & > a {
-        color: #000;
+        --font-color: #000;
+
+        color: var(--font-color);
       }
     }
   }
 }
 
 .auth_error {
-  color: #ff0000;
+  --error-font-color: #ff0000;
+
+  color: var(--error-font-color);
 }

@@ -3,12 +3,14 @@
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
+  color: var(--member-font-color);
 
   & > input {
     --checkbox-accent-color: #87ceeb;
 
     margin-right: 0.5rem;
     scale: 1.5;
+
     accent-color: var(--checkbox-accent-color);
   }
 }

@@ -1,6 +1,4 @@
 .next_button {
-  --next-button-background-color: #08a045;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,5 +10,5 @@
   right: 2rem;
   border: none;
   border-radius: 50rem;
-  background-color: var(--next-button-background-color);
+  background-color: var(--next-button-bg-color);
 }

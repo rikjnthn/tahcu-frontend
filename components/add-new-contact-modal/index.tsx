@@ -11,12 +11,14 @@ import SubmitButton from "../submit-button";
 import { useSocket } from "@/context/socket-connection-context";
 import { useHomePageDispatch } from "@/context/home-page-context";
 import Modal from "@/components/modal";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const AddNewContactModal = ({
   setIsOpenModal,
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
+  const { isDark } = useDarkMode();
   const { privateChatIo } = useSocket();
   const dispatch = useHomePageDispatch();
   const queryClient = useQueryClient();
@@ -55,7 +57,7 @@ const AddNewContactModal = ({
         <header className={style.header}>
           <CloseButton
             onClick={() => setIsOpenModal(false)}
-            stroke="#000"
+            stroke={isDark ? "#ffffff" : "#000000"}
             title="Close"
           />
           <span>Add New Contact</span>

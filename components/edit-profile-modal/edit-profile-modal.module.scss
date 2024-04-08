@@ -1,8 +1,6 @@
 .wrapper {
-  --wrapper-background-color: #fff;
-
   width: 25rem;
   padding: 1rem 2rem;
   border-radius: 10px;
-  background-color: var(--wrapper-background-color);
+  background-color: var(--wrapper-bg-color);
 }

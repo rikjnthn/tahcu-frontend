@@ -2,7 +2,6 @@
 
 .navigation {
   --transition-duration: 200ms;
-  --navigation-background-color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -11,7 +10,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  background-color: var(--navigation-background-color);
+  background-color: var(--nav-bg-color);
   transition: transform var(--transition-duration);
   z-index: 10;
   user-select: none;
@@ -22,19 +21,17 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 1rem;
+  color: var(--nav-option-font-color);
 }
 
 .user_data {
-  --user-data-font-color: #fff;
-  --user-data-background-color: #0b6e4f;
-
   display: flex;
   align-items: center;
   gap: 1rem;
   height: 7rem;
   padding: 1rem;
-  color: var(--user-data-font-color);
-  background-color: var(--user-data-background-color);
+  color: var(--nav-user-data-font-color);
+  background-color: var(--nav-user-data-bg-color);
 
   & > div {
     display: flex;

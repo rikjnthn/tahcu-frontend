@@ -1,10 +1,8 @@
 .contact_container {
-  --contact-container-background-color: #fff;
-
   width: 25rem;
   padding: 1rem 2rem;
   border-radius: 10px;
-  background-color: var(--contact-container-background-color);
+  background-color: var(--contact-container-bg-color);
 
   & > div {
     max-height: 50vh;
@@ -21,6 +19,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  color: var(--contact-container-header-font-color);
 
   & > span {
     font-size: 20px;

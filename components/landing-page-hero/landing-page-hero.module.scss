@@ -5,6 +5,8 @@
   grid-template-areas: "stack";
 
   & > div {
+    --font-color: #fff;
+
     grid-area: stack;
     display: flex;
     flex-direction: column;
@@ -13,7 +15,7 @@
     gap: 2rem;
     width: 15rem;
     padding: 2rem;
-    color: var(--white);
+    color: var(--font-color);
     z-index: 1;
 
     & > span {
@@ -36,12 +38,13 @@
 
     & > a {
       --button-green: #08a045;
+      --font-color: #fff;
 
       padding: 0.75rem 1rem;
       border-radius: 5px;
       text-decoration: none;
       background-color: var(--button-green);
-      color: var(--white);
+      color: var(--font-color);
 
       &:hover {
         --button-green-hover: #09b54e;

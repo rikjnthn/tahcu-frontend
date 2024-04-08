@@ -9,11 +9,9 @@
 }
 
 .message {
-  --message-background-color: #fff;
-
   border-radius: 10px;
   padding-block: 0.25rem;
-  background-color: var(--message-background-color);
+  background-color: var(--message-bg-color);
 
   & > div {
     position: relative;
@@ -24,8 +22,6 @@
 }
 
 .username {
-  --message-username-font-color: #0b6e4f;
-
   font-size: 12px;
   font-weight: 500;
   color: var(--message-username-font-color);
@@ -37,11 +33,10 @@
   word-break: break-word;
   white-space: pre-wrap;
   padding-inline-end: 1.25rem;
+  color: var(--message-text-font-color);
 }
 
 .time {
-  --message-time-font-color: #7e7e7e;
-
   position: absolute;
   right: 0;
   bottom: 0;

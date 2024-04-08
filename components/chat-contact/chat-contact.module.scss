@@ -6,8 +6,6 @@
   gap: 20px;
 
   & > a {
-    --chat-contact-font-color: #000;
-
     display: flex;
     gap: 20px;
     align-items: center;
@@ -18,9 +16,7 @@
   }
 
   &:hover {
-    --contact-background-color-hover: #dbdbdb;
-
-    background-color: var(--contact-background-color-hover);
+    background-color: var(--contact-bg-color-hover);
   }
 }
 
@@ -34,13 +30,11 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .message_snippet {
-  --message-snippet-font-color: #363636;
-
   font-size: 14px;
   height: 2ch;
   overflow: hidden;
@@ -50,7 +44,5 @@
 }
 
 .open_link {
-  --openk-link-color: #80808026;
-
   background-color: var(--openk-link-color);
 }

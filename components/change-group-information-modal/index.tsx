@@ -12,6 +12,7 @@ import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
 import Input from "../input";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const ChangeGroupInformationModal = ({
   description,
@@ -46,6 +47,7 @@ const ChangeGroupInformationModal = ({
     return () => document.removeEventListener("keyup", closeModalOnEsc);
   }, [setIsOpenModal]);
 
+  const { isDark } = useDarkMode();
   const { name } = useChatPage();
   const queryClient = useQueryClient();
 
@@ -71,7 +73,11 @@ const ChangeGroupInformationModal = ({
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
       >
-        <CloseButton onClick={handleCloseModal} stroke="#000" title="Close" />
+        <CloseButton
+          onClick={handleCloseModal}
+          stroke={isDark ? "#ffffff" : "#000000"}
+          title="Close"
+        />
 
         <Input
           labelName="Name"

@@ -1,6 +1,4 @@
 .user_profile_header {
-  --user_profile_header_background_color: #fff;
-
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -10,7 +8,8 @@
   width: 100%;
   height: 4rem;
   padding-inline: 2rem;
-  background-color: var(--user_profile_header_background_color);
+  color: var(--user-profile-header-font-color);
+  background-color: var(--user-profile-header-bg-color);
 
   & > span {
     font-weight: 600;

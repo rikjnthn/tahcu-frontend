@@ -7,6 +7,7 @@ import PhotoProfile from "../photo-profile";
 import style from "./member.module.scss";
 import { AddedMembersType, GroupType, SetStateType } from "@/interface";
 import DeleteButton from "../close-button";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const Member = ({
   name,
@@ -29,6 +30,7 @@ const Member = ({
 
   const param = useParams<{ contact: string }>();
 
+  const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
 
   const addMember = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +90,10 @@ const Member = ({
 
       {!isAdmin && showDelete ? (
         <div className={style.delete_member}>
-          <DeleteButton onClick={deleteMember} stroke="#000" />
+          <DeleteButton
+            onClick={deleteMember}
+            stroke={isDark ? "#ffffff" : "#000000"}
+          />
         </div>
       ) : null}
     </li>

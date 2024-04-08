@@ -1,13 +1,11 @@
 .float_option {
-  --float-option-background-color: #fff;
-  --float-option-shadow-color: #6464647a;
-
   width: 10rem;
   position: absolute;
   right: 2rem;
   bottom: 120%;
   border-radius: 10px;
-  background-color: var(--float-option-background-color);
+  color: var(--float-option-font-color);
+  background-color: var(--float-option-bg-color);
   box-shadow: 0 0 10px -2px var(--float-option-shadow-color);
 
   & > div {

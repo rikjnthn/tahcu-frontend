@@ -7,6 +7,7 @@ import style from "./navigation.module.scss";
 import DarkModeToggle from "../dark-mode-toggle";
 import { useHomePageDispatch } from "@/context/home-page-context";
 import { SetStateType, UserDataType } from "@/interface";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const Navigation = ({
   isOpenNav,
@@ -15,6 +16,7 @@ const Navigation = ({
   isOpenNav: boolean;
   setIsOpenNav: SetStateType<boolean>;
 }) => {
+  const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
   const dispatch = useHomePageDispatch();
 
@@ -45,7 +47,11 @@ const Navigation = ({
       </div>
       <div className={style.nav_option}>
         <DarkModeToggle />
-        <NavOption onClick={openSetting} icon="setting.svg" name="Setting" />
+        <NavOption
+          onClick={openSetting}
+          icon={isDark ? "setting-white.svg" : "setting-black.svg"}
+          name="Setting"
+        />
       </div>
     </nav>
   );
