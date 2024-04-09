@@ -1,7 +1,4 @@
-import { redirect } from "next/navigation";
 import dynamic from "next/dynamic";
-
-import { isTahcuTokenVerified } from "@/action/auth";
 
 const ChatPage = dynamic(() => import("@/components/chat-page"), {
   ssr: false,
@@ -12,9 +9,6 @@ export default async function Page({
 }: {
   params: { contact: string };
 }) {
-  const isValid = await isTahcuTokenVerified();
-  if (!isValid) redirect("/login");
-
   return (
     <div>
       <ChatPage contactId={params.contact} />
