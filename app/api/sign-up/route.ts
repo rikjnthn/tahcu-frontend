@@ -12,10 +12,8 @@ export async function POST(req: Request) {
       }
     );
 
-    const newHeader = headers as HeadersInit;
-
     const response = new Response(data, {
-      headers: newHeader,
+      headers: Object.entries(headers),
     });
     return response;
   } catch (error) {

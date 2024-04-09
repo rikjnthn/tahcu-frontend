@@ -7,14 +7,14 @@ export async function PATCH(
   const exitGroupData = await req.json();
 
   try {
-    const { data } = await axios.patch(
+    const { data, headers } = await axios.patch(
       `${process.env.API_URL}/group/exit-group/${params.groupId}`,
       exitGroupData,
       {
         headers: Object.fromEntries(req.headers),
       }
     );
-    return Response.json(data);
+    return Response.json(data, { headers: Object.entries(headers) });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {

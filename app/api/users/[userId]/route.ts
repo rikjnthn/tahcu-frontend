@@ -5,14 +5,14 @@ export async function GET(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const { data } = await axios.get(
+    const { data, headers } = await axios.get(
       `${process.env.API_URL}/users/${params.userId}`,
       {
         headers: Object.fromEntries(req.headers),
       }
     );
 
-    return Response.json(data);
+    return Response.json(data, { headers: Object.entries(headers) });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {

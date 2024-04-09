@@ -8,9 +8,8 @@ export async function POST(req: Request) {
       loginData
     );
 
-    const newHeaders = headers as HeadersInit;
     return Response.json(data, {
-      headers: newHeaders,
+      headers: Object.entries(headers),
     });
   } catch (error) {
     if (!isAxiosError(error)) return;

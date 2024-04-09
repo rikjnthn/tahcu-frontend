@@ -5,11 +5,11 @@ export async function GET(
   { params }: { params: { groupId: string } }
 ) {
   try {
-    const { data } = await axios.get(
+    const { data, headers } = await axios.get(
       `${process.env.API_URL}/group/${params.groupId}`,
       { headers: Object.fromEntries(req.headers) }
     );
-    return Response.json(data);
+    return Response.json(data, { headers: Object.entries(headers) });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
@@ -26,14 +26,14 @@ export async function PATCH(
   const updateData = await req.json();
 
   try {
-    const { data } = await axios.patch(
+    const { data, headers } = await axios.patch(
       `${process.env.API_URL}/group/update-group/${params.groupId}`,
       updateData,
       {
         headers: Object.fromEntries(req.headers),
       }
     );
-    return Response.json(data);
+    return Response.json(data, { headers: Object.entries(headers) });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
@@ -48,13 +48,13 @@ export async function DELETE(
   { params }: { params: { groupId: string } }
 ) {
   try {
-    const { data } = await axios.delete(
+    const { data, headers } = await axios.delete(
       `${process.env.API_URL}/group/${params.groupId}`,
       {
         headers: Object.fromEntries(req.headers),
       }
     );
-    return Response.json(data);
+    return Response.json(data, { headers: Object.entries(headers) });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
