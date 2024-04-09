@@ -7,12 +7,19 @@ import axios from "axios";
 import { HomePageProvider } from "@/context/home-page-context";
 import HomePage from "@/components/home-page";
 import { DarkModeProvider } from "@/context/dark-mode-context";
-import { SocketProvider } from "@/context/socket-connection-context";
 
 const ReactQueryDevtools = dynamic(
   () =>
     import("@tanstack/react-query-devtools/production").then((d) => ({
       default: d.ReactQueryDevtools,
+    })),
+  { ssr: false }
+);
+
+const SocketProvider = dynamic(
+  () =>
+    import("@/context/socket-connection-context").then((d) => ({
+      default: d.SocketProvider,
     })),
   { ssr: false }
 );
