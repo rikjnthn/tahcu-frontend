@@ -1,9 +1,13 @@
 .footer {
+  --footer-background-color: #073b3a;
+
   display: flex;
   flex-direction: column;
-  background-color: #073b3a;
+  background-color: var(--footer-background-color);
 
   & > ul {
+    --font-color: #fff;
+
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -12,7 +16,7 @@
     list-style: none;
     font-size: 14px;
     font-weight: 200;
-    color: var(--white);
+    color: var(--font-color);
 
     & > li {
       width: fit-content;
@@ -27,7 +31,9 @@
   padding: 2rem;
 
   & > span {
-    color: var(--white);
+    --font-color: #fff;
+
+    color: var(--font-color);
     font-size: 1.25rem;
     font-weight: 700;
   }
@@ -35,12 +41,15 @@
 
 .copyright {
   --border-color: #0b6e4f;
+
   margin-top: auto;
   padding: 2rem;
   border-top: 1px solid var(--border-color);
 
   & > span {
+    --font-color: #fff;
+
     font-size: 12px;
-    color: var(--white);
+    color: var(--font-color);
   }
 }

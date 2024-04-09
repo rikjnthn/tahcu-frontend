@@ -1,13 +1,5 @@
 @use "./breakpoint.scss";
 
-:root {
-  --primary: #08a045;
-  --secondary: #6bbf59;
-  --tertiary: #0b6e4f;
-  --quaternary: #073b3a;
-  --white: #fff;
-}
-
 * {
   padding: 0;
   margin: 0;
@@ -19,11 +11,191 @@ main {
   min-height: 100dvh;
 }
 
+.dark {
+  --overlay-bg-color: rgba(150, 150, 150, 0.3);
+  --chat-page-container-bg-color: #454545;
+  --delete-account-base: #ff0000;
+  --delete-account-hover: #ff6464;
+  --font-grey: #757575;
+  --message-input-bg-color: #353535;
+  --setting-header-bg-color: #353535;
+  --setting-header-font-color: #fff;
+  --setting-font-color: #fff;
+  --search-bar-border-top-color: #bdbdbd;
+  --send-message-place-bg-color: #353535;
+  --send-message-place-border-top-color: rgba(255, 255, 255, 0.3);
+  --edit-message-bg-color: #454545;
+  --message-to-edit-bg-color: #545454;
+  --editting-font-color: #0bbe53;
+  --chat-setting-button-font-color: #fff;
+  --chat-setting-button-bg-color: #454545;
+  --chat-setting-button-bg-color-hover: #cccccc;
+  --photo-profile-bg-color: #fff;
+  --photo-profile-font-color: #000;
+  --next-button-bg-color: #08a045;
+  --new-contact-bg-color: #08a045;
+  --nav-bg-color: #252525;
+  --nav-option-font-color: #fff;
+  --nav-user-data-font-color: #fff;
+  --nav-user-data-bg-color: #09573e;
+  --nav-user-profile-header-bg-color: #252525;
+  --user-profile-header-font-color: #fff;
+  --user-data-font-color: #fff;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --message-context-bg-color: #454545;
+  --message-context-shadow-color: rgba(100, 100, 100, 0.5);
+  --message-context-button-bg-color-hover: rgba(94, 94, 94, 0.4);
+  --message-bg-color: #414141;
+  --message-username-font-color: #08a045;
+  --message-text-font-color: #fff;
+  --message-time-font-color: #7e7e7e;
+  --message-context-btn-font-color: #fff;
+  --checkbox-accent-color: #87ceeb;
+  --input-font-color: #fff;
+  --label-gray: #838383;
+  --label-bg-color: #353535;
+  --ring-gray: #b8b8b8;
+  --ring-green-hover: #31c55d;
+  --label-green-hover: #31c55d;
+  --ring-green-focus: #2bbb56;
+  --label-green-focus: #2bbb56;
+  --ring-error-color: #ff0000;
+  --label-error-color: #ff0000;
+  --home-page-border-color: #454545;
+  --home-page-bg-color: #353535;
+  --contact-home-font-color: #fff;
+  --setting-button-font-color: #000;
+  --setting-button-bg-color: #fff;
+  --setting-button-bg-color-hover: #cccccc;
+  --group-profile-bg-color: #fff;
+  --group-profile-font-color: #000;
+  --group-member-font-color: #fff;
+  --group-description-font-color: #fff;
+  --float-option-bg-color: #303030;
+  --float-option-font-color: #fff;
+  --float-option-shadow-color: rgba(80, 80, 80, 0.4);
+  --float-button-bg-color: #08a045;
+  --wrapper-bg-color: #353535;
+  --contact-container-bg-color: #353535;
+  --contact-container-header-font-color: #fff;
+  --toggle-color: #d1d1d1;
+  --toggle-ball-color: #0b6e4f;
+  --chat-profile-bg-color: #353535;
+  --chat-profile-header-font-color: #fff;
+  --float-button-bg-color: #08a045;
+  --chat-header-bg-color: #086b30;
+  --chat-header-font-color: #fff;
+  --chat-contact-font-color: #fff;
+  --contact-bg-color-hover: rgba(70, 70, 70, 0.5);
+  --message-snippet-font-color: #363636;
+  --openk-link-color: rgba(80, 80, 80, 0.5);
+  --chat-bg-color: #252525;
+  --added-member-bg-color: #87ceeb;
+  --create-private-chat-header-font-color: #fff;
+  --add-new-contact-form-bg-color: #353535;
+  --add-new-contact-header-font-color: #fff;
+  --adding-members-header-font-color: #fff;
+  --add-member-input-font-color: #fff;
+  --change-group-information-form-bg-color: #353535;
+  --edit-profile-header-font-color: #fff;
+  --member-font-color: #fff;
+  --create-group-header-font-color: #fff;
+}
+
+.light {
+  --overlay-bg-color: rgba(0, 0, 0, 0.3);
+  --chat-page-container-bg-color: #fff;
+  --delete-account-base: #ff0000;
+  --delete-account-hover: #ff6464;
+  --font-grey: #757575;
+  --message-input-bg-color: #fff;
+  --setting-header-bg-color: #fff;
+  --search-bar-border-top-color: #000;
+  --send-message-place-bg-color: #fff;
+  --send-message-place-border-top-color: #000;
+  --edit-message-bg-color: #fff;
+  --message-to-edit-bg-color: #e9e9e9;
+  --editting-font-color: #0b6e4f;
+  --chat-setting-button-font-color: #000;
+  --chat-setting-button-bg-color: #fff;
+  --chat-setting-button-bg-color-hover: #cccccc;
+  --photo-profile-bg-color: #fff;
+  --photo-profile-font-color: #000;
+  --next-button-bg-color: #08a045;
+  --new-contact-bg-color: #08a045;
+  --nav-bg-color: #fff;
+  --nav-user-data-font-color: #fff;
+  --nav-user-data-bg-color: #0b6e4f;
+  --user-profile-header-bg-color: #fff;
+  --edit-profile-header-font-color: #000;
+  --user-data-font-color: #000000;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --message-context-bg-color: #fff;
+  --message-context-shadow-color: rgba(100, 100, 100, 0.5);
+  --message-context-button-bg-color-hover: rgba(94, 94, 94, 0.4);
+  --message-bg-color: #fff;
+  --message-username-font-color: #0b6e4f;
+  --message-text-font-color: #000;
+  --message-time-font-color: #7e7e7e;
+  --message-context-btn-font-color: #000;
+  --checkbox-accent-color: #87ceeb;
+  --label-gray: #838383;
+  --label-bg-color: #fff;
+  --ring-gray: #b8b8b8;
+  --ring-green-hover: #29a74e;
+  --label-green-hover: #29a74e;
+  --ring-green-focus: #1f8a3f;
+  --label-green-focus: #1f8a3f;
+  --ring-error-color: #ff0000;
+  --label-error-color: #ff0000;
+  --home-page-border-color: hsla(0, 0%, 53%, 0.5);
+  --home-page-bg-color: #fff;
+  --contact-home-font-color: #000;
+  --setting-header-font-color: #000000;
+  --setting-body-bg-color: #fff;
+  --setting-font-color: #000;
+  --setting-button-font-color: #000;
+  --setting-button-bg-color: #fff;
+  --setting-button-bg-color-hover: #cccccc;
+  --group-profile-bg-color: #fff;
+  --group-profile-font-color: #000;
+  --group-member-font-color: #000;
+  --group-description-font-color: #000;
+  --float-option-bg-color: #fff;
+  --float-option-shadow-color: rgba(100, 100, 100, 0.4);
+  --float-button-bg-color: #08a045;
+  --wrapper-bg-color: #fff;
+  --contact-container-bg-color: #fff;
+  --contact-container-header-font-color: #000;
+  --toggle-color: #d1d1d1;
+  --toggle-ball-color: #0b6e4f;
+  --chat-profile-bg-color: #fff;
+  --chat-profile-header-font-color: #000;
+  --float-button-bg-color: #08a045;
+  --chat-header-bg-color: #08a045;
+  --chat-header-font-color: #fff;
+  --chat-contact-font-color: #000;
+  --contact-bg-color-hover: #dbdbdb;
+  --message-snippet-font-color: #363636;
+  --openk-link-color: rgba(128, 128, 128, 0.2);
+  --chat-bg-color: #f6eddb;
+  --added-member-bg-color: #87ceeb;
+  --create-private-chat-header-font-color: #000;
+  --add-new-contact-form-bg-color: #fff;
+  --add-new-contact-header-font-color: #000;
+  --adding-members-header-font-color: #000;
+  --add-member-input-font-color: #000;
+  --change-group-information-form-bg-color: #fff;
+  --nav-option-font-color: #000;
+  --member-font-color: #000;
+  --create-group-header-font-color: #000;
+}
+
 .dark_overlay {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #0000004d;
+  background-color: var(--overlay-bg-color);
   top: 0;
   z-index: 1;
 }
@@ -53,12 +225,6 @@ main {
   height: 2rem;
 }
 
-input {
-  &:invalid {
-    border-color: red !important;
-  }
-}
-
 input:focus,
 textarea:focus {
   outline: none;
@@ -72,14 +238,6 @@ textarea:focus {
   margin-top: 4rem;
 }
 
-.font-weight-600 {
-  font-weight: 600;
-}
-
-.hidden {
-  display: none;
-}
-
 .flex-row-reversed {
   flex-direction: row-reverse;
 }
@@ -88,65 +246,13 @@ textarea:focus {
   display: none;
 }
 
-.left-0 {
-  left: 0;
-}
-
-.top-0 {
-  top: 0;
-}
-
-.right-0 {
-  right: 0;
-}
-
-.left-10 {
-  left: 1rem;
-}
-
-.right-10 {
-  right: 1rem;
-}
-
-.-right-100 {
-  right: -100%;
-}
-
-.w-0 {
-  width: 0;
-}
-
 .h-full-dvh {
   height: 100vh;
   height: 100dvh;
 }
 
-.-z-1 {
-  z-index: -1;
-}
-
-.z-0 {
-  z-index: 0;
-}
-
 .z-1 {
   z-index: 1;
-}
-
-.z-2 {
-  z-index: 2;
-}
-
-.z-3 {
-  z-index: 3;
-}
-
-.z-4 {
-  z-index: 4;
-}
-
-.z-5 {
-  z-index: 5;
 }
 
 .opacity-50 {
@@ -161,25 +267,12 @@ textarea:focus {
   transform: translateX(-10%);
 }
 
-.-translateX-100 {
-  transform: translateX(-100%);
-}
-
 .translateX-100 {
   transform: translateX(100%);
 }
 
 .scale-90 {
   transform: scale(0.9);
-}
-
-.grid {
-  display: grid;
-}
-
-.grid-stack {
-  grid-template-areas: "stack";
-  grid-area: stack;
 }
 
 .overflow-hidden {
@@ -206,6 +299,8 @@ textarea:focus {
 }
 
 .not-found {
+  --not-found-bg-color: #fff;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -215,7 +310,7 @@ textarea:focus {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: var(--not-found-bg-color);
 
   & > svg {
     scale: 0.5;
@@ -274,7 +369,7 @@ textarea:focus {
   @include breakpoint.tablet {
     position: static;
     width: calc(100% - 30rem);
-    background-color: #fff;
+    background-color: var(--chat-page-container-bg-color);
   }
 }
 

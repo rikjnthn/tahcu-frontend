@@ -16,7 +16,7 @@ const AddMembers = () => {
           user_id={addedMember.user_id}
         />
       ))}
-      <input type="text" placeholder="Add members" />
+      <input type="text" placeholder="Add members" disabled />
     </div>
   );
 };

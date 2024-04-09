@@ -2,6 +2,8 @@
 
 .first,
 .second {
+  --font-color: #0b6e4f;
+
   padding: 2rem;
   margin-block: 10rem;
 
@@ -9,7 +11,7 @@
     text-align: center;
     margin-bottom: 5rem;
     font-size: 24px;
-    color: var(--tertiary);
+    color: var(--font-color);
 
     @include breakpoint.tablet {
       font-size: 30px;
@@ -43,13 +45,15 @@
 
 .user_1,
 .user_2 {
+  --background-color: #d3f2df;
+
   display: flex;
   align-items: center;
   height: fit-content;
   padding: 5px 10px;
   border-radius: 5px;
   font-weight: 500;
-  background-color: #d3f2df;
+  background-color: var(--background-color);
 
   & > img {
     width: 50px;
@@ -73,9 +77,11 @@
   align-items: center;
 
   & > img {
+    --img-drop-shadow-color: #00000025;
+
     width: min(100%, 25rem);
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(4px 4px 10px #00000025);
+    filter: drop-shadow(4px 4px 10px var(--img-drop-shadow-color));
   }
 }

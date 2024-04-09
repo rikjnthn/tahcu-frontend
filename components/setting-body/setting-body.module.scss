@@ -1,2 +1,5 @@
 .body {
+  height: calc(100vh - 4rem);
+  height: calc(100dvh - 4rem);
+  color: var(--setting-font-color);
 }

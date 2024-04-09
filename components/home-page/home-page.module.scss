@@ -3,19 +3,16 @@
 .home {
   & > div {
     --transition-duration: 200ms;
-    --home-page-background-color: #fff;
 
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--home-page-background-color);
+    background-color: var(--home-page-bg-color);
     transition: transform var(--transition-duration);
 
     @include breakpoint.tablet {
-      --border-color: #88888880;
-
-      border-inline-end: 1px solid var(--border-color);
+      border-inline-end: 1px solid var(--home-page-border-color);
     }
   }
 }

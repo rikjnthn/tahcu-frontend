@@ -7,6 +7,7 @@ import HamburgerButton from "../hamburger-button";
 import BackButton from "../back-button";
 import style from "./chat-contact-header.module.scss";
 import { SetStateType } from "@/interface";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const ChatContactHeader = ({
   setIsOpenNav,
@@ -15,13 +16,15 @@ const ChatContactHeader = ({
 }) => {
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
+  const { isDark } = useDarkMode();
+
   return (
     <header className={style.header}>
       {!isSearch && (
         <div className={style.logo_and_hamburger}>
           <HamburgerButton
             onClick={() => setIsOpenNav(true)}
-            fill="#000000"
+            fill={isDark ? "#ffffff" : "#000000"}
             title="Open navigation"
           />
           <span>Tahcu</span>

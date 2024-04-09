@@ -1,6 +1,4 @@
 .new_contact {
-  --new-contact-background-color: #08a045;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,5 +8,5 @@
   width: 4rem;
   height: 4rem;
   border-radius: 100%;
-  background-color: var(--new-contact-background-color);
+  background-color: var(--new-contact-bg-color);
 }

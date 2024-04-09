@@ -4,8 +4,10 @@ import NavOption from "../nav-option";
 import style from "./float-option.module.scss";
 import { useHomePageDispatch } from "@/context/home-page-context";
 import { SetStateType } from "@/interface";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const FloatOption = ({ setIsOpen }: { setIsOpen: SetStateType<boolean> }) => {
+  const { isDark } = useDarkMode();
   const dispact = useHomePageDispatch();
 
   const openCreatePrivateChat = () => {
@@ -23,10 +25,14 @@ const FloatOption = ({ setIsOpen }: { setIsOpen: SetStateType<boolean> }) => {
     <div className={style.float_option}>
       <NavOption
         onClick={openCreatePrivateChat}
-        icon="user.svg"
+        icon={isDark ? "user-white.svg" : "user-black.svg"}
         name="New Contact"
       />
-      <NavOption onClick={openCreateGroup} icon="group.svg" name="New Group" />
+      <NavOption
+        onClick={openCreateGroup}
+        icon={isDark ? "group-white.svg" : "group-black.svg"}
+        name="New Group"
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ import {
 import Member from "../member";
 import SubmitButton from "../submit-button";
 import Modal from "@/components/modal";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const EditMembers = ({
   currentMembers,
@@ -27,6 +28,7 @@ const EditMembers = ({
 
   const param = useParams<{ contact: string }>();
 
+  const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
@@ -69,7 +71,7 @@ const EditMembers = ({
         <header className={style.header}>
           <CloseButton
             onClick={() => setIsEditMembers(false)}
-            stroke="#000"
+            stroke={isDark ? "#ffffff" : "#000000"}
             title="Close"
           />
           <span>Add Members</span>

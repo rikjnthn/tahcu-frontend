@@ -1,7 +1,4 @@
 .group_photo {
-  --group-profile-background-color: #fff;
-  --group-profile-font-color: #000;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +7,7 @@
   height: 2rem;
   border: 1px solid;
   border-radius: 100%;
-  background-color: var(--group-profile-background-color);
+  background-color: var(--group-profile-bg-color);
   color: var(--group-profile-font-color);
   user-select: none;
 }

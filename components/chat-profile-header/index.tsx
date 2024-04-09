@@ -7,12 +7,14 @@ import EditButton from "../edit-button";
 import style from "./chat-profile-header.module.scss";
 import { SetStateType } from "@/interface";
 import { useChatPage, useChatPageDispatch } from "@/context/chat-page-context";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const ChatProfileHeader = ({
   setIsOpenModal,
 }: {
   setIsOpenModal?: SetStateType<boolean>;
 }) => {
+  const { isDark } = useDarkMode();
   const { isGroup, name } = useChatPage();
   const { setIsOpenHeader } = useChatPageDispatch();
 
@@ -20,14 +22,14 @@ const ChatProfileHeader = ({
     <header className={style.header}>
       <BackButton
         onClick={() => setIsOpenHeader(false)}
-        fill="#000"
+        fill={isDark ? "#ffffff" : "#000000"}
         title="Close"
       />
       <span>{name}</span>
       {isGroup && setIsOpenModal ? (
         <EditButton
           onClick={() => setIsOpenModal(true)}
-          stroke="#000"
+          stroke={isDark ? "#ffffff" : "#000000"}
           title="Edit group"
         />
       ) : null}

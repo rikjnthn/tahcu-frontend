@@ -1,15 +1,12 @@
 @use "../../style/breakpoint.scss";
 
 .message_context {
-  --message-context-background-color: #fff;
-  --message-context-shadow-color: #6464647a;
-
   position: absolute;
   display: flex;
   flex-direction: column;
   position: fixed;
   width: fit-content;
-  background-color: var(--message-context-background-color);
+  background-color: var(--message-context-bg-color);
   box-shadow: 0 0 10px -2px var(--message-context-shadow-color);
   border-radius: 5px;
   z-index: 2;
@@ -23,11 +20,10 @@
     background-color: transparent;
     font-size: 13px;
     font-family: inherit;
+    color: var(--message-context-btn-font-color);
 
     &:hover {
-      --message-context-button-background-color-hover: #5e5e5e62;
-
-      background: var(--message-context-button-background-color-hover);
+      background: var(--message-context-button-bg-color-hover);
     }
   }
 }

@@ -1,13 +1,9 @@
 .chat_profile {
-  --chat-profile-background-color: #fff;
-
   height: 100%;
-  background-color: var(--chat-profile-background-color);
+  background-color: var(--chat-profile-bg-color);
 }
 
 .float_button {
-  --float-button-background-color: #0b6e4f;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +14,7 @@
   height: 4rem;
   border: none;
   border-radius: 100%;
-  background-color: var(--float-button-background-color);
+  background-color: var(--float-button-bg-color);
 
   & > button {
     width: inherit;

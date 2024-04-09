@@ -1,12 +1,9 @@
 .chat_header {
-  --chat-header-background-color: #08a045;
-  --chat-header-font-color: #fff;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: var(--chat-header-background-color);
+  background-color: var(--chat-header-bg-color);
   color: var(--chat-header-font-color);
 
   & > div:first-child {

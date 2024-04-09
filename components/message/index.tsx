@@ -53,7 +53,7 @@ const Message = ({
       className={`${style.message_container} ${
         isSender ? "margin-left-auto flex-row-reversed" : ""
       }`}
-      title={time}
+      title={`${name}, ${time}`}
     >
       <div className={style.message}>
         {!isSender && isGroup ? (
