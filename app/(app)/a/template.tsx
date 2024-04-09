@@ -50,7 +50,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
+      <ReactQueryDevtools buttonPosition="bottom-left" />
       <SocketProvider>
         <DarkModeProvider value={{ isDark, setIsDark }}>
           <main className={`main-page ${isDark ? "dark" : "light"}`}>

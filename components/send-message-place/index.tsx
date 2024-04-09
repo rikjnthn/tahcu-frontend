@@ -6,6 +6,7 @@ import style from "./send-message-place.module.scss";
 import TextTyping from "../text-typing";
 import CloseButton from "../close-button";
 import { useChat, useChatDispatch } from "@/context/chat-context";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const SendMessagePlace = () => {
   const sendMassagePlaceRef = useRef<HTMLDivElement>(null);
@@ -13,6 +14,7 @@ const SendMessagePlace = () => {
 
   const { isEditMessage, editMessage } = useChat();
   const { setIsEditMessage } = useChatDispatch();
+  const { isDark } = useDarkMode();
 
   const handleInput = () => {
     if (textTypingRef.current && sendMassagePlaceRef.current) {
@@ -49,7 +51,7 @@ const SendMessagePlace = () => {
           <div className={style.close}>
             <CloseButton
               onClick={handleEditMessage}
-              stroke="#000"
+              stroke={isDark ? "#fff" : "#000"}
               title="Cancel edit message"
             />
           </div>

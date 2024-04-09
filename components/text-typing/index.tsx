@@ -10,6 +10,7 @@ import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
 import { ContactType, GroupType, UserDataType } from "@/interface";
+import { useDarkMode } from "@/context/dark-mode-context";
 
 const handleGroup = ({
   io,
@@ -113,6 +114,7 @@ const TextTyping = (
   const { isEditMessage, editMessageId } = useChat();
   const { isGroup } = useChatPage();
   const { setIsEditMessage } = useChatDispatch();
+  const { isDark } = useDarkMode();
 
   const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
@@ -184,7 +186,7 @@ const TextTyping = (
         >
           <path
             d="M1.74878 4.94412L14.2758 0.768443L10.6054 13.2894L8.60146 6.99126L8.51816 6.72945L8.25251 6.65939L1.74878 4.94412Z"
-            stroke="#000"
+            stroke={isDark ? "#fff" : "#000"}
           />
         </svg>
       </button>
