@@ -1,6 +1,11 @@
 import { io } from "socket.io-client";
 
 import cookieParser from "@/util/cookie-parser";
+import { redirect } from "next/navigation";
+import { isTahcuTokenVerified } from "@/action/auth";
+
+const isVerified = isTahcuTokenVerified();
+if (!isVerified) redirect("/");
 
 export const privateChatSocket = () => {
   const cookies = cookieParser(document.cookie);
