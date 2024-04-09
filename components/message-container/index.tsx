@@ -1,5 +1,5 @@
 "use client";
-import { memo, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
@@ -41,7 +41,11 @@ const MessageContainer = () => {
         group_id: param.contact,
       },
       (messages: MessageType[]) => {
-        setMessages(messages);
+        setMessages(
+          messages.sort((message1, message2) =>
+            message1.sent_at < message2.sent_at ? -1 : 1
+          )
+        );
       }
     );
 
@@ -90,7 +94,11 @@ const MessageContainer = () => {
         receiver_id: contact?.friends_id,
       },
       (messages: MessageType[]) => {
-        setMessages(messages);
+        setMessages(
+          messages.sort((message1, message2) =>
+            message1.sent_at < message2.sent_at ? -1 : 1
+          )
+        );
       }
     );
 
