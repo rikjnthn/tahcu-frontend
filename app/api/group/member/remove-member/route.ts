@@ -4,7 +4,7 @@ export async function PATCH(req: Request) {
   const deleteMembersData = await req.json();
 
   try {
-    const { data, headers } = await axios.patch(
+    const { data, headers, status } = await axios.patch(
       `${process.env.API_URL}/group/delete-members`,
       deleteMembersData,
       {
@@ -12,7 +12,7 @@ export async function PATCH(req: Request) {
       }
     );
 
-    return Response.json(data, { headers: Object.entries(headers) });
+    return Response.json(data, { headers: Object.entries(headers), status });
   } catch (error) {
     if (isAxiosError(error)) {
       console.log(error.response?.data);

@@ -5,7 +5,7 @@ export async function POST(
   { params }: { params: { contactId: string } }
 ) {
   try {
-    const { data, headers } = await axios.post(
+    const { data, headers, status } = await axios.post(
       `${process.env.API_URL}/private-chat/${params.contactId}`,
       null,
       {
@@ -13,7 +13,7 @@ export async function POST(
       }
     );
 
-    return Response.json(data, { headers: Object.entries(headers) });
+    return Response.json(data, { headers: Object.entries(headers), status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
@@ -28,14 +28,14 @@ export async function DELETE(
   { params }: { params: { contactId: string } }
 ) {
   try {
-    const { data, headers } = await axios.delete(
+    const { data, headers, status } = await axios.delete(
       `${process.env.API_URL}/private-chat/${params.contactId}`,
       {
         headers: Object.fromEntries(req.headers),
       }
     );
 
-    return Response.json(data, { headers: Object.entries(headers) });
+    return Response.json(data, { headers: Object.entries(headers), status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
