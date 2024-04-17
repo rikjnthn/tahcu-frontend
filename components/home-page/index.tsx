@@ -39,11 +39,13 @@ const HomePage = () => {
   const { data: contacts } = useQuery<ContactType[]>({
     queryKey: ["contactList"],
     queryFn: getContactList,
+    refetchOnWindowFocus: false,
   });
 
   const { data: groups } = useQuery<GroupType[]>({
     queryKey: ["groupList"],
     queryFn: getGroupList,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {

@@ -9,10 +9,20 @@ import HomePage from "@/components/home-page";
 import { DarkModeProvider } from "@/context/dark-mode-context";
 
 const ReactQueryDevtools = dynamic(
-  () =>
-    import("@tanstack/react-query-devtools/production").then((d) => ({
+  async () => {
+    return import("@tanstack/react-query-devtools/production").then((d) => ({
       default: d.ReactQueryDevtools,
-    })),
+    }));
+  },
+  { ssr: false }
+);
+
+const SocketProvider = dynamic(
+  async () => {
+    return import("@/context/socket-connection-context").then((d) => ({
+      default: d.SocketProvider,
+    }));
+  },
   { ssr: false }
 );
 

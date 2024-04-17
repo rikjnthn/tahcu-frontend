@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   const signUpData = await req.json();
 
   try {
-    const { data, headers } = await axios.post(
+    const { data, headers, status } = await axios.post(
       `${process.env.API_URL}/auth/sign-up`,
       {
         ...signUpData,
@@ -12,10 +12,9 @@ export async function POST(req: Request) {
       }
     );
 
-    const newHeader = headers as HeadersInit;
-
     const response = new Response(data, {
-      headers: newHeader,
+      headers: Object.entries(headers),
+      status,
     });
     return response;
   } catch (error) {

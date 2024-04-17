@@ -15,6 +15,7 @@ const ChatContactList = () => {
   const { data: userData } = useQuery<UserDataType>({
     queryKey: ["userData"],
     queryFn: getUserData,
+    refetchOnWindowFocus: false,
   });
 
   const queryClient = useQueryClient();

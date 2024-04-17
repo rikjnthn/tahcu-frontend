@@ -1,12 +1,13 @@
 import axios, { isAxiosError } from "axios";
+import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   try {
-    const { data } = await axios.get(`${process.env.API_URL}/users`, {
+    const { data, status } = await axios.get(`${process.env.API_URL}/users`, {
       headers: Object.fromEntries(req.headers),
     });
 
-    return Response.json(data);
+    return Response.json(data, { status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error, { status: error.response?.status });
@@ -17,7 +18,7 @@ export async function GET(req: Request) {
 export async function PATCH(req: Request) {
   const updateData = await req.json();
   try {
-    const { data } = await axios.patch(
+    const { data, headers, status } = await axios.patch(
       `${process.env.API_URL}/users`,
       updateData,
       {
@@ -25,7 +26,10 @@ export async function PATCH(req: Request) {
       }
     );
 
-    return Response.json(data);
+    return Response.json(data, {
+      headers: Object.entries(headers),
+      status,
+    });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
@@ -37,11 +41,18 @@ export async function PATCH(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const { data } = await axios.delete(`${process.env.API_URL}/users`, {
-      headers: Object.fromEntries(req.headers),
-    });
+    const { data, status } = await axios.delete(
+      `${process.env.API_URL}/users`,
+      {
+        headers: Object.fromEntries(req.headers),
+      }
+    );
 
-    return Response.json(data);
+    const cookie = cookies();
+    cookie.delete("CSRF_TOKEN");
+    cookie.delete("tahcu_auth");
+
+    return Response.json(data, { status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {
