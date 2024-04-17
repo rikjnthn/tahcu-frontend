@@ -18,15 +18,6 @@ const ReactQueryDevtools = dynamic(
 );
 
 const SocketProvider = dynamic(
-  async () => {
-    return import("@/context/socket-connection-context").then((d) => ({
-      default: d.SocketProvider,
-    }));
-  },
-  { ssr: false }
-);
-
-const SocketProvider = dynamic(
   () =>
     import("@/context/socket-connection-context").then((d) => ({
       default: d.SocketProvider,
