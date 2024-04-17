@@ -5,11 +5,11 @@ export async function GET(
   { params }: { params: { groupId: string } }
 ) {
   try {
-    const { data, headers, status } = await axios.get(
+    const { data, status } = await axios.get(
       `${process.env.API_URL}/group/${params.groupId}`,
       { headers: Object.fromEntries(req.headers) }
     );
-    return Response.json(data, { headers: Object.entries(headers), status });
+    return Response.json(data, { status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {

@@ -15,7 +15,6 @@ export async function PATCH(req: Request) {
     return Response.json(data, { headers: Object.entries(headers), status });
   } catch (error) {
     if (isAxiosError(error)) {
-      console.log(error.response?.data);
       return Response.json(error.response?.data, {
         status: error.response?.status,
       });
