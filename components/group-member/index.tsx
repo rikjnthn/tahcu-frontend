@@ -21,7 +21,8 @@ const GroupMember = ({
                 key={id}
                 name={user.username}
                 user_id={user_id}
-                isAdmin={adminId === user_id}
+                isMemberAdmin={adminId === user_id}
+                adminId={adminId}
                 showDelete
               />
             ))
