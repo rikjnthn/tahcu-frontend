@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect, useId } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
 import { SetStateType } from "@/interface";
-import { useForm } from "react-hook-form";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -21,9 +21,7 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const descriptionId = useId();
-
-  const { contact } = useParams();
+  const param = useParams();
 
   const {
     register,
@@ -34,7 +32,7 @@ const ChangeGroupInformationModal = ({
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
     mutationFn: (updateData) =>
-      axios.patch(`/api/group/${contact}`, updateData),
+      axios.patch(`/api/group/${param.contact}`, updateData),
   });
 
   useEffect(() => {
@@ -96,7 +94,7 @@ const ChangeGroupInformationModal = ({
         />
         <div>
           <textarea
-            id={descriptionId}
+            id={"description"}
             autoComplete="off"
             placeholder="No Description"
             rows={8}
@@ -109,7 +107,7 @@ const ChangeGroupInformationModal = ({
               value: description,
             })}
           />
-          <label htmlFor={descriptionId}>Description</label>
+          <label htmlFor={"description"}>Description</label>
         </div>
         <SubmitButton
           className={style.submit}

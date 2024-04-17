@@ -5,14 +5,47 @@ import axios from "axios";
 
 import PhotoProfile from "../photo-profile";
 import style from "./member.module.scss";
-import { AddedMembersType, GroupType, SetStateType } from "@/interface";
+import {
+  AddedMembersType,
+  GroupType,
+  SetStateType,
+  UserDataType,
+} from "@/interface";
 import DeleteButton from "../close-button";
 import { useDarkMode } from "@/context/dark-mode-context";
+
+const KickMember = ({
+  deleteMember,
+  isDark,
+  adminId,
+}: {
+  deleteMember: () => void;
+  isDark: boolean;
+  adminId?: string;
+}) => {
+  const queryClient = useQueryClient();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
+
+  const isAdmin = userData?.user_id === adminId;
+
+  if (!isAdmin) return;
+
+  return (
+    <div className={style.delete_member}>
+      <DeleteButton
+        onClick={deleteMember}
+        stroke={isDark ? "#ffffff" : "#000000"}
+      />
+    </div>
+  );
+};
 
 const Member = ({
   name,
   checkbox,
-  isAdmin,
+  isMemberAdmin,
+  adminId,
   showDelete,
   user_id,
   addedMembers,
@@ -20,7 +53,8 @@ const Member = ({
 }: {
   name: string;
   checkbox?: boolean;
-  isAdmin?: boolean;
+  isMemberAdmin?: boolean;
+  adminId?: string;
   showDelete?: boolean;
   user_id: string;
   addedMembers?: AddedMembersType[];
@@ -73,7 +107,7 @@ const Member = ({
 
     if (!addedMembers?.find((val) => val.user_id === user_id))
       inputRef.current.checked = false;
-  });
+  }, [addedMembers, user_id]);
 
   return (
     <li className={style.member}>
@@ -82,19 +116,18 @@ const Member = ({
       ) : null}
       <PhotoProfile name={name} size="md" />
       <span>{name}</span>
-      {isAdmin && (
+      {isMemberAdmin && (
         <div className={style.admin}>
           <span>Admin</span>
         </div>
       )}
 
-      {!isAdmin && showDelete ? (
-        <div className={style.delete_member}>
-          <DeleteButton
-            onClick={deleteMember}
-            stroke={isDark ? "#ffffff" : "#000000"}
-          />
-        </div>
+      {!isMemberAdmin && showDelete ? (
+        <KickMember
+          isDark={isDark}
+          adminId={adminId}
+          deleteMember={deleteMember}
+        />
       ) : null}
     </li>
   );
