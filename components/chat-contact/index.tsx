@@ -28,7 +28,12 @@ const ChatContact = ({
       className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}
       title={name}
     >
-      <Link href={`/a/chat/${to}`}>
+      <Link
+        href={{
+          pathname: "/a",
+          query: { chatId: to },
+        }}
+      >
         <PhotoProfile name={name} size="md" />
 
         <div className={style.name_message}>
