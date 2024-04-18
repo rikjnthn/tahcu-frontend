@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -62,10 +62,11 @@ const Member = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const param = useParams<{ contact: string }>();
-
+  const searchParams = useSearchParams();
   const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
+
+  const chatId = searchParams.get("chatId");
 
   const addMember = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
@@ -85,7 +86,7 @@ const Member = ({
     }) => axios.patch("/api/group/member/remove-member", deleteMemberData),
   });
 
-  const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
+  const group = queryClient.getQueryData<GroupType>(["group", chatId]);
 
   const deleteMember = () => {
     const deleteMemberData = {
@@ -95,9 +96,7 @@ const Member = ({
 
     mutate(deleteMemberData, {
       onSuccess: () => {
-        queryClient.refetchQueries({
-          queryKey: ["group", param.contact],
-        });
+        queryClient.refetchQueries({ queryKey: ["group", chatId] });
       },
     });
   };

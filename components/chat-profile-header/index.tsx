@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import BackButton from "../back-button";
 import EditButton from "../edit-button";
@@ -16,15 +16,17 @@ const ChatProfileHeader = ({
 }: {
   setIsOpenModal?: SetStateType<boolean>;
 }) => {
-  const param = useParams();
+  const searchParams = useSearchParams();
   const { isDark } = useDarkMode();
   const { isGroup, name } = useChatPage();
   const { setIsOpenHeader } = useChatPageDispatch();
 
   const queryClient = useQueryClient();
 
+  const chatId = searchParams.get("chatId");
+
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
-  const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
+  const group = queryClient.getQueryData<GroupType>(["group", chatId]);
 
   const isAdmin = userData?.user_id === group?.admin_id;
   return (

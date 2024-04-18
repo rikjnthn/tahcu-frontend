@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -17,21 +17,22 @@ const GroupSetting = ({
 }: {
   setIsOpenSetting: SetStateType<boolean>;
 }) => {
-  const param = useParams();
-
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const chatId = searchParams.get("chatId");
 
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],
     mutationFn: async (new_admin: string) =>
-      axios.patch(`/api/group/exit-group/${param.contact}`, {
+      axios.patch(`/api/group/exit-group/${chatId}`, {
         new_admin,
       }),
   });
 
   const { mutate: deleteGroup } = useMutation({
     mutationKey: ["deleteGroup"],
-    mutationFn: async () => axios.delete(`/api/group/${param.contact}`),
+    mutationFn: async () => axios.delete(`/api/group/${chatId}`),
   });
 
   const { groupChatIo } = useSocket();
@@ -39,7 +40,7 @@ const GroupSetting = ({
 
   const group = queryClient.getQueryData<GroupWithMembershipType>([
     "group",
-    param.contact,
+    chatId,
   ]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 

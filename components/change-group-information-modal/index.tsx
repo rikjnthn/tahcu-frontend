@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const param = useParams();
+  const searchParams = useSearchParams();
 
   const {
     register,
@@ -29,10 +29,11 @@ const ChangeGroupInformationModal = ({
     handleSubmit,
   } = useForm();
 
+  const chatId = searchParams.get("chatId");
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData) =>
-      axios.patch(`/api/group/${param.contact}`, updateData),
+    mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./chat-profile.module.scss";
@@ -19,14 +19,15 @@ const ChatProfile = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
 
-  const param = useParams();
-
+  const searchParams = useSearchParams();
   const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
+  const chatId = searchParams.get("chatId");
+
   const group = queryClient.getQueryData<GroupWithMembershipType>([
     "group",
-    param.contact,
+    chatId,
   ]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
