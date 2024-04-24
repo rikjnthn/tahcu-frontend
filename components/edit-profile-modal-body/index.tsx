@@ -27,8 +27,11 @@ const EditProfileModalBody = ({
 
   const { isPending, isError, mutate } = useMutation({
     mutationKey: ["updateUserData"],
-    mutationFn: (newData: UpdateUserDataType) =>
-      axios.patch<any, AxiosResponse<UpdateUserDataType>>("api/users", newData),
+    mutationFn: (updateData: UpdateUserDataType) =>
+      axios.patch<any, AxiosResponse<UpdateUserDataType>>(
+        "api/users",
+        updateData
+      ),
     retry: false,
   });
 
@@ -48,6 +51,16 @@ const EditProfileModalBody = ({
   }, [isError, setError, clearErrors]);
 
   const onSubmit = (data: UpdateUserDataType) => {
+    const isDataSame =
+      data.email === userData?.email &&
+      data.user_id === userData?.user_id &&
+      data.username === userData?.username;
+
+    if (isDataSame) {
+      setIsOpenModal(false);
+      return;
+    }
+
     mutate(data, {
       onSuccess: async () => {
         await queryClient.refetchQueries({ queryKey: ["userData"] });
