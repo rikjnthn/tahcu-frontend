@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType } from "@/interface";
+import { SetStateType, UpdateGroupDataType } from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -25,13 +25,14 @@ const ChangeGroupInformationModal = ({
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm<UpdateGroupDataType>();
 
   const { hash: chatId } = useURLHash();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
+    mutationFn: (updateData: UpdateGroupDataType) =>
+      axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   useEffect(() => {
@@ -50,8 +51,15 @@ const ChangeGroupInformationModal = ({
 
   const handleCloseModal = () => setIsOpenModal(false);
 
-  const onSubmit = (updateData: any) => {
-    mutate(updateData, {
+  const onSubmit = (data: UpdateGroupDataType) => {
+    const isDataSame = data.description === description && data.name === name;
+
+    if (isDataSame) {
+      setIsOpenModal(false);
+      return;
+    }
+
+    mutate(data, {
       onSuccess: async () => {
         await queryClient.refetchQueries({ queryKey: ["group"] });
         setIsOpenModal(false);
