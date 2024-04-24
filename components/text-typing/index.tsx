@@ -2,7 +2,6 @@
 
 import React, { forwardRef, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { Socket } from "socket.io-client";
 
 import style from "./text-typing.module.scss";
@@ -11,6 +10,7 @@ import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
 import { ContactType, GroupType, UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const handleGroup = ({
   io,
@@ -108,15 +108,13 @@ const TextTyping = (
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const queryClient = useQueryClient();
   const { groupChatIo, privateChatIo } = useSocket();
   const { isEditMessage, editMessageId } = useChat();
   const { isGroup } = useChatPage();
   const { setIsEditMessage } = useChatDispatch();
   const { isDark } = useDarkMode();
-
-  const chatId = searchParams.get("chatId");
 
   const group = queryClient.getQueryData<GroupType>(["group", chatId]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);

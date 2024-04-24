@@ -49,8 +49,8 @@ const EditProfileModalBody = ({
 
   const onSubmit = (data: UpdateUserDataType) => {
     mutate(data, {
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["userData"] });
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["userData"] });
         setIsOpenModal(false);
       },
     });

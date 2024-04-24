@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -13,6 +12,7 @@ import {
 } from "@/interface";
 import DeleteButton from "../close-button";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const KickMember = ({
   deleteMember,
@@ -62,11 +62,9 @@ const Member = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
-
-  const chatId = searchParams.get("chatId");
 
   const addMember = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
@@ -95,8 +93,8 @@ const Member = ({
     };
 
     mutate(deleteMemberData, {
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["group", chatId] });
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["group", chatId] });
       },
     });
   };

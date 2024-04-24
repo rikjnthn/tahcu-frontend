@@ -10,12 +10,13 @@ import style from "./chat-header.module.scss";
 import { useChatPage, useChatPageDispatch } from "@/context/chat-page-context";
 import ThreeDots from "../three-dots";
 import ChatSetting from "../chat-setting";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChatHeader = () => {
   const [isOpenSetting, setIsOpenSetting] = useState<boolean>(false);
 
   const router = useRouter();
-
+  const { setHash } = useURLHash();
   const { isGroup, name } = useChatPage();
   const { setIsRouteChangeComplete, setIsOpenHeader } = useChatPageDispatch();
 
@@ -28,6 +29,7 @@ const ChatHeader = () => {
 
     const id = setTimeout(() => {
       router.replace("/a");
+      setHash("");
       done = true;
     }, 100);
 

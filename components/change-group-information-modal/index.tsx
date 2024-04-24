@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -13,6 +12,7 @@ import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
 import Input from "../input";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChangeGroupInformationModal = ({
   description,
@@ -21,15 +21,13 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const searchParams = useSearchParams();
-
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
 
-  const chatId = searchParams.get("chatId");
+  const { hash: chatId } = useURLHash();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
@@ -54,8 +52,8 @@ const ChangeGroupInformationModal = ({
 
   const onSubmit = (updateData: any) => {
     mutate(updateData, {
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["group"] });
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["group"] });
         setIsOpenModal(false);
       },
     });

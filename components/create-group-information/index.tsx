@@ -48,8 +48,8 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
     };
 
     mutate(groupData, {
-      onSuccess: () => {
-        queryClient.prefetchQuery({
+      onSuccess: async () => {
+        await queryClient.prefetchQuery({
           queryKey: ["groupList"],
         });
 

@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -16,6 +15,7 @@ import Member from "../member";
 import SubmitButton from "../submit-button";
 import Modal from "@/components/modal";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const EditMembers = ({
   currentMembers,
@@ -26,12 +26,10 @@ const EditMembers = ({
 }) => {
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
 
   const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
-
-  const chatId = searchParams.get("chatId");
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
@@ -53,8 +51,8 @@ const EditMembers = ({
     };
 
     addMembers(addMembersData, {
-      onSuccess: () => {
-        queryClient.prefetchQuery({
+      onSuccess: async () => {
+        await queryClient.prefetchQuery({
           queryKey: ["group", chatId],
         });
 

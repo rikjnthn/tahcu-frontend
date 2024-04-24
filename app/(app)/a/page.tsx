@@ -1,13 +1,12 @@
 "use client";
 
 import ChatPage from "@/components/chat-page";
+import { useURLHash } from "@/context/url-hash-context";
 
-export default function Page({
-  searchParams,
-}: {
-  searchParams: { chatId: string };
-}) {
-  if (searchParams.chatId) return <ChatPage contactId={searchParams.chatId} />;
+export default function Page() {
+  const { hash } = useURLHash();
 
-  return null;
+  if (!hash) return;
+
+  return <ChatPage contactId={hash} />;
 }

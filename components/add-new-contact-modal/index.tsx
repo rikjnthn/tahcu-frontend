@@ -38,8 +38,8 @@ const AddNewContactModal = ({
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
     mutate(user_id, {
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["contactList"] });
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["contactList"] });
         privateChatIo.emit("join-room", { contact_ids: [data?.data.id] });
         setIsOpenModal(false);
         dispatch({ type: "SET_OPEN_CHAT_CONTACT" });

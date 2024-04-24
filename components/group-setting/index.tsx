@@ -1,5 +1,4 @@
 import React from "react";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -11,16 +10,15 @@ import {
   UserDataType,
 } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const GroupSetting = ({
   setIsOpenSetting,
 }: {
   setIsOpenSetting: SetStateType<boolean>;
 }) => {
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const router = useRouter();
-
-  const chatId = searchParams.get("chatId");
 
   const { mutate: exitGroup } = useMutation({
     mutationKey: ["exitGroup"],

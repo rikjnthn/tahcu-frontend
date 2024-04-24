@@ -1,25 +1,23 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 
 import Message from "../message";
 import style from "./message-container.module.scss";
 import { ContactType, MessageType, UserDataType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const MessageContainer = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const messageContainerRef = useRef<HTMLUListElement>(null);
 
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const { groupChatIo, privateChatIo } = useSocket();
   const { isGroup } = useChatPage();
   const queryClient = useQueryClient();
-
-  const chatId = searchParams.get("chatId");
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);

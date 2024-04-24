@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 
 import style from "./message-context-menu.module.scss";
 import {
@@ -13,6 +12,7 @@ import {
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const handleGroup = ({
   io,
@@ -67,7 +67,7 @@ const MessageContextMenu = ({
 }) => {
   const messageContextRef = useRef<HTMLDivElement>(null);
 
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const { chatRef } = useChat();
   const { isGroup } = useChatPage();
   const { setEditMessage, setEditMessageId, setIsEditMessage } =
@@ -75,7 +75,6 @@ const MessageContextMenu = ({
   const { groupChatIo, privateChatIo } = useSocket();
   const queryClient = useQueryClient();
 
-  const chatId = searchParams.get("chatId") ?? "";
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {

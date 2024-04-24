@@ -2,7 +2,6 @@
 
 import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 
 import BackButton from "../back-button";
 import EditButton from "../edit-button";
@@ -10,20 +9,19 @@ import style from "./chat-profile-header.module.scss";
 import { GroupType, SetStateType, UserDataType } from "@/interface";
 import { useChatPage, useChatPageDispatch } from "@/context/chat-page-context";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChatProfileHeader = ({
   setIsOpenModal,
 }: {
   setIsOpenModal?: SetStateType<boolean>;
 }) => {
-  const searchParams = useSearchParams();
+  const { hash: chatId } = useURLHash();
   const { isDark } = useDarkMode();
   const { isGroup, name } = useChatPage();
   const { setIsOpenHeader } = useChatPageDispatch();
 
   const queryClient = useQueryClient();
-
-  const chatId = searchParams.get("chatId");
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const group = queryClient.getQueryData<GroupType>(["group", chatId]);
