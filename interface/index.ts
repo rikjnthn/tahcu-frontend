@@ -87,3 +87,8 @@ export interface MessageType {
   sent_at: Date;
   updated_at: Date;
 }
+
+export interface UpdateGroupDataType {
+  name: string;
+  description?: string;
+}

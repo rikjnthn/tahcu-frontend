@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import PhotoProfile from "../photo-profile";
 import style from "./chat-contact.module.scss";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChatContact = ({
   to,
@@ -17,18 +18,22 @@ const ChatContact = ({
   message: string;
   unread: number;
 }) => {
-  const path = usePathname();
+  const { hash, setHash } = useURLHash();
 
-  const contactId = path.split("/")[3];
-
-  const isOpen = contactId === to;
+  const isOpen = hash === to;
 
   return (
     <li
       className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}
       title={name}
     >
-      <Link href={`/a/chat/${to}`}>
+      <Link
+        onClick={() => setHash(to)}
+        href={{
+          pathname: "/a",
+          hash: to,
+        }}
+      >
         <PhotoProfile name={name} size="md" />
 
         <div className={style.name_message}>

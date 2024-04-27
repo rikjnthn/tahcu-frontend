@@ -1,27 +1,27 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 
 import Message from "../message";
 import style from "./message-container.module.scss";
 import { ContactType, MessageType, UserDataType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const MessageContainer = () => {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const messageContainerRef = useRef<HTMLUListElement>(null);
 
-  const param = useParams();
+  const { hash: chatId } = useURLHash();
   const { groupChatIo, privateChatIo } = useSocket();
   const { isGroup } = useChatPage();
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const contact = contacts?.find((val) => val.id === param.contact);
+  const contact = contacts?.find((val) => val.id === chatId);
 
   useEffect(() => {
     if (messageContainerRef.current) {
@@ -38,7 +38,7 @@ const MessageContainer = () => {
     io.emit(
       "find-all",
       {
-        group_id: param.contact,
+        group_id: chatId,
       },
       (messages: MessageType[]) => {
         setMessages(
@@ -70,7 +70,7 @@ const MessageContainer = () => {
     io.on("message", (message: MessageType) => {
       const { group_id } = message;
 
-      if (group_id === param.contact) {
+      if (group_id === chatId) {
         setMessages((prev) => [...prev, message]);
       }
     });
@@ -80,7 +80,7 @@ const MessageContainer = () => {
       io.off("updated-message");
       io.off("deleted-message");
     };
-  }, [groupChatIo, isGroup, param, userData]);
+  }, [groupChatIo, isGroup, userData, chatId]);
 
   useEffect(() => {
     if (isGroup) return;
@@ -138,7 +138,7 @@ const MessageContainer = () => {
       io.off("updated-message");
       io.off("deleted-message");
     };
-  }, [isGroup, privateChatIo, contact, userData, param]);
+  }, [isGroup, privateChatIo, contact, userData, chatId]);
 
   return (
     <ul ref={messageContainerRef} className={style.message_container}>

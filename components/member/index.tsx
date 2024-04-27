@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -13,6 +12,7 @@ import {
 } from "@/interface";
 import DeleteButton from "../close-button";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const KickMember = ({
   deleteMember,
@@ -62,8 +62,7 @@ const Member = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const param = useParams<{ contact: string }>();
-
+  const { hash: chatId } = useURLHash();
   const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
 
@@ -85,7 +84,7 @@ const Member = ({
     }) => axios.patch("/api/group/member/remove-member", deleteMemberData),
   });
 
-  const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
+  const group = queryClient.getQueryData<GroupType>(["group", chatId]);
 
   const deleteMember = () => {
     const deleteMemberData = {
@@ -94,10 +93,8 @@ const Member = ({
     };
 
     mutate(deleteMemberData, {
-      onSuccess: () => {
-        queryClient.refetchQueries({
-          queryKey: ["group", param.contact],
-        });
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["group", chatId] });
       },
     });
   };

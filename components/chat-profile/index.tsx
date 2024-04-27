@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./chat-profile.module.scss";
@@ -14,19 +13,19 @@ import Input from "../input";
 import { GroupWithMembershipType, UserDataType } from "@/interface";
 import EditMembers from "../edit-members";
 import { useChatPage } from "@/context/chat-page-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChatProfile = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
 
-  const param = useParams();
-
+  const { hash: chatId } = useURLHash();
   const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
   const group = queryClient.getQueryData<GroupWithMembershipType>([
     "group",
-    param.contact,
+    chatId,
   ]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 

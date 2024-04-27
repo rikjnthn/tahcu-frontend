@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from "react";
-import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -16,6 +15,7 @@ import Member from "../member";
 import SubmitButton from "../submit-button";
 import Modal from "@/components/modal";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const EditMembers = ({
   currentMembers,
@@ -26,7 +26,7 @@ const EditMembers = ({
 }) => {
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
-  const param = useParams<{ contact: string }>();
+  const { hash: chatId } = useURLHash();
 
   const { isDark } = useDarkMode();
   const queryClient = useQueryClient();
@@ -46,14 +46,14 @@ const EditMembers = ({
     e.preventDefault();
 
     const addMembersData = {
-      group_id: param.contact,
+      group_id: chatId ?? "",
       members: addedMembers.map((addedMember) => addedMember.user_id),
     };
 
     addMembers(addMembersData, {
-      onSuccess: () => {
-        queryClient.prefetchQuery({
-          queryKey: ["group", param.contact],
+      onSuccess: async () => {
+        await queryClient.prefetchQuery({
+          queryKey: ["group", chatId],
         });
 
         setIsEditMembers(false);

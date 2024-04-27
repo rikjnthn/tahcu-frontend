@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { Socket } from "socket.io-client";
 
 import { groupChatSocket, privateChatSocket } from "@/socket";
@@ -17,6 +17,16 @@ export const useSocket = () => {
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const groupChatIo = useMemo(groupChatSocket, []);
   const privateChatIo = useMemo(privateChatSocket, []);
+
+  useEffect(() => {
+    groupChatIo.connect();
+    privateChatIo.connect();
+
+    return () => {
+      groupChatIo.disconnect();
+      privateChatIo.disconnect();
+    };
+  }, [groupChatIo, privateChatIo]);
 
   return (
     <SocketContext.Provider

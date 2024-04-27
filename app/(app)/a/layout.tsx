@@ -1,12 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { Children, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 
+import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
 import HomePage from "@/components/home-page";
-import { DarkModeProvider } from "@/context/dark-mode-context";
+import ChatPage from "@/components/chat-page";
+import { URLHashProvider } from "@/context/url-hash-context";
 
 const ReactQueryDevtools = dynamic(
   async () => {
@@ -25,8 +27,6 @@ const SocketProvider = dynamic(
   { ssr: false }
 );
 
-const queryClient = new QueryClient();
-
 const getDarkModeValue = () => {
   if (typeof localStorage === "undefined") return false;
 
@@ -35,7 +35,9 @@ const getDarkModeValue = () => {
   return isDarkMode;
 };
 
-export default function Template({ children }: { children: React.ReactNode }) {
+const queryClient = new QueryClient();
+
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState<boolean>(getDarkModeValue);
 
   useEffect(() => {
@@ -51,17 +53,19 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools buttonPosition="bottom-left" />
+      {process.env.NODE_ENV === "development" ? <ReactQueryDevtools /> : null}
       <SocketProvider>
         <DarkModeProvider value={{ isDark, setIsDark }}>
-          <main className={`main-page ${isDark ? "dark" : "light"}`}>
-            <div className="home-page-container">
-              <HomePageProvider>
-                <HomePage />
-              </HomePageProvider>
-            </div>
-            <div className="chat-page-container">{children}</div>
-          </main>
+          <URLHashProvider>
+            <main className={`main-page ${isDark ? "dark" : "light"}`}>
+              <div className="home-page-container">
+                <HomePageProvider>
+                  <HomePage />
+                </HomePageProvider>
+              </div>
+              <div className="chat-page-container">{children}</div>
+            </main>
+          </URLHashProvider>
         </DarkModeProvider>
       </SocketProvider>
     </QueryClientProvider>

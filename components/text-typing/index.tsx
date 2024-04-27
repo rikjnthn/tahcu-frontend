@@ -2,7 +2,6 @@
 
 import React, { forwardRef, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 import { Socket } from "socket.io-client";
 
 import style from "./text-typing.module.scss";
@@ -11,6 +10,7 @@ import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
 import { ContactType, GroupType, UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const handleGroup = ({
   io,
@@ -108,7 +108,7 @@ const TextTyping = (
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
-  const param = useParams();
+  const { hash: chatId } = useURLHash();
   const queryClient = useQueryClient();
   const { groupChatIo, privateChatIo } = useSocket();
   const { isEditMessage, editMessageId } = useChat();
@@ -116,10 +116,10 @@ const TextTyping = (
   const { setIsEditMessage } = useChatDispatch();
   const { isDark } = useDarkMode();
 
-  const group = queryClient.getQueryData<GroupType>(["group", param.contact]);
+  const group = queryClient.getQueryData<GroupType>(["group", chatId]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const contact = contacts?.find((val) => val.id === param.contact);
+  const contact = contacts?.find((val) => val.id === chatId);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {

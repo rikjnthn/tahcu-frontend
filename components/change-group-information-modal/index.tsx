@@ -1,18 +1,18 @@
 "use client";
 import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType } from "@/interface";
+import { SetStateType, UpdateGroupDataType } from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
 import Input from "../input";
 import { useDarkMode } from "@/context/dark-mode-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const ChangeGroupInformationModal = ({
   description,
@@ -21,18 +21,18 @@ const ChangeGroupInformationModal = ({
   description: string;
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const param = useParams();
-
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm<UpdateGroupDataType>();
+
+  const { hash: chatId } = useURLHash();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData) =>
-      axios.patch(`/api/group/${param.contact}`, updateData),
+    mutationFn: (updateData: UpdateGroupDataType) =>
+      axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   useEffect(() => {
@@ -51,10 +51,17 @@ const ChangeGroupInformationModal = ({
 
   const handleCloseModal = () => setIsOpenModal(false);
 
-  const onSubmit = (updateData: any) => {
-    mutate(updateData, {
-      onSuccess: () => {
-        queryClient.refetchQueries({ queryKey: ["group"] });
+  const onSubmit = (data: UpdateGroupDataType) => {
+    const isDataSame = data.description === description && data.name === name;
+
+    if (isDataSame) {
+      setIsOpenModal(false);
+      return;
+    }
+
+    mutate(data, {
+      onSuccess: async () => {
+        await queryClient.refetchQueries({ queryKey: ["group"] });
         setIsOpenModal(false);
       },
     });

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 
 import style from "./message-context-menu.module.scss";
 import {
@@ -13,6 +12,7 @@ import {
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { useChatPage } from "@/context/chat-page-context";
+import { useURLHash } from "@/context/url-hash-context";
 
 const handleGroup = ({
   io,
@@ -67,7 +67,7 @@ const MessageContextMenu = ({
 }) => {
   const messageContextRef = useRef<HTMLDivElement>(null);
 
-  const param = useParams<{ contact: string }>();
+  const { hash: chatId } = useURLHash();
   const { chatRef } = useChat();
   const { isGroup } = useChatPage();
   const { setEditMessage, setEditMessageId, setIsEditMessage } =
@@ -117,14 +117,14 @@ const MessageContextMenu = ({
     isGroup
       ? handleGroup({
           io: groupChatIo,
-          groupId: param.contact,
+          groupId: chatId,
           messageId: id,
           senderId: userData?.user_id,
         })
       : handlePrivateChat({
           io: privateChatIo,
           messageId: id,
-          contactId: param.contact,
+          contactId: chatId,
         });
 
     setMessages((prev) => prev.filter((val) => val.id !== id));
