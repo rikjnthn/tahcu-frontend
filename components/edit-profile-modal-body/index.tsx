@@ -35,9 +35,7 @@ const EditProfileModalBody = ({
     retry: false,
   });
 
-  const userData = queryClient.getQueryData<unknown, string[], UserDataType>([
-    "userData",
-  ]);
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
     if (!isError) {

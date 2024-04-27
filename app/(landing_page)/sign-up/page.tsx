@@ -143,6 +143,10 @@ export default function Page() {
               value: 8,
               message: "Password should contain a minimum of 8 letters",
             },
+            maxLength: {
+              value: 64,
+              message: "Maximum password length exceeded",
+            },
           })}
         />
 
@@ -158,10 +162,10 @@ export default function Page() {
               message: "Please enter the confirm password",
             },
             validate: {
-              isSameWithPassword: (v: string) => {
+              isSameWithPassword: (confirm_password: string) => {
                 const password = getValues("password");
 
-                if (password === v) return true;
+                if (password === confirm_password) return true;
 
                 return "Password and confirm password does not match";
               },

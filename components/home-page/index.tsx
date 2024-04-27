@@ -14,7 +14,6 @@ import SettingPage from "../setting-page";
 import { CreateGroupProvider } from "@/context/create-group-context";
 import { ContactType, GroupType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
-import { useURLHash } from "@/context/url-hash-context";
 
 const getContactList = async (): Promise<Array<any>> => {
   const { data } = await axios.get<ContactType[]>("/api/chat-contact");
@@ -35,7 +34,7 @@ const HomePage = () => {
     isOpenSetting,
   } = useHomePage();
 
-  const { groupChatIo, privateChatIo } = useSocket();
+  const messageIo = useSocket();
 
   const { data: contacts } = useQuery<ContactType[]>({
     queryKey: ["contactList"],
@@ -53,9 +52,8 @@ const HomePage = () => {
     const contactIds = contacts?.map(({ id }) => id) ?? [];
     const groupIds = groups?.map(({ id }) => id) ?? [];
 
-    privateChatIo.emit("join-room", { contact_ids: contactIds });
-    groupChatIo.emit("join-room", { group_ids: groupIds });
-  }, [contacts, groups, privateChatIo, groupChatIo]);
+    messageIo.emit("join-room", { ids: contactIds.concat(groupIds) });
+  }, [contacts, groups, messageIo]);
 
   return (
     <div className={style.home}>

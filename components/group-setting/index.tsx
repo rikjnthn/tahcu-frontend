@@ -33,7 +33,7 @@ const GroupSetting = ({
     mutationFn: async () => axios.delete(`/api/group/${chatId}`),
   });
 
-  const { groupChatIo } = useSocket();
+  const messageio = useSocket();
   const queryClient = useQueryClient();
 
   const group = queryClient.getQueryData<GroupWithMembershipType>([
@@ -52,7 +52,7 @@ const GroupSetting = ({
     const randomIndex = Math.floor(Math.random() * groupMemberships?.length);
     const newAdmin = groupMemberships[randomIndex];
 
-    groupChatIo.emit("remove-room", { group_id: group?.id });
+    messageio.emit("remove-room", { id: group?.id });
     exitGroup(newAdmin.user_id);
     router.push("/a");
 
@@ -62,7 +62,7 @@ const GroupSetting = ({
   const handleDeleteGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    groupChatIo.emit("remove-room", group?.id);
+    messageio.emit("remove-room", { id: group?.id });
     deleteGroup();
     router.push("/a");
 
