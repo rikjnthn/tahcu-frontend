@@ -2,99 +2,14 @@
 
 import React, { forwardRef, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Socket } from "socket.io-client";
 
 import style from "./text-typing.module.scss";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
-import { useChatPage } from "@/context/chat-page-context";
-import { ContactType, GroupType, UserDataType } from "@/interface";
+import { UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
 import { useURLHash } from "@/context/url-hash-context";
-
-const handleGroup = ({
-  io,
-  isEditMessage,
-  editMessageId,
-  message,
-  user,
-  group,
-}: {
-  io: Socket;
-  isEditMessage: boolean;
-  editMessageId?: string;
-  group?: GroupType;
-  user?: UserDataType;
-  message: string;
-}) => {
-  if (isEditMessage) {
-    io.emit("update", {
-      group_id: group?.id,
-      data: {
-        message_id: editMessageId,
-        group_id: group?.id,
-        sender_id: user?.user_id,
-        message,
-      },
-    });
-
-    return;
-  }
-
-  io.emit("create", {
-    group_id: group?.id,
-    data: {
-      sender_id: user?.user_id,
-      group_id: group?.id,
-      message,
-    },
-  });
-};
-
-const handlePrivateChat = ({
-  io,
-  isEditMessage,
-  contact,
-  user,
-  message,
-  editMessageId,
-}: {
-  io: Socket;
-  isEditMessage: boolean;
-  user?: UserDataType;
-  contact?: ContactType;
-  editMessageId?: string;
-  message: string;
-}) => {
-  if (isEditMessage) {
-    io.emit("update", {
-      chat_id: contact?.id,
-      data: {
-        id: editMessageId,
-        sender_id: user?.user_id,
-        receiver_id:
-          user?.user_id === contact?.user_id
-            ? contact?.friends_id
-            : contact?.user_id,
-        message,
-      },
-    });
-
-    return;
-  }
-
-  io.emit("create", {
-    chat_id: contact?.id,
-    data: {
-      sender_id: user?.user_id,
-      receiver_id:
-        user?.user_id === contact?.user_id
-          ? contact?.friends_id
-          : contact?.user_id,
-      message,
-    },
-  });
-};
+import { useChatPage } from "@/context/chat-page-context";
 
 const TextTyping = (
   {
@@ -110,16 +25,13 @@ const TextTyping = (
 
   const { hash: chatId } = useURLHash();
   const queryClient = useQueryClient();
-  const { groupChatIo, privateChatIo } = useSocket();
+  const messageIo = useSocket();
   const { isEditMessage, editMessageId } = useChat();
   const { isGroup } = useChatPage();
   const { setIsEditMessage } = useChatDispatch();
   const { isDark } = useDarkMode();
 
-  const group = queryClient.getQueryData<GroupType>(["group", chatId]);
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const contact = contacts?.find((val) => val.id === chatId);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -134,24 +46,22 @@ const TextTyping = (
     const message = textareaRef.current?.value ?? "";
     setIsEditMessage(false);
 
-    isGroup
-      ? handleGroup({
-          io: groupChatIo,
-          isEditMessage,
-          editMessageId,
+    if (isEditMessage) {
+      messageIo.emit("update", {
+        chat_id: chatId,
+        data: { id: editMessageId, message },
+      });
+    } else {
+      messageIo.emit("create", {
+        chat_id: chatId,
+        data: {
+          sender_id: user?.user_id,
+          group_id: isGroup ? chatId : undefined,
+          contact_id: !isGroup ? chatId : undefined,
           message,
-          user,
-          group,
-        })
-      : handlePrivateChat({
-          io: privateChatIo,
-          isEditMessage,
-          user,
-          contact,
-          editMessageId,
-          message,
-        });
-
+        },
+      });
+    }
     if (textareaRef.current) textareaRef.current.value = "";
   };
 

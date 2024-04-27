@@ -15,7 +15,7 @@ const PrivateChatSetting = ({
 }) => {
   const router = useRouter();
   const { hash: chatId } = useURLHash();
-  const { privateChatIo } = useSocket();
+  const messageIo = useSocket();
 
   const { mutate } = useMutation({
     mutationKey: ["deleteContact", chatId],
@@ -26,7 +26,7 @@ const PrivateChatSetting = ({
   const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    privateChatIo.emit("remove-room", { contact_id: chatId });
+    messageIo.emit("remove-room", { id: chatId });
 
     mutate(chatId ?? "");
     setIsOpenSetting(false);

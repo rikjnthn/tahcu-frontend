@@ -19,7 +19,7 @@ const AddNewContactModal = ({
   setIsOpenModal: SetStateType<boolean>;
 }) => {
   const { isDark } = useDarkMode();
-  const { privateChatIo } = useSocket();
+  const messageIo = useSocket();
   const dispatch = useHomePageDispatch();
   const queryClient = useQueryClient();
 
@@ -40,7 +40,7 @@ const AddNewContactModal = ({
     mutate(user_id, {
       onSuccess: async () => {
         await queryClient.refetchQueries({ queryKey: ["contactList"] });
-        privateChatIo.emit("join-room", { contact_ids: [data?.data.id] });
+        messageIo.emit("join-room", { ids: [data?.data.id] });
         setIsOpenModal(false);
         dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
       },

@@ -1,56 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { Socket } from "socket.io-client";
-import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./message-context-menu.module.scss";
 import {
   MessageMenuCoordinateType,
   MessageType,
   SetStateType,
-  UserDataType,
 } from "@/interface";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
-import { useChatPage } from "@/context/chat-page-context";
 import { useURLHash } from "@/context/url-hash-context";
-
-const handleGroup = ({
-  io,
-  messageId,
-  groupId,
-  senderId,
-}: {
-  io: Socket;
-  messageId: string;
-  groupId: string;
-  senderId?: string;
-}) => {
-  io.emit("delete", {
-    chat_id: groupId,
-    data: {
-      ids: [messageId],
-      group_id: groupId,
-      sender_id: senderId,
-    },
-  });
-};
-
-const handlePrivateChat = ({
-  io,
-  messageId,
-  contactId,
-}: {
-  io: Socket;
-  messageId: string;
-  contactId: string;
-}) => {
-  io.emit("remove", {
-    chat_id: contactId,
-    data: {
-      ids: [messageId],
-    },
-  });
-};
 
 const MessageContextMenu = ({
   id,
@@ -69,13 +27,9 @@ const MessageContextMenu = ({
 
   const { hash: chatId } = useURLHash();
   const { chatRef } = useChat();
-  const { isGroup } = useChatPage();
   const { setEditMessage, setEditMessageId, setIsEditMessage } =
     useChatDispatch();
-  const { groupChatIo, privateChatIo } = useSocket();
-  const queryClient = useQueryClient();
-
-  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
+  const messageIo = useSocket();
 
   useEffect(() => {
     if (messageContextRef.current) {
@@ -114,18 +68,10 @@ const MessageContextMenu = ({
   };
 
   const handleDeleteMessage = () => {
-    isGroup
-      ? handleGroup({
-          io: groupChatIo,
-          groupId: chatId,
-          messageId: id,
-          senderId: userData?.user_id,
-        })
-      : handlePrivateChat({
-          io: privateChatIo,
-          messageId: id,
-          contactId: chatId,
-        });
+    messageIo.emit("remove", {
+      chat_id: chatId,
+      data: { ids: [id] },
+    });
 
     setMessages((prev) => prev.filter((val) => val.id !== id));
   };

@@ -105,6 +105,10 @@ export default function Page() {
               value: 0,
               message: "Password should contain a minimal of 8 letters",
             },
+            maxLength: {
+              value: 64,
+              message: "Maximum password length exceeded",
+            },
           })}
         />
 

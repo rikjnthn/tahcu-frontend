@@ -2,24 +2,11 @@ import { io } from "socket.io-client";
 
 import cookieParser from "@/util/cookie-parser";
 
-export const privateChatSocket = () => {
+export const messageSocket = () => {
   const cookies = cookieParser(document.cookie);
 
   return io(`${process.env.NEXT_PUBLIC_API_URL}/message`, {
-    path: "/private-message",
-    extraHeaders: {
-      "x-csrf-token": decodeURIComponent(cookies.CSRF_TOKEN),
-    },
-    withCredentials: true,
-    autoConnect: false,
-  });
-};
-
-export const groupChatSocket = () => {
-  const cookies = cookieParser(document.cookie);
-
-  return io(`${process.env.NEXT_PUBLIC_API_URL}/message`, {
-    path: "/group-message",
+    path: "/message",
     extraHeaders: {
       "x-csrf-token": decodeURIComponent(cookies.CSRF_TOKEN),
     },
