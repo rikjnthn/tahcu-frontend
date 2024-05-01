@@ -50,6 +50,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     axios.defaults.withCredentials = true;
   }, []);
 
+  useEffect(() => {
+    const tokenExp = localStorage.getItem("token_exp");
+
+    const parsedTokenExp = JSON.parse(tokenExp ?? "");
+    const tokenExpDate = new Date(parsedTokenExp);
+    const fiveDaysInMs = 432_000_000;
+    const fiveDaysBeforeTokenExpInMs = tokenExpDate.getTime() - fiveDaysInMs;
+
+    const fiveMinutesInMs = 300_000;
+
+    const intervalId = setInterval(() => {
+      if (fiveDaysBeforeTokenExpInMs < Date.now()) {
+        axios.post("/api/refresh-token");
+      }
+    }, fiveMinutesInMs);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {process.env.NODE_ENV === "development" ? <ReactQueryDevtools /> : null}

@@ -30,6 +30,15 @@ export default function Page() {
 
       await axios.post("/api/login", data);
 
+      localStorage.setItem(
+        "token_exp",
+        JSON.stringify(
+          new Date(
+            Date.now() + parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? "0")
+          )
+        )
+      );
+
       router.push("/a");
     } catch (error) {
       setLoginError(true);
