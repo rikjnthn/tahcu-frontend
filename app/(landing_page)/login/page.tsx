@@ -107,7 +107,7 @@ export default function Page() {
             },
             maxLength: {
               value: 64,
-              message: "Maximum password length exceeded",
+              message: "Maximum password length exceeded (Maximum 64 letters)",
             },
           })}
         />

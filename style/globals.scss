@@ -14,8 +14,10 @@ main {
 .dark {
   --overlay-bg-color: rgba(150, 150, 150, 0.3);
   --chat-page-container-bg-color: #454545;
-  --delete-account-base: #ff0000;
-  --delete-account-hover: #ff6464;
+  --user-setting-button-bg: #b92929;
+  --user-setting-button-bg-hover: #c23535;
+  --user-setting-button-bg-active: #8b2626;
+  --user-setting-button-font-color: #fff;
   --font-grey: #757575;
   --message-input-bg-color: #353535;
   --message-input-font-color: #ffffff;
@@ -102,13 +104,16 @@ main {
   --edit-profile-header-font-color: #fff;
   --member-font-color: #fff;
   --create-group-header-font-color: #fff;
+  --change-password-error-font-color: #ff0000;
 }
 
 .light {
   --overlay-bg-color: rgba(0, 0, 0, 0.3);
   --chat-page-container-bg-color: #fff;
-  --delete-account-base: #ff0000;
-  --delete-account-hover: #ff6464;
+  --user-setting-button-bg: #cc1414;
+  --user-setting-button-bg-hover: #d81212;
+  --user-setting-button-bg-active: #971010;
+  --user-setting-button-font-color: #ffffff;
   --font-grey: #757575;
   --message-input-bg-color: #fff;
   --message-input-font-color: #000;
@@ -193,6 +198,7 @@ main {
   --nav-option-font-color: #000;
   --member-font-color: #000;
   --create-group-header-font-color: #000;
+  --change-password-error-font-color: #ff0000;
 }
 
 .dark_overlay {
@@ -206,6 +212,10 @@ main {
 
 .margin-left-auto {
   margin-left: auto;
+}
+
+.margin-top-auto {
+  margin-top: auto;
 }
 
 .center {

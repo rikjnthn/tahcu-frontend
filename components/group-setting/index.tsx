@@ -53,8 +53,11 @@ const GroupSetting = ({
     const newAdmin = groupMemberships[randomIndex];
 
     messageio.emit("remove-room", { id: group?.id });
-    exitGroup(newAdmin.user_id);
-    router.push("/a");
+    exitGroup(newAdmin.user_id, {
+      onSuccess() {
+        router.push("/a");
+      },
+    });
 
     setIsOpenSetting(false);
   };
@@ -63,8 +66,11 @@ const GroupSetting = ({
     e.stopPropagation();
 
     messageio.emit("remove-room", { id: group?.id });
-    deleteGroup();
-    router.push("/a");
+    deleteGroup(undefined, {
+      onSuccess() {
+        router.push("/a");
+      },
+    });
 
     setIsOpenSetting(false);
   };

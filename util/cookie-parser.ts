@@ -1,4 +1,6 @@
-export default function cookieParser(cookie: string) {
+export default function cookieParser(
+  cookie: string
+): Record<string, string> | undefined {
   if (!cookie) return;
 
   const separetedCookies = cookie.split(";").map((cookie) => {

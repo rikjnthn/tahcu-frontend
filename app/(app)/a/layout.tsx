@@ -1,5 +1,5 @@
 "use client";
-import React, { Children, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
@@ -7,7 +7,6 @@ import axios from "axios";
 import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
 import HomePage from "@/components/home-page";
-import ChatPage from "@/components/chat-page";
 import { URLHashProvider } from "@/context/url-hash-context";
 
 const ReactQueryDevtools = dynamic(
