@@ -8,7 +8,7 @@ export const messageSocket = () => {
   return io(`${process.env.NEXT_PUBLIC_API_URL}/message`, {
     path: "/message",
     extraHeaders: {
-      "x-csrf-token": decodeURIComponent(cookies.CSRF_TOKEN),
+      "x-csrf-token": decodeURIComponent(cookies?.CSRF_TOKEN ?? ""),
     },
     withCredentials: true,
     autoConnect: false,

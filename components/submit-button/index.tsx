@@ -19,6 +19,7 @@ const SubmitButton = ({
       className={`${style.button} ${className}`}
       type="submit"
       title={title}
+      disabled={isLoading}
     >
       {isLoading ? <Spinner /> : name}
     </button>

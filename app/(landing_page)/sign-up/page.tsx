@@ -32,6 +32,15 @@ export default function Page() {
       const { confirm_password, ...bodyData } = data;
       await axios.post("/api/sign-up", bodyData);
 
+      localStorage.setItem(
+        "token_exp",
+        JSON.stringify(
+          new Date(
+            Date.now() + parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? "0")
+          )
+        )
+      );
+
       router.push("/a");
     } catch (error) {
       setSignupError(true);
@@ -145,7 +154,7 @@ export default function Page() {
             },
             maxLength: {
               value: 64,
-              message: "Maximum password length exceeded",
+              message: "Maximum password length exceeded (Maximum 64 letters)",
             },
           })}
         />

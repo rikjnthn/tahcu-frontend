@@ -11,13 +11,39 @@
   }
 }
 
-.delete_account {
+.user_setting_button {
   font-weight: 500;
+  font-size: 14px;
+  font-family: inherit;
   width: fit-content;
-  color: var(--delete-account-base);
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  color: var(--user-setting-button-font-color);
+  background-color: var(--user-setting-button-bg);
 
   &:hover {
-    color: var(--delete-account-hover);
-    text-decoration: underline;
+    background-color: var(--user-setting-button-bg-hover);
   }
+
+  &:active {
+    background-color: var(--user-setting-button-bg-active);
+  }
+}
+
+.delete_account_information {
+  font-size: 13px;
+  padding-block: 1rem;
+  opacity: 90%;
+}
+
+.change_password_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.change_password_error {
+  font-size: 12px;
+  color: var(--change-password-error-font-color);
 }

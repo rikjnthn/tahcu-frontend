@@ -1,5 +1,5 @@
 "use client";
-import React, { Children, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
@@ -7,7 +7,6 @@ import axios from "axios";
 import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
 import HomePage from "@/components/home-page";
-import ChatPage from "@/components/chat-page";
 import { URLHashProvider } from "@/context/url-hash-context";
 
 const ReactQueryDevtools = dynamic(
@@ -49,6 +48,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     axios.defaults.xsrfCookieName = "CSRF_TOKEN";
     axios.defaults.xsrfHeaderName = "x-csrf-token";
     axios.defaults.withCredentials = true;
+  }, []);
+
+  useEffect(() => {
+    const tokenExp = localStorage.getItem("token_exp");
+
+    const parsedTokenExp = JSON.parse(tokenExp ?? "");
+    const tokenExpDate = new Date(parsedTokenExp);
+    const fiveDaysInMs = 432_000_000;
+    const fiveDaysBeforeTokenExpInMs = tokenExpDate.getTime() - fiveDaysInMs;
+
+    const fiveMinutesInMs = 300_000;
+
+    const intervalId = setInterval(() => {
+      if (fiveDaysBeforeTokenExpInMs < Date.now()) {
+        axios.post("/api/refresh-token");
+      }
+    }, fiveMinutesInMs);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
