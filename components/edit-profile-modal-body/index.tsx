@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./edit-profile-modal-body.module.scss";
 import Input from "../input";
@@ -25,13 +25,13 @@ const EditProfileModalBody = ({
     clearErrors,
   } = useForm<UpdateUserDataType>();
 
-  const { isPending, isError, mutate } = useMutation({
+  const { isPending, isError, mutate } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    UpdateUserDataType
+  >({
     mutationKey: ["updateUserData"],
-    mutationFn: (updateData: UpdateUserDataType) =>
-      axios.patch<any, AxiosResponse<UpdateUserDataType>>(
-        "api/users",
-        updateData
-      ),
+    mutationFn: (updateData) => axios.patch("api/users", updateData),
     retry: false,
   });
 

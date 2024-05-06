@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 
 import style from "./user-setting.module.scss";
@@ -17,13 +17,16 @@ const UserSetting = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     clearErrors,
     reset,
     formState: { errors },
   } = useForm<ChangePasswordDataType>();
 
-  const { mutate: deleteAccount } = useMutation({
+  const { mutate: deleteAccount } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    void
+  >({
     mutationKey: ["deleteAccount"],
     mutationFn: async () => axios.delete("/api/users"),
   });
@@ -32,10 +35,10 @@ const UserSetting = () => {
     mutate: changePassword,
     isPending,
     isError,
-  } = useMutation({
+    failureReason,
+  } = useMutation<AxiosResponse, AxiosError, ChangePasswordDataType>({
     mutationKey: ["changePassword"],
-    mutationFn: async (data: Pick<ChangePasswordDataType, "new_password">) =>
-      axios.patch("/api/users/change-password", data),
+    mutationFn: async (data) => axios.patch("/api/users/change-password", data),
   });
 
   const queryClient = useQueryClient();
@@ -45,7 +48,8 @@ const UserSetting = () => {
 
   useEffect(() => {
     clearErrors();
-  }, [isOpenSetting, clearErrors]);
+    reset();
+  }, [isOpenSetting, clearErrors, reset]);
 
   const handleDeleteAccount = () => {
     if (groups && groups.length > 0) {
@@ -62,17 +66,14 @@ const UserSetting = () => {
   };
 
   const onSubmit = (data: ChangePasswordDataType) => {
-    const { new_password } = data;
-
-    changePassword(
-      { new_password },
-      {
-        onSuccess() {
-          reset();
-        },
-      }
-    );
+    changePassword(data, {
+      onSuccess() {
+        reset();
+      },
+    });
   };
+
+  const changePasswordStatus = failureReason?.response?.status;
 
   return (
     <div className={style.user_setting}>
@@ -86,6 +87,28 @@ const UserSetting = () => {
             onSubmit={handleSubmit(onSubmit)}
             className={style.change_password_form}
           >
+            <Input
+              labelName="Current Password"
+              errorMessage={errors.current_password?.message?.toString()}
+              type="password"
+              placeholder="Confirm password"
+              {...register("current_password", {
+                required: {
+                  value: true,
+                  message: "Please enter your confirm password",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Password should contain a minimum of 8 letters",
+                },
+                maxLength: {
+                  value: 64,
+                  message:
+                    "Maximum password length exceeded (Maximum 64 letters)",
+                },
+              })}
+            />
+
             <Input
               labelName="New Password"
               errorMessage={errors.new_password?.message?.toString()}
@@ -108,31 +131,11 @@ const UserSetting = () => {
               })}
             />
 
-            <Input
-              labelName="Confirm Password"
-              errorMessage={errors.confirm_password?.message?.toString()}
-              type="password"
-              placeholder="Confirm password"
-              {...register("confirm_password", {
-                required: {
-                  value: true,
-                  message: "Please enter your confirm password",
-                },
-
-                validate: {
-                  isSameWithConfirmPassword: (confirm_password: string) => {
-                    const newPassword = getValues("new_password");
-                    if (confirm_password === newPassword) return true;
-
-                    return "New password and confirm password does not match";
-                  },
-                },
-              })}
-            />
-
             {isError && (
               <em className={style.change_password_error}>
-                Failed to change password
+                {changePasswordStatus === 429
+                  ? "Too much request"
+                  : "Failed to change password"}
               </em>
             )}
 
@@ -166,5 +169,5 @@ export default UserSetting;
 
 interface ChangePasswordDataType {
   new_password: string;
-  confirm_password: string;
+  current_password: string;
 }

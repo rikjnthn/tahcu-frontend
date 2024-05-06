@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import PhotoProfile from "../photo-profile";
 import style from "./member.module.scss";
@@ -76,12 +76,14 @@ const Member = ({
       setAddedMembers((prev) => prev.filter((val) => val.user_id !== user_id));
   };
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    DeleteMemberDataType
+  >({
     mutationKey: ["remove-members"],
-    mutationFn: async (deleteMemberData: {
-      group_id: string;
-      members: string[];
-    }) => axios.patch("/api/group/member/remove-member", deleteMemberData),
+    mutationFn: async (deleteMemberData) =>
+      axios.patch("/api/group/member/remove-member", deleteMemberData),
   });
 
   const group = queryClient.getQueryData<GroupType>(["group", chatId]);
@@ -131,3 +133,8 @@ const Member = ({
 };
 
 export default Member;
+
+interface DeleteMemberDataType {
+  group_id: string;
+  members: string[];
+}

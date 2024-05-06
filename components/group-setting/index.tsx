@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./group-setting.module.scss";
 import {
@@ -20,15 +20,15 @@ const GroupSetting = ({
   const { hash: chatId } = useURLHash();
   const router = useRouter();
 
-  const { mutate: exitGroup } = useMutation({
+  const { mutate: exitGroup } = useMutation<AxiosResponse, AxiosError, string>({
     mutationKey: ["exitGroup"],
-    mutationFn: async (new_admin: string) =>
+    mutationFn: async (new_admin) =>
       axios.patch(`/api/group/exit-group/${chatId}`, {
         new_admin,
       }),
   });
 
-  const { mutate: deleteGroup } = useMutation({
+  const { mutate: deleteGroup } = useMutation<AxiosResponse, AxiosError, void>({
     mutationKey: ["deleteGroup"],
     mutationFn: async () => axios.delete(`/api/group/${chatId}`),
   });

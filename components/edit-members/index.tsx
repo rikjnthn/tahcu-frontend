@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./edit-members.module.scss";
 import CloseButton from "../close-button";
@@ -34,12 +34,14 @@ const EditMembers = ({
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
 
-  const { mutate: addMembers, isPending } = useMutation({
+  const { mutate: addMembers, isPending } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    AddMemberDataType
+  >({
     mutationKey: ["add-members"],
-    mutationFn: async (addMembersData: {
-      group_id: string;
-      members: string[];
-    }) => axios.patch("/api/group/member/add-member", addMembersData),
+    mutationFn: async (addMembersData) =>
+      axios.patch("/api/group/member/add-member", addMembersData),
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -122,3 +124,8 @@ const EditMembers = ({
 };
 
 export default EditMembers;
+
+interface AddMemberDataType {
+  group_id: string;
+  members: string[];
+}

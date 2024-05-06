@@ -1,11 +1,11 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import MemberList from "../member-list";
 import style from "./create-group-information.module.scss";
-import { UserDataType } from "@/interface";
+import { GroupType, UserDataType } from "@/interface";
 import Input from "../input";
 import NextButton from "../next-button";
 import { useHomePageDispatch } from "@/context/home-page-context";
@@ -28,16 +28,15 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
     setValue,
   } = useForm<{ group_name: string }>();
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<AxiosResponse, AxiosError, GroupDataType>({
     mutationKey: ["createGroup"],
-    mutationFn: (groupData: GroupDataType) =>
-      axios.post("api/group", groupData),
+    mutationFn: (groupData) => axios.post("api/group", groupData),
   });
 
   const dispatch = useHomePageDispatch();
 
   const onSubmit = (data: { group_name: string }) => {
-    const userId = userData?.user_id ?? undefined;
+    const userId = userData?.user_id;
 
     const members = [userId, ...addedMembers.map((member) => member.user_id)];
 

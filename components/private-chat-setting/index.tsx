@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./private-chat-setting.module.scss";
 import { SetStateType } from "@/interface";
@@ -17,9 +17,9 @@ const PrivateChatSetting = ({
   const { hash: chatId } = useURLHash();
   const messageIo = useSocket();
 
-  const { mutate } = useMutation({
+  const { mutate } = useMutation<AxiosResponse, AxiosError, string>({
     mutationKey: ["deleteContact", chatId],
-    mutationFn: async (contactId: string) =>
+    mutationFn: async (contactId) =>
       axios.delete(`/api/chat-contact/${contactId}`),
   });
 
