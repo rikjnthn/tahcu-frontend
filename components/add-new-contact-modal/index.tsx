@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./add-new-contact-modal.module.scss";
 import CloseButton from "../close-button";
@@ -27,20 +27,26 @@ const AddNewContactModal = ({
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+  } = useForm<ContactInformationType>();
 
-  const { data, mutate, isPending } = useMutation({
+  const { data, mutate, isPending } = useMutation<
+    AxiosResponse<ContactType>,
+    AxiosError,
+    string
+  >({
     mutationKey: ["addContact"],
     mutationFn: async (user_id?: string) =>
-      axios.post<ContactType>(`api/chat-contact/${user_id}`),
+      axios.post(`api/chat-contact/${user_id}`),
     retry: false,
   });
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
-    mutate(user_id, {
+    mutate(user_id ?? "", {
       onSuccess: async () => {
         await queryClient.refetchQueries({ queryKey: ["contactList"] });
+
         messageIo.emit("join-room", { ids: [data?.data.id] });
+
         setIsOpenModal(false);
         dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
       },

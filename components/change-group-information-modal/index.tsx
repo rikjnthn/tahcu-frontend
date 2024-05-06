@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType, UpdateGroupDataType } from "@/interface";
+import { GroupType, SetStateType, UpdateGroupDataType } from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -29,10 +29,13 @@ const ChangeGroupInformationModal = ({
 
   const { hash: chatId } = useURLHash();
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    UpdateGroupDataType
+  >({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData: UpdateGroupDataType) =>
-      axios.patch(`/api/group/${chatId}`, updateData),
+    mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   useEffect(() => {
