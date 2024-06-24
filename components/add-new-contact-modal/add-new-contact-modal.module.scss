@@ -26,3 +26,10 @@
     margin-block: 1rem;
   }
 }
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-size: 14px;
+  color: var(--error-message-font-color);
+}

@@ -2,10 +2,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
 
 import MemberList from "../member-list";
 import style from "./create-group-information.module.scss";
-import { GroupType, UserDataType } from "@/interface";
+import { ErrorResponseType, UserDataType } from "@/interface";
 import Input from "../input";
 import NextButton from "../next-button";
 import { useHomePageDispatch } from "@/context/home-page-context";
@@ -13,9 +14,11 @@ import {
   useCreateGroup,
   useCreateGroupDispatch,
 } from "@/context/create-group-context";
-import { useEffect } from "react";
 
 const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
+  const [createGroupErrorMessage, setCreateGroupErrorMessage] =
+    useState<string>("");
+
   const queryClient = useQueryClient();
 
   const { addedMembers, isCreateGroup } = useCreateGroup();
@@ -26,9 +29,14 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    setError,
   } = useForm<{ group_name: string }>();
 
-  const { mutate } = useMutation<AxiosResponse, AxiosError, GroupDataType>({
+  const { mutate } = useMutation<
+    AxiosResponse,
+    AxiosError<ErrorResponseType>,
+    GroupDataType
+  >({
     mutationKey: ["createGroup"],
     mutationFn: (groupData) => axios.post("api/group", groupData),
   });
@@ -46,8 +54,29 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
       members,
     };
 
+    setCreateGroupErrorMessage("");
+
     mutate(groupData, {
-      onSuccess: async () => {
+      onError(error) {
+        if (error.response?.data.error.code === "VALIDATION_ERROR") {
+          setError("group_name", {
+            message: error.response.data.error.message,
+          });
+
+          return;
+        }
+
+        if (error.response?.data.error.code === "NOT_FOUND") {
+          setCreateGroupErrorMessage(
+            "One or more members to be added to the group are not found"
+          );
+
+          return;
+        }
+
+        setCreateGroupErrorMessage("Failed to create group");
+      },
+      async onSuccess() {
         await queryClient.prefetchQuery({
           queryKey: ["groupList"],
         });
@@ -77,6 +106,10 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
             },
           })}
         />
+
+        {createGroupErrorMessage.length > 0 && (
+          <em>{createGroupErrorMessage}</em>
+        )}
 
         <NextButton type="submit" fill="#fff" title="Create group" />
       </form>
