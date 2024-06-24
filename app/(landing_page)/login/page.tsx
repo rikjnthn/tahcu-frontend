@@ -9,9 +9,12 @@ import { useForm } from "react-hook-form";
 import style from "@/style/auth.module.scss";
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
+import { ErrorResponseType } from "@/interface";
+
+const sixtyDaysInMs = "5184000000";
 
 export default function Page() {
-  const [loginError, setLoginError] = useState<boolean>(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -19,14 +22,14 @@ export default function Page() {
     formState: { errors },
     handleSubmit,
     setError,
-  } = useForm();
+  } = useForm<LoginDataType>();
 
   const router = useRouter();
 
-  const login = async (data: any) => {
+  const login = async (data: LoginDataType) => {
     try {
       setIsLoading(true);
-      setLoginError(false);
+      setAuthErrorMessage("");
 
       await axios.post("/api/login", data);
 
@@ -34,39 +37,46 @@ export default function Page() {
         "token_exp",
         JSON.stringify(
           new Date(
-            Date.now() + parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? "0")
+            Date.now() +
+              parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? sixtyDaysInMs)
           )
         )
       );
 
       router.push("/a");
     } catch (error) {
-      setLoginError(true);
+      if (!isAxiosError<ErrorResponseType>(error)) return;
 
-      if (isAxiosError(error)) {
-        const errorMessage = error.response?.data.message;
+      if (error.response?.status === 429) {
+        setAuthErrorMessage(
+          "You have sent too many requests. Please try again later."
+        );
 
-        if (typeof errorMessage === "object")
-          for (const name in errorMessage) {
-            if (name === "user_idOrEmail")
-              setError(name, {
-                message: "User id or email should not be empty",
-              });
-            else setError(name, { message: errorMessage[name] });
-          }
+        return;
       }
+
+      const errorMessage = error.response?.data.error.message;
+
+      if (error.response?.data.error.code === "VALIDATION_ERROR") {
+        setError("user_idOrEmail", { message: errorMessage.user_idOrEmail });
+        setError("password", { message: errorMessage.password });
+        return;
+      }
+
+      if (error.response?.data.error.code === "INVALID") {
+        setAuthErrorMessage(errorMessage.message);
+        return;
+      }
+
+      setAuthErrorMessage("Failed to login");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onSubmit = (data: any) => {
-    login(data);
-  };
-
   return (
     <div className={`${style.auth} h-full-dvh`}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(login)}>
         <header>
           <span>Login</span>
         </header>
@@ -86,16 +96,6 @@ export default function Page() {
               value: 4,
               message: "User id should contain a minimal of 4 letters",
             },
-            validate: {
-              isEmail: (v: string) => {
-                if (v.includes("@")) {
-                  const domain = v.split("@")[1];
-
-                  if (domain === "gmail.com") return true;
-                  return "Please use gmail.com domain";
-                }
-              },
-            },
           })}
         />
 
@@ -111,7 +111,7 @@ export default function Page() {
               message: "Please enter your password",
             },
             minLength: {
-              value: 0,
+              value: 8,
               message: "Password should contain a minimal of 8 letters",
             },
             maxLength: {
@@ -121,10 +121,8 @@ export default function Page() {
           })}
         />
 
-        {loginError && (
-          <em className={style.auth_error}>
-            Failed to login. User id or password is wrong
-          </em>
+        {authErrorMessage.length > 0 && (
+          <em className={style.auth_error}>{authErrorMessage}</em>
         )}
 
         <footer>
@@ -134,4 +132,9 @@ export default function Page() {
       </form>
     </div>
   );
+}
+
+interface LoginDataType {
+  user_idOrEmail: string;
+  password: string;
 }

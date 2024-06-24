@@ -92,3 +92,26 @@ export interface UpdateGroupDataType {
   name: string;
   description?: string;
 }
+
+export interface SignUpData {
+  user_id: string;
+  username: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+}
+
+type ErrorCode =
+  | "UNAUTHORIZED"
+  | "INVALID"
+  | "NOT_FOUND"
+  | "DUPLICATE_VALUE"
+  | "VALIDATION_ERROR"
+  | "OTP_EXPIRED";
+
+export interface ErrorResponseType {
+  error: {
+    code: ErrorCode;
+    message: any;
+  };
+}

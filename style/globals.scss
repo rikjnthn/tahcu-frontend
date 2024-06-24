@@ -105,6 +105,8 @@ main {
   --member-font-color: #fff;
   --create-group-header-font-color: #fff;
   --change-password-error-font-color: #ff0000;
+  --change-email-error-font-color: #ff0000;
+  --otp-container-bg-color: #353535;
 }
 
 .light {
@@ -199,6 +201,12 @@ main {
   --member-font-color: #000;
   --create-group-header-font-color: #000;
   --change-password-error-font-color: #ff0000;
+  --change-email-error-font-color: #ff0000;
+  --otp-container-bg-color: #fff;
+}
+
+.transition-transform {
+  transition: transform 500ms;
 }
 
 .dark_overlay {
@@ -283,6 +291,18 @@ textarea:focus {
 
 .translateX-100 {
   transform: translateX(100%);
+}
+
+.-translateX-100-vw {
+  transform: translateX(-100vw);
+}
+
+.translateX-100-vw {
+  transform: translateX(100vw);
+}
+
+.absolute {
+  position: absolute;
 }
 
 .scale-90 {

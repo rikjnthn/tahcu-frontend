@@ -2,17 +2,20 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import isEmail from "validator/lib/isEmail";
 
 import style from "@/style/auth.module.scss";
 import SubmitButton from "@/components/submit-button";
 import Input from "@/components/input";
+import SignUpOTP from "@/components/signup-otp";
+import { ErrorResponseType, SignUpData } from "@/interface";
 
 export default function Page() {
-  const [signupError, setSignupError] = useState<boolean>(false);
+  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [authErrorMessage, setAuthErrorMessage] = useState<string>("");
 
   const {
     register,
@@ -20,65 +23,52 @@ export default function Page() {
     formState: { errors },
     getValues,
     setError,
-  } = useForm();
+  } = useForm<SignUpData>();
 
-  const router = useRouter();
+  const onSubmit = async (data: SignUpData) => {
+    const sendOTPDto = {
+      email: data.email,
+      user_id: data.user_id,
+    };
 
-  const signup = async (data: any) => {
     try {
-      setIsLoading(true);
-      setSignupError(false);
+      setAuthErrorMessage("");
 
-      const { confirm_password, ...bodyData } = data;
-      await axios.post("/api/sign-up", bodyData);
+      await axios.post("/api/send-otp", sendOTPDto);
 
-      localStorage.setItem(
-        "token_exp",
-        JSON.stringify(
-          new Date(
-            Date.now() + parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? "0")
-          )
-        )
-      );
-
-      router.push("/a");
+      setIsOpenOTPInput(true);
     } catch (error) {
-      setSignupError(true);
+      if (!isAxiosError<ErrorResponseType>(error)) return;
 
-      if (isAxiosError(error)) {
-        const errorMessage = error.response?.data.message;
+      if (error.response?.status === 429) {
+        setAuthErrorMessage(
+          "You have sent too many requests. Please try again later."
+        );
 
-        if (errorMessage) {
-          ["user_id", "username", "password", "email"].forEach((name) => {
-            setError(name, { message: errorMessage[name] });
-          });
-        }
-
-        if (Array.isArray(errorMessage.meta)) {
-          if (errorMessage.type === "Duplicate field value") {
-            errorMessage.meta.forEach((name: string) => {
-              setError(name, {
-                message: `Someone had already using that ${name.replace(
-                  "_",
-                  " "
-                )}`,
-              });
-            });
-          }
-        }
+        return;
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const onSubmit = (data: any) => {
-    signup(data);
+      if (error.response?.data.error.code === "DUPLICATE_VALUE") {
+        const errorMessage = error.response?.data.error.message;
+
+        setError("email", { message: errorMessage.email });
+        setError("user_id", { message: errorMessage.user_id });
+
+        return;
+      }
+
+      setAuthErrorMessage("Failed to sign up");
+    }
   };
 
   return (
     <div className={`${style.auth} h-full-dvh`}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={`absolute transition-transform ${
+          isOpenOTP ? "-translateX-100-vw" : ""
+        }`}
+      >
         <header>
           <span>Sign Up</span>
         </header>
@@ -98,6 +88,10 @@ export default function Page() {
               value: 4,
               message: "User id should contain a minimum of 4 letters",
             },
+            maxLength: {
+              value: 20,
+              message: "User id should contain a maximum of 20 letters",
+            },
           })}
         />
 
@@ -111,6 +105,14 @@ export default function Page() {
             required: {
               value: true,
               message: "Please enter your username",
+            },
+            minLength: {
+              value: 4,
+              message: "Username should contain a minimum of 4 letters",
+            },
+            maxLength: {
+              value: 20,
+              message: "Username should contain a maximum of 20 letters",
             },
           })}
         />
@@ -128,10 +130,8 @@ export default function Page() {
             },
             validate: {
               isEmail: (v: string) => {
-                const domain = v.split("@")[1];
-                if (domain === "gmail.com") return true;
-
-                return "Please use gmail.com domain";
+                if (isEmail(v)) return true;
+                return "Email is not valid";
               },
             },
           })}
@@ -173,17 +173,15 @@ export default function Page() {
             validate: {
               isSameWithPassword: (confirm_password: string) => {
                 const password = getValues("password");
-
                 if (password === confirm_password) return true;
-
                 return "Password and confirm password does not match";
               },
             },
           })}
         />
 
-        {signupError && (
-          <em className={style.auth_error}>Failed to create account</em>
+        {authErrorMessage.length > 0 && (
+          <em className={style.auth_error}>{authErrorMessage}</em>
         )}
 
         <footer>
@@ -191,6 +189,20 @@ export default function Page() {
           <SubmitButton name="Create" isLoading={isLoading} />
         </footer>
       </form>
+
+      <div
+        className={`${style.sign_up_otp} ${
+          isOpenOTP ? "center" : "translateX-100-vw"
+        }`}
+      >
+        <SignUpOTP
+          setAuthErrorMessage={setAuthErrorMessage}
+          setError={setError}
+          setIsLoading={setIsLoading}
+          signUpData={getValues()}
+          setIsOpenOTPInput={setIsOpenOTPInput}
+        />
+      </div>
     </div>
   );
 }

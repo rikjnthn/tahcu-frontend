@@ -9,11 +9,7 @@ export async function POST(req: Request) {
       signUpData
     );
 
-    const response = new Response(data, {
-      headers: Object.entries(headers),
-      status,
-    });
-    return response;
+    return Response.json(data, { headers: Object.entries(headers), status });
   } catch (error) {
     if (!isAxiosError(error)) return;
 

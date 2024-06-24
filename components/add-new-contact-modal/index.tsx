@@ -69,7 +69,7 @@ const AddNewContactModal = ({
           <span>Add New Contact</span>
         </header>
 
-        <Input
+        {/* <Input
           labelName="Name"
           errorMessage={errors.name?.message?.toString()}
           placeholder="Name"
@@ -79,7 +79,7 @@ const AddNewContactModal = ({
               message: "Please enter contact name",
             },
           })}
-        />
+        /> */}
 
         <Input
           labelName="User Id"
@@ -106,6 +106,6 @@ const AddNewContactModal = ({
 export default AddNewContactModal;
 
 interface ContactInformationType {
-  name?: string;
+  // name?: string;
   user_id?: string;
 }

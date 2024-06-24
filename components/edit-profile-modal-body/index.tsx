@@ -45,12 +45,10 @@ const EditProfileModalBody = ({
 
     setError("username", { message: "username error" });
     setError("user_id", { message: "user id error" });
-    setError("email", { message: "email error" });
   }, [isError, setError, clearErrors]);
 
   const onSubmit = (data: UpdateUserDataType) => {
     const isDataSame =
-      data.email === userData?.email &&
       data.user_id === userData?.user_id &&
       data.username === userData?.username;
 
@@ -99,24 +97,6 @@ const EditProfileModalBody = ({
           value: userData?.user_id,
         })}
       />
-      <Input
-        labelName="Email"
-        errorMessage={errors.email?.message?.toString()}
-        {...register("email", {
-          required: {
-            value: true,
-            message: "Please enter the email",
-          },
-          validate: {
-            isEmail: (v?: string) => {
-              const domain = v?.split("@")[1];
-              if (domain === "gmail.com") return true;
-              return "Please use gmail.com domain";
-            },
-          },
-          value: userData?.email,
-        })}
-      />
 
       <SubmitButton name="Confirm" isLoading={isPending} />
     </form>
@@ -128,5 +108,4 @@ export default EditProfileModalBody;
 interface UpdateUserDataType {
   username?: string;
   user_id?: string;
-  email?: string;
 }

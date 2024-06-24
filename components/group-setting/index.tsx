@@ -70,6 +70,9 @@ const GroupSetting = ({
       onSuccess() {
         router.push("/a");
       },
+      onSettled() {
+        alert("ts");
+      },
     });
 
     setIsOpenSetting(false);

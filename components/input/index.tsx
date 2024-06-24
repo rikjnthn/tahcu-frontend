@@ -24,11 +24,11 @@ const Input = (
     <div
       className={`${
         noTransition ? style.input_no_transition : style.input_with_transition
-      } ${className}`}
+      } ${className ? className : ""}`}
     >
       <div>
         <input ref={ref} id={id} aria-invalid={isError} {...props} />
-        <label htmlFor={id}>{labelName}</label>
+        {labelName ? <label htmlFor={id}>{labelName}</label> : null}
       </div>
       {isError ? (
         <em className={style.error_message} title={errorMessage}>

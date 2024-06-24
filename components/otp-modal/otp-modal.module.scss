@@ -1,0 +1,56 @@
+.otp_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 23rem;
+  padding: 2rem;
+  border-radius: 10px;
+  background-color: var(--otp-container-bg-color);
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+}
+
+.header {
+  display: flex;
+  width: 100%;
+
+  & > button {
+    position: absolute;
+  }
+
+  & > span {
+    margin-inline: auto;
+    font-weight: 600;
+    font-size: 20px;
+  }
+}
+
+.text_content {
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.request_again {
+  margin-top: 2rem;
+
+  & > p {
+    font-size: 12px;
+    font-weight: 300;
+
+    & > span {
+      text-decoration: underline;
+    }
+  }
+}
+
+.submit_button {
+  margin-block-start: 2rem;
+  margin-inline: auto;
+}

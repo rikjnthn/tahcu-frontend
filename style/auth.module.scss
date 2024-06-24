@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   & > form {
     --border-color: #08a045;
@@ -20,7 +21,7 @@
       & > span {
         --font-color: #0b6e4f;
 
-        font-size: 2rem;
+        font-size: 36px;
         font-weight: 600;
         color: var(--font-color);
       }
@@ -43,5 +44,13 @@
 .auth_error {
   --error-font-color: #ff0000;
 
+  font-size: 14px;
+  font-weight: 500;
   color: var(--error-font-color);
+}
+
+.sign_up_otp {
+  position: absolute;
+  background-color: #fff;
+  transition: transform 500ms;
 }

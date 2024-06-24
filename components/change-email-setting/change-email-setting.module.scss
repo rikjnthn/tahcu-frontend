@@ -1,0 +1,10 @@
+.change_email_form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.change_email_error {
+  font-size: 12px;
+  color: var(--change-email-error-font-color);
+}
