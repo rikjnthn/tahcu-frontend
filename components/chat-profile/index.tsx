@@ -23,10 +23,12 @@ const ChatProfile = () => {
   const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
-  const group = queryClient.getQueryData<GroupWithMembershipType>([
-    "group",
-    chatId,
+  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
+    "groupList",
   ]);
+
+  const group = groups?.find((group) => group.id === chatId);
+
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const isGroupAdmin = group?.admin_id === user?.user_id;

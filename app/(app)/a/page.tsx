@@ -8,5 +8,5 @@ export default function Page() {
 
   if (!hash) return;
 
-  return <ChatPage contactId={hash} />;
+  return <ChatPage />;
 }
