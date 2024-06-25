@@ -58,7 +58,9 @@ const AddNewContactModal = ({
       return;
     }
 
-    mutate(user_id ?? "", {
+    if (!user_id) return;
+
+    mutate(user_id, {
       onError(error) {
         if (error.response?.data.error.code === "VALIDATION_ERROR") {
           setError("user_id", {
@@ -91,6 +93,7 @@ const AddNewContactModal = ({
 
   return (
     <Modal
+      setIsOpenModal={setIsOpenModal}
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsOpenModal(false);
       }}

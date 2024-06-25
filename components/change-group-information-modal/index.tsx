@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { GroupType, SetStateType, UpdateGroupDataType } from "@/interface";
+import { SetStateType, UpdateGroupDataType } from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -38,16 +38,6 @@ const ChangeGroupInformationModal = ({
     mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
   });
 
-  useEffect(() => {
-    const closeModalOnEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpenModal(false);
-    };
-
-    document.addEventListener("keyup", closeModalOnEsc);
-
-    return () => document.removeEventListener("keyup", closeModalOnEsc);
-  }, [setIsOpenModal]);
-
   const { isDark } = useDarkMode();
   const { name } = useChatPage();
   const queryClient = useQueryClient();
@@ -63,8 +53,8 @@ const ChangeGroupInformationModal = ({
     }
 
     mutate(data, {
-      onSuccess: async () => {
-        await queryClient.refetchQueries({ queryKey: ["group"] });
+      async onSuccess() {
+        await queryClient.refetchQueries({ queryKey: ["group", chatId] });
         setIsOpenModal(false);
       },
     });
@@ -72,6 +62,7 @@ const ChangeGroupInformationModal = ({
 
   return (
     <Modal
+      setIsOpenModal={setIsOpenModal}
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsOpenModal(false);
       }}

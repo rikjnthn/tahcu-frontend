@@ -43,8 +43,11 @@ const TextTyping = (
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const message = textareaRef.current?.value ?? "";
+    const message = textareaRef.current?.value;
+
     setIsEditMessage(false);
+
+    if (!message) return;
 
     if (isEditMessage) {
       messageIo.emit("update", {

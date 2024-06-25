@@ -24,6 +24,8 @@ const EditMembers = ({
   currentMembers: GroupMemberShipType[];
   setIsEditMembers: SetStateType<boolean>;
 }) => {
+  const [addMemberErrorMessage, setAddMembersErrorMessage] =
+    useState<string>("");
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
   const { hash: chatId } = useURLHash();
@@ -47,13 +49,20 @@ const EditMembers = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
+    if (addedMembers.length === 0) return;
+
+    if (!chatId) return;
+
     const addMembersData = {
-      group_id: chatId ?? "",
+      group_id: chatId,
       members: addedMembers.map((addedMember) => addedMember.user_id),
     };
 
     addMembers(addMembersData, {
-      onSuccess: async () => {
+      onError() {
+        setAddMembersErrorMessage("Failed to add members");
+      },
+      async onSuccess() {
         await queryClient.prefetchQuery({
           queryKey: ["group", chatId],
         });
@@ -65,6 +74,7 @@ const EditMembers = ({
 
   return (
     <Modal
+      setIsOpenModal={setIsEditMembers}
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsEditMembers(false);
       }}
@@ -78,38 +88,37 @@ const EditMembers = ({
           />
           <span>Add Members</span>
         </header>
-
         <div>
-          {contacts
-            ? contacts.map(({ id, friends, friends_id, user, user_id }) => {
-                const isInGroup = currentMembers.find((currentMember) => {
-                  const memberId =
-                    userData?.user_id === user_id ? friends_id : user_id;
+          {contacts?.map(({ id, friends, friends_id, user, user_id }) => {
+            const isInGroup = currentMembers.find((currentMember) => {
+              const memberId =
+                userData?.user_id === user_id ? friends_id : user_id;
 
-                  return currentMember.user_id === memberId;
-                });
+              return currentMember.user_id === memberId;
+            });
 
-                if (isInGroup) return;
+            if (isInGroup) return;
 
-                return (
-                  <Member
-                    key={id}
-                    checkbox
-                    name={
-                      userData?.user_id === user_id
-                        ? friends.username
-                        : user.username
-                    }
-                    user_id={
-                      userData?.user_id === user_id ? friends_id : user_id
-                    }
-                    addedMembers={addedMembers}
-                    setAddedMembers={setAddedMembers}
-                  />
-                );
-              })
-            : null}
+            return (
+              <Member
+                key={id}
+                name={
+                  userData?.user_id === user_id
+                    ? friends.username
+                    : user.username
+                }
+                user_id={userData?.user_id === user_id ? friends_id : user_id}
+                addedMembers={addedMembers}
+                setAddedMembers={setAddedMembers}
+                checkbox
+              />
+            );
+          })}
         </div>
+
+        {addMemberErrorMessage.length > 0 && (
+          <em className={style.error_message}>{addMemberErrorMessage}</em>
+        )}
 
         <form onSubmit={handleSubmit}>
           <SubmitButton
