@@ -53,15 +53,15 @@ const EditProfileModalBody = ({
 
     mutate(data, {
       onError(error) {
-        const errorMessage = error.response?.data.error.message;
-        if (error.response?.data.error.code === "DUPLICATE_VALUE") {
-          setError("user_id", { message: errorMessage.user_id });
+        const errorResponse = error.response?.data.error;
+        if (errorResponse?.code === "DUPLICATE_VALUE") {
+          setError("user_id", { message: errorResponse?.message.user_id });
           return;
         }
 
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
-          setError("user_id", { message: errorMessage.user_id });
-          setError("username", { message: errorMessage.username });
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("user_id", { message: errorResponse?.message.user_id });
+          setError("username", { message: errorResponse?.message.username });
           return;
         }
 

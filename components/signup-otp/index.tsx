@@ -48,9 +48,9 @@ const SignUpOTP = ({
     } catch (error) {
       if (!isAxiosError<ErrorResponseType>(error)) return;
 
-      if (error.response?.data.error.code === "VALIDATION_ERROR") {
-        const errorMessage = error.response?.data.error.message;
+      const errorResponse = error.response?.data.error;
 
+      if (errorResponse?.code === "VALIDATION_ERROR") {
         const signUpDataKeys = [
           "user_id",
           "username",
@@ -59,7 +59,7 @@ const SignUpOTP = ({
         ] as const;
 
         signUpDataKeys.forEach((name) => {
-          setError(name, { message: errorMessage[name] });
+          setError(name, { message: errorResponse?.message[name] });
         });
 
         setIsOpenOTPInput(false);
@@ -67,14 +67,14 @@ const SignUpOTP = ({
         return;
       }
 
-      if (error.response?.data.error.code === "OTP_EXPIRED") {
+      if (errorResponse?.code === "OTP_EXPIRED") {
         setIsOtpError(true);
         setErrorMessage("OTP has been expired");
 
         return;
       }
 
-      if (error.response?.data.error.code === "INVALID") {
+      if (errorResponse?.code === "INVALID") {
         setIsOtpError(true);
         setErrorMessage("OTP is invalid");
 

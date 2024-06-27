@@ -62,17 +62,19 @@ const AddNewContactModal = ({
 
     mutate(user_id, {
       onError(error) {
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("user_id", {
-            message: error.response.data.error.message.user_id,
+            message: errorResponse.message.user_id,
           });
           return;
         }
-        if (error.response?.data.error.code === "DUPLICATE_VALUE") {
+        if (errorResponse?.code === "DUPLICATE_VALUE") {
           setError("user_id", { message: "Contact has already exists" });
           return;
         }
-        if (error.response?.data.error.code === "NOT_FOUND") {
+        if (errorResponse?.code === "NOT_FOUND") {
           setError("user_id", { message: "User id not found" });
           return;
         }

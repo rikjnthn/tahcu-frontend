@@ -51,23 +51,25 @@ const ChangePasswordSetting = () => {
           return;
         }
 
-        const errorMessage = error.response?.data.error.message;
+        const errorResponse = error.response?.data.error;
 
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
+        if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("current_password", {
-            message: errorMessage?.current_password,
+            message: errorResponse.message?.current_password,
           });
-          setError("new_password", { message: errorMessage?.new_password });
+          setError("new_password", {
+            message: errorResponse.message?.new_password,
+          });
 
           return;
         }
 
-        if (error.response?.data.error.code === "NOT_FOUND") {
+        if (errorResponse?.code === "NOT_FOUND") {
           setChangePasswordErrorMessage("User not found");
           return;
         }
 
-        if (error.response?.data.error.code === "UNAUTHORIZED") {
+        if (errorResponse?.code === "UNAUTHORIZED") {
           setError("current_password", { message: "Wrong password" });
           return;
         }
