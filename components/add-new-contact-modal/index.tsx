@@ -1,11 +1,12 @@
 "use client";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./add-new-contact-modal.module.scss";
 import CloseButton from "../close-button";
-import { ContactType, SetStateType } from "@/interface";
+import { ContactType, ErrorResponseType, SetStateType } from "@/interface";
 import Input from "../input";
 import SubmitButton from "../submit-button";
 import { useSocket } from "@/context/socket-connection-context";
@@ -18,6 +19,9 @@ const AddNewContactModal = ({
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
+  const [addContactErrorMessage, setAddContactErrorMessage] =
+    useState<string>("");
+
   const { isDark } = useDarkMode();
   const messageIo = useSocket();
   const dispatch = useHomePageDispatch();
@@ -27,11 +31,12 @@ const AddNewContactModal = ({
     register,
     formState: { errors },
     handleSubmit,
+    setError,
   } = useForm<ContactInformationType>();
 
   const { data, mutate, isPending } = useMutation<
     AxiosResponse<ContactType>,
-    AxiosError,
+    AxiosError<ErrorResponseType>,
     string
   >({
     mutationKey: ["addContact"],
@@ -40,9 +45,44 @@ const AddNewContactModal = ({
     retry: false,
   });
 
+  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+
   const onSubmit = ({ user_id }: ContactInformationType) => {
-    mutate(user_id ?? "", {
-      onSuccess: async () => {
+    const contactFound = contacts?.find((val) => {
+      return val.friends_id === user_id || val.user_id === user_id;
+    });
+
+    if (contactFound) {
+      setError("user_id", { message: "Contact has already exists" });
+
+      return;
+    }
+
+    if (!user_id) return;
+
+    mutate(user_id, {
+      onError(error) {
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("user_id", {
+            message: errorResponse.message.user_id,
+          });
+          return;
+        }
+        if (errorResponse?.code === "DUPLICATE_VALUE") {
+          setError("user_id", { message: "Contact has already exists" });
+          return;
+        }
+        if (errorResponse?.code === "NOT_FOUND") {
+          setError("user_id", { message: "User id not found" });
+          return;
+        }
+
+        setAddContactErrorMessage("Failed to add contact");
+      },
+
+      async onSuccess() {
         await queryClient.refetchQueries({ queryKey: ["contactList"] });
 
         messageIo.emit("join-room", { ids: [data?.data.id] });
@@ -55,6 +95,7 @@ const AddNewContactModal = ({
 
   return (
     <Modal
+      setIsOpenModal={setIsOpenModal}
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsOpenModal(false);
       }}
@@ -68,18 +109,6 @@ const AddNewContactModal = ({
           />
           <span>Add New Contact</span>
         </header>
-
-        {/* <Input
-          labelName="Name"
-          errorMessage={errors.name?.message?.toString()}
-          placeholder="Name"
-          {...register("name", {
-            required: {
-              value: true,
-              message: "Please enter contact name",
-            },
-          })}
-        /> */}
 
         <Input
           labelName="User Id"
@@ -97,6 +126,10 @@ const AddNewContactModal = ({
           })}
         />
 
+        {addContactErrorMessage.length > 0 && (
+          <em className={style.error_message}>{addContactErrorMessage}</em>
+        )}
+
         <SubmitButton name="Add" isLoading={isPending} title="Add contact" />
       </form>
     </Modal>
@@ -106,6 +139,5 @@ const AddNewContactModal = ({
 export default AddNewContactModal;
 
 interface ContactInformationType {
-  // name?: string;
   user_id?: string;
 }

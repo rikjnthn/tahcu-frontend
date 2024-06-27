@@ -19,7 +19,7 @@ const CreatePrivateChatHeader = () => {
         fill={isDark ? "#ffffff" : "#000000"}
         title="Back"
       />
-      <span>Add Contact</span>
+      <span>Contact</span>
     </header>
   );
 };

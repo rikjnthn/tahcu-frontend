@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./private-chat-setting.module.scss";
@@ -14,13 +14,21 @@ const PrivateChatSetting = ({
   setIsOpenSetting: SetStateType<boolean>;
 }) => {
   const router = useRouter();
-  const { hash: chatId } = useURLHash();
+  const { hash: chatId, setHash } = useURLHash();
   const messageIo = useSocket();
+
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation<AxiosResponse, AxiosError, string>({
     mutationKey: ["deleteContact", chatId],
     mutationFn: async (contactId) =>
       axios.delete(`/api/chat-contact/${contactId}`),
+    async onSuccess() {
+      await queryClient.refetchQueries({ queryKey: ["contactList"] });
+
+      setHash("");
+      router.push("/a");
+    },
   });
 
   const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,9 +36,9 @@ const PrivateChatSetting = ({
 
     messageIo.emit("remove-room", { id: chatId });
 
-    mutate(chatId ?? "");
+    if (chatId) mutate(chatId);
+
     setIsOpenSetting(false);
-    router.push("/a");
   };
   return (
     <div className={style.setting}>

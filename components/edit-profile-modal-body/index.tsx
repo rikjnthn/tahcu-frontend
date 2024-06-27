@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -8,13 +8,16 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import style from "./edit-profile-modal-body.module.scss";
 import Input from "../input";
 import SubmitButton from "../submit-button";
-import { SetStateType, UserDataType } from "@/interface";
+import { SetStateType, UserDataType, ErrorResponseType } from "@/interface";
 
 const EditProfileModalBody = ({
   setIsOpenModal,
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
+  const [editProfileErrorMessage, setEditProfileErrorMessage] =
+    useState<string>("");
+
   const queryClient = useQueryClient();
 
   const {
@@ -22,12 +25,11 @@ const EditProfileModalBody = ({
     formState: { errors },
     handleSubmit,
     setError,
-    clearErrors,
   } = useForm<UpdateUserDataType>();
 
-  const { isPending, isError, mutate } = useMutation<
+  const { isPending, mutate } = useMutation<
     AxiosResponse,
-    AxiosError,
+    AxiosError<ErrorResponseType>,
     UpdateUserDataType
   >({
     mutationKey: ["updateUserData"],
@@ -37,20 +39,12 @@ const EditProfileModalBody = ({
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
-  useEffect(() => {
-    if (!isError) {
-      clearErrors();
-      return;
-    }
-
-    setError("username", { message: "username error" });
-    setError("user_id", { message: "user id error" });
-  }, [isError, setError, clearErrors]);
-
   const onSubmit = (data: UpdateUserDataType) => {
     const isDataSame =
       data.user_id === userData?.user_id &&
       data.username === userData?.username;
+
+    setEditProfileErrorMessage("");
 
     if (isDataSame) {
       setIsOpenModal(false);
@@ -58,7 +52,22 @@ const EditProfileModalBody = ({
     }
 
     mutate(data, {
-      onSuccess: async () => {
+      onError(error) {
+        const errorResponse = error.response?.data.error;
+        if (errorResponse?.code === "DUPLICATE_VALUE") {
+          setError("user_id", { message: errorResponse?.message.user_id });
+          return;
+        }
+
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("user_id", { message: errorResponse?.message.user_id });
+          setError("username", { message: errorResponse?.message.username });
+          return;
+        }
+
+        setEditProfileErrorMessage("Failed to update profile");
+      },
+      async onSuccess() {
         await queryClient.refetchQueries({ queryKey: ["userData"] });
         setIsOpenModal(false);
       },
@@ -97,6 +106,10 @@ const EditProfileModalBody = ({
           value: userData?.user_id,
         })}
       />
+
+      {editProfileErrorMessage.length > 0 && (
+        <em className={style.error_message}>{editProfileErrorMessage}</em>
+      )}
 
       <SubmitButton name="Confirm" isLoading={isPending} />
     </form>

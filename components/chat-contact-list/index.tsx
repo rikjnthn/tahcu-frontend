@@ -25,25 +25,21 @@ const ChatContactList = () => {
 
   return (
     <ul className={style.chat_contact_list}>
-      {contacts && userData
-        ? contacts.map(({ id, user_id, friends, user }) => (
-            <ChatContact
-              key={id}
-              to={id}
-              message=""
-              name={
-                user_id === userData.user_id ? friends.username : user.username
-              }
-              unread={0}
-            />
-          ))
-        : null}
+      {contacts?.map(({ id, user_id, friends, user }) => (
+        <ChatContact
+          key={id}
+          to={id}
+          message=""
+          name={
+            user_id === userData?.user_id ? friends.username : user.username
+          }
+          unread={0}
+        />
+      ))}
 
-      {groups
-        ? groups.map(({ id, name }) => (
-            <ChatContact key={id} to={id} message="" name={name} unread={0} />
-          ))
-        : null}
+      {groups?.map(({ id, name }) => (
+        <ChatContact key={id} to={id} message="" name={name} unread={0} />
+      ))}
     </ul>
   );
 };

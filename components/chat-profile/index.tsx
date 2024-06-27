@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
+import { QueryKey, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 import style from "./chat-profile.module.scss";
 import PlusButton from "../plus-button";
@@ -15,6 +16,17 @@ import EditMembers from "../edit-members";
 import { useChatPage } from "@/context/chat-page-context";
 import { useURLHash } from "@/context/url-hash-context";
 
+const getGroup = async ({
+  queryKey,
+}: {
+  queryKey: QueryKey;
+}): Promise<GroupWithMembershipType> => {
+  const [_, chatId] = queryKey;
+
+  const { data } = await axios.get(`/api/group/${chatId}`);
+  return data;
+};
+
 const ChatProfile = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditMembers, setIsEditMembers] = useState<boolean>(false);
@@ -23,10 +35,13 @@ const ChatProfile = () => {
   const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
-  const group = queryClient.getQueryData<GroupWithMembershipType>([
-    "group",
-    chatId,
-  ]);
+  const { data: group, refetch } = useQuery<GroupWithMembershipType>({
+    queryKey: ["group", chatId],
+    queryFn: getGroup,
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
+
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const isGroupAdmin = group?.admin_id === user?.user_id;
@@ -34,6 +49,10 @@ const ChatProfile = () => {
   const editMembers = () => {
     setIsEditMembers(true);
   };
+
+  useEffect(() => {
+    if (isGroup) refetch();
+  });
 
   if (isGroup) {
     return (

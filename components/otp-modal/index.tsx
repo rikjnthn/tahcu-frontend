@@ -78,6 +78,7 @@ const OTPModal = ({
 
   return (
     <Modal
+      setIsOpenModal={setIsOpenModal}
       onClick={(e) => {
         if (e.currentTarget === e.target) setIsOpenModal(false);
       }}

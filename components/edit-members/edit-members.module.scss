@@ -31,3 +31,10 @@
   padding: 0.5rem 1rem;
   margin-inline-start: auto;
 }
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-size: 14px;
+  color: var(--error-message-font-color);
+}

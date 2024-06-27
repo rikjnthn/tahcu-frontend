@@ -55,16 +55,18 @@ export default function Page() {
         return;
       }
 
-      const errorMessage = error.response?.data.error.message;
+      const errorResponse = error.response?.data.error;
 
-      if (error.response?.data.error.code === "VALIDATION_ERROR") {
-        setError("user_idOrEmail", { message: errorMessage.user_idOrEmail });
-        setError("password", { message: errorMessage.password });
+      if (errorResponse?.code === "VALIDATION_ERROR") {
+        setError("user_idOrEmail", {
+          message: errorResponse?.message.user_idOrEmail,
+        });
+        setError("password", { message: errorResponse?.message.password });
         return;
       }
 
-      if (error.response?.data.error.code === "INVALID") {
-        setAuthErrorMessage(errorMessage.message);
+      if (errorResponse?.code === "INVALID") {
+        setAuthErrorMessage(errorResponse?.message);
         return;
       }
 

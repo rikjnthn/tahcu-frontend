@@ -15,18 +15,16 @@ const GroupMember = ({
     <div className={style.group_member}>
       <span>Member</span>
       <ul>
-        {members
-          ? members.map(({ id, user, user_id }) => (
-              <Member
-                key={id}
-                name={user.username}
-                user_id={user_id}
-                isMemberAdmin={adminId === user_id}
-                adminId={adminId}
-                showDelete
-              />
-            ))
-          : null}
+        {members?.map(({ id, user, user_id }) => (
+          <Member
+            key={id}
+            name={user.username}
+            user_id={user_id}
+            isMemberAdmin={adminId === user_id}
+            adminId={adminId}
+            showDelete
+          />
+        ))}
       </ul>
     </div>
   );

@@ -17,29 +17,47 @@ const GroupSetting = ({
 }: {
   setIsOpenSetting: SetStateType<boolean>;
 }) => {
-  const { hash: chatId } = useURLHash();
+  const { hash: chatId, setHash } = useURLHash();
   const router = useRouter();
 
   const { mutate: exitGroup } = useMutation<AxiosResponse, AxiosError, string>({
     mutationKey: ["exitGroup"],
     mutationFn: async (new_admin) =>
-      axios.patch(`/api/group/exit-group/${chatId}`, {
+      await axios.patch(`/api/group/exit-group/${chatId}`, {
         new_admin,
       }),
+    async onSuccess() {
+      await queryClient.refetchQueries({ queryKey: ["groupList"] });
+
+      setHash("");
+      router.push("/a");
+    },
   });
 
-  const { mutate: deleteGroup } = useMutation<AxiosResponse, AxiosError, void>({
+  const { mutate: deleteGroup } = useMutation<
+    AxiosResponse,
+    AxiosError,
+    string
+  >({
     mutationKey: ["deleteGroup"],
-    mutationFn: async () => axios.delete(`/api/group/${chatId}`),
+    mutationFn: async (chatId) => await axios.delete(`/api/group/${chatId}`),
+    async onSuccess() {
+      await queryClient.refetchQueries({ queryKey: ["groupList"] });
+
+      setHash("");
+      router.push("/a");
+    },
   });
 
   const messageio = useSocket();
   const queryClient = useQueryClient();
 
-  const group = queryClient.getQueryData<GroupWithMembershipType>([
-    "group",
-    chatId,
+  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
+    "groupList",
   ]);
+
+  const group = groups?.find((group) => group.id === chatId);
+
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const isGroupAdmin = group?.admin_id === user?.user_id;
@@ -53,11 +71,7 @@ const GroupSetting = ({
     const newAdmin = groupMemberships[randomIndex];
 
     messageio.emit("remove-room", { id: group?.id });
-    exitGroup(newAdmin.user_id, {
-      onSuccess() {
-        router.push("/a");
-      },
-    });
+    exitGroup(newAdmin.user_id);
 
     setIsOpenSetting(false);
   };
@@ -66,14 +80,8 @@ const GroupSetting = ({
     e.stopPropagation();
 
     messageio.emit("remove-room", { id: group?.id });
-    deleteGroup(undefined, {
-      onSuccess() {
-        router.push("/a");
-      },
-      onSettled() {
-        alert("ts");
-      },
-    });
+
+    deleteGroup(chatId);
 
     setIsOpenSetting(false);
   };

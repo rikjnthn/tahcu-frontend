@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 import Chat from "@/components/chat";
 import ChatProfile from "@/components/chat-profile";
@@ -15,33 +14,18 @@ import {
   SetStateType,
   UserDataType,
 } from "@/interface";
-
-const getGroup = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, contactId] = queryKey;
-
-  const { data } = await axios.get<GroupWithMembershipType>(
-    `/api/group/${contactId}`
-  );
-
-  return data;
-};
+import { useURLHash } from "@/context/url-hash-context";
 
 const handlePrivateChat = ({
-  contactId,
   setName,
-  contacts,
+  contact,
   userData,
 }: {
-  contactId: string;
-  contacts?: ContactType[];
+  contact?: ContactType;
   userData?: UserDataType;
   setName: SetStateType<string>;
 }) => {
-  if (!contacts || !userData) return;
-
-  const contact = contacts.find((val) => val.id === contactId);
-
-  if (!contact) return;
+  if (!contact || !userData) return;
 
   const { user_id, friends, user } = contact;
 
@@ -62,32 +46,34 @@ const handleGroupChat = ({
   setName(group.name);
 };
 
-const ChatPage = ({ contactId }: { contactId: string }) => {
+const ChatPage = () => {
   const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
   const [isRouteChangeComplete, setIsRouteChangeComplete] =
     useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [isGroup, setIsGroup] = useState<boolean>(false);
 
+  const { hash: chatId } = useURLHash();
+
   useEffect(() => {
     setIsRouteChangeComplete(true);
-  }, [contactId]);
-
-  const { data: group } = useQuery({
-    queryKey: ["group", contactId],
-    queryFn: getGroup,
-    retry: false,
-  });
+  }, [chatId]);
 
   const queryClient = useQueryClient();
 
   const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
+    "groupList",
+  ]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
+
+  const group = groups?.find((group) => group.id === chatId);
+  const contact = contacts?.find((contact) => contact.id === chatId);
 
   useEffect(() => {
     if (group) handleGroupChat({ setIsGroup, group, setName });
-    else handlePrivateChat({ contacts, userData, setName, contactId });
-  }, [contactId, contacts, userData, group]);
+    else handlePrivateChat({ contact, userData, setName });
+  }, [chatId, contact, userData, group]);
 
   return (
     <ChatPageProvider
