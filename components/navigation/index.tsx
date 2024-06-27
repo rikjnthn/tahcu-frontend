@@ -44,6 +44,8 @@ const Navigation = ({
       }; expires=${new Date(0).toUTCString()};`;
     }
 
+    localStorage.removeItem("token_exp");
+
     router.push("/");
   };
 
