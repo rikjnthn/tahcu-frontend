@@ -32,32 +32,32 @@ const MessageContextMenu = ({
   const messageIo = useSocket();
 
   useEffect(() => {
-    if (messageContextRef.current) {
-      const messageContext = messageContextRef.current;
-      const chatPageElement = chatRef.current;
+    if (!messageContextRef.current) return;
 
-      const chatPageWidth = chatPageElement?.clientWidth ?? 0;
-      const chatPageHeight = chatPageElement?.clientHeight ?? 0;
+    const messageContext = messageContextRef.current;
+    const chatPageElement = chatRef.current;
 
-      const { left, top } = menuCoordinate;
+    const chatPageWidth = chatPageElement?.clientWidth ?? 0;
+    const chatPageHeight = chatPageElement?.clientHeight ?? 0;
 
-      const halfScreenWidth =
-        chatPageWidth / 2 + (window.innerWidth - chatPageWidth);
-      const halfScreenHeight = chatPageHeight / 2;
+    const { left, top } = menuCoordinate;
 
-      if (left > halfScreenWidth) {
-        messageContext.style.right = `${window.innerWidth - left}px`;
-      } else {
-        messageContext.style.left = `${
-          left - window.innerWidth + chatPageWidth
-        }px`;
-      }
+    const halfScreenWidth =
+      chatPageWidth / 2 + (window.innerWidth - chatPageWidth);
+    const halfScreenHeight = chatPageHeight / 2;
 
-      if (top > halfScreenHeight) {
-        messageContext.style.bottom = `${window.innerHeight - top}px`;
-      } else messageContext.style.top = `${top}px`;
+    if (left > halfScreenWidth) {
+      messageContext.style.right = `${window.innerWidth - left}px`;
+    } else {
+      messageContext.style.left = `${
+        left - window.innerWidth + chatPageWidth
+      }px`;
     }
-  });
+
+    if (top > halfScreenHeight) {
+      messageContext.style.bottom = `${window.innerHeight - top}px`;
+    } else messageContext.style.top = `${top}px`;
+  }, [chatRef, menuCoordinate]);
 
   const handleCopyMessage = async () => {
     try {

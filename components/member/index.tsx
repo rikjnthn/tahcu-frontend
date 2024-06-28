@@ -84,7 +84,6 @@ const Member = ({
 
   const { hash: chatId } = useURLHash();
   const { isDark } = useDarkMode();
-  const queryClient = useQueryClient();
 
   const addMemberCreateGroup = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
@@ -100,8 +99,9 @@ const Member = ({
   useEffect(() => {
     if (!inputRef.current) return;
 
-    if (!addedMembers?.find((val) => val.user_id === user_id))
-      inputRef.current.checked = false;
+    const addedMember = addedMembers?.find((val) => val.user_id === user_id);
+
+    if (!addedMember) inputRef.current.checked = false;
   }, [addedMembers, user_id]);
 
   return (

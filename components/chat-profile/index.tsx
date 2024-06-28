@@ -52,7 +52,7 @@ const ChatProfile = () => {
 
   useEffect(() => {
     if (isGroup) refetch();
-  });
+  }, [isGroup, refetch]);
 
   if (isGroup) {
     return (
