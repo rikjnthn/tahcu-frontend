@@ -96,7 +96,7 @@ export default function Page() {
             },
             minLength: {
               value: 4,
-              message: "User id should contain a minimal of 4 letters",
+              message: "User id should contain a minimum of 4 letters",
             },
           })}
         />
@@ -114,11 +114,11 @@ export default function Page() {
             },
             minLength: {
               value: 8,
-              message: "Password should contain a minimal of 8 letters",
+              message: "Password should contain a minimum of 8 letters",
             },
             maxLength: {
               value: 64,
-              message: "Maximum password length exceeded (Maximum 64 letters)",
+              message: "Password should contain a maximum of 64 letters",
             },
           })}
         />
