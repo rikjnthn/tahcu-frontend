@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: var(--contact-home-font-color);
+}
+
+.logo_and_hamburger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 8rem;
+  height: 2rem;
+
+  & > span {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 16.5px;
+    user-select: none;
+  }
+}
+
+.search_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 50rem;
+  padding-inline: 0.75rem;
+  background-color: transparent;
+
+  & > div {
+    flex: 1 0 0;
+    display: flex;
+    align-items: center;
+  }
+}

@@ -1,0 +1,13 @@
+.added_member {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 10px;
+  background-color: var(--added-member-bg-color);
+
+  &:not(:hover) > button {
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,12 @@
+.user_data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-inline: 2.5rem;
+  color: var(--user-data-font-color);
+}
+
+.name {
+  font-size: 14px;
+  color: var(--font-grey);
+}

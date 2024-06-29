@@ -1,0 +1,87 @@
+@use "../../style/breakpoint.scss";
+
+.first,
+.second {
+  --font-color: #0b6e4f;
+
+  padding: 2rem;
+  margin-block: 10rem;
+
+  & > h1 {
+    text-align: center;
+    margin-bottom: 5rem;
+    font-size: 24px;
+    color: var(--font-color);
+
+    @include breakpoint.tablet {
+      font-size: 30px;
+    }
+
+    @include breakpoint.desktop {
+      font-size: 36px;
+    }
+  }
+}
+
+.chat_preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  max-width: 20rem;
+  margin-inline: auto;
+
+  @include breakpoint.tablet {
+    max-width: 30rem;
+  }
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+.user_1,
+.user_2 {
+  --background-color: #d3f2df;
+
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  background-color: var(--background-color);
+
+  & > img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    object-fit: cover;
+  }
+}
+
+.user_1 {
+  margin-left: auto;
+}
+
+.user_2 {
+  margin-right: auto;
+}
+
+.second {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > img {
+    --img-drop-shadow-color: #00000025;
+
+    width: min(100%, 25rem);
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(4px 4px 10px var(--img-drop-shadow-color));
+  }
+}

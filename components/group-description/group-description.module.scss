@@ -1,0 +1,12 @@
+.description {
+  padding: 1rem 2.5rem;
+  color: var(--group-description-font-color);
+
+  & > span {
+    font-weight: 600;
+  }
+
+  & > div {
+    margin-top: 1rem;
+  }
+}

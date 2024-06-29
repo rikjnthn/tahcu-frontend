@@ -1,0 +1,17 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  & > button {
+    width: 6rem;
+    margin-left: auto;
+  }
+}
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-size: 14px;
+  color: var(--error-message-font-color);
+}

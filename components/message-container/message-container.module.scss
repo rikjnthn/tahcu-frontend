@@ -1,0 +1,14 @@
+.message_container {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: calc(100vh - 4rem - 3.5rem);
+  max-height: calc(100dvh - 4rem - 3.5rem);
+  padding: 1rem 1.875rem;
+  overflow: scroll;
+
+  & > li:first-child {
+    margin-top: auto;
+  }
+}

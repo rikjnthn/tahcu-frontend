@@ -1,0 +1,35 @@
+.form {
+  width: 100%;
+  max-width: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  background-color: var(--add-new-contact-form-bg-color);
+
+  & > button {
+    margin-inline-start: auto;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--add-new-contact-header-font-color);
+
+  & > span {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    margin-block: 1rem;
+  }
+}
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-size: 14px;
+  color: var(--error-message-font-color);
+}

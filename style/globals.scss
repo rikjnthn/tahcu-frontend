@@ -1,0 +1,422 @@
+@use "./breakpoint.scss";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+main {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.dark {
+  --overlay-bg-color: rgba(150, 150, 150, 0.3);
+  --chat-page-container-bg-color: #454545;
+  --user-setting-button-bg: #b92929;
+  --user-setting-button-bg-hover: #c23535;
+  --user-setting-button-bg-active: #8b2626;
+  --user-setting-button-font-color: #fff;
+  --font-grey: #757575;
+  --message-input-bg-color: #353535;
+  --message-input-font-color: #ffffff;
+  --setting-header-bg-color: #353535;
+  --setting-header-font-color: #fff;
+  --setting-font-color: #fff;
+  --search-bar-border-top-color: #bdbdbd;
+  --send-message-place-bg-color: #353535;
+  --send-message-place-border-top-color: rgba(255, 255, 255, 0.3);
+  --edit-message-bg-color: #454545;
+  --message-to-edit-bg-color: #545454;
+  --editting-font-color: #0bbe53;
+  --chat-setting-button-font-color: #fff;
+  --chat-setting-button-bg-color: #454545;
+  --chat-setting-button-bg-color-hover: #cccccc;
+  --photo-profile-bg-color: #fff;
+  --photo-profile-font-color: #000;
+  --next-button-bg-color: #08a045;
+  --new-contact-bg-color: #08a045;
+  --nav-bg-color: #252525;
+  --nav-option-font-color: #fff;
+  --nav-user-data-font-color: #fff;
+  --nav-user-data-bg-color: #09573e;
+  --nav-user-profile-header-bg-color: #252525;
+  --user-profile-header-font-color: #fff;
+  --user-data-font-color: #fff;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --message-context-bg-color: #454545;
+  --message-context-shadow-color: rgba(100, 100, 100, 0.5);
+  --message-context-button-bg-color-hover: rgba(94, 94, 94, 0.4);
+  --message-bg-color: #414141;
+  --message-username-font-color: #08a045;
+  --message-text-font-color: #fff;
+  --message-time-font-color: #7e7e7e;
+  --message-context-btn-font-color: #fff;
+  --checkbox-accent-color: #87ceeb;
+  --input-font-color: #fff;
+  --label-gray: #838383;
+  --label-bg-color: #353535;
+  --ring-gray: #b8b8b8;
+  --ring-green-hover: #31c55d;
+  --label-green-hover: #31c55d;
+  --ring-green-focus: #2bbb56;
+  --label-green-focus: #2bbb56;
+  --ring-error-color: #ff0000;
+  --label-error-color: #ff0000;
+  --error-font-color: #ff0000;
+  --home-page-border-color: #454545;
+  --home-page-bg-color: #353535;
+  --contact-home-font-color: #fff;
+  --setting-button-font-color: #000;
+  --setting-button-bg-color: #fff;
+  --setting-button-bg-color-hover: #cccccc;
+  --group-profile-bg-color: #fff;
+  --group-profile-font-color: #000;
+  --group-member-font-color: #fff;
+  --group-description-font-color: #fff;
+  --float-option-bg-color: #303030;
+  --float-option-font-color: #fff;
+  --float-option-shadow-color: rgba(80, 80, 80, 0.4);
+  --float-button-bg-color: #08a045;
+  --wrapper-bg-color: #353535;
+  --contact-container-bg-color: #353535;
+  --contact-container-header-font-color: #fff;
+  --toggle-color: #d1d1d1;
+  --toggle-ball-color: #0b6e4f;
+  --chat-profile-bg-color: #353535;
+  --chat-profile-header-font-color: #fff;
+  --float-button-bg-color: #08a045;
+  --chat-header-bg-color: #086b30;
+  --chat-header-font-color: #fff;
+  --chat-contact-font-color: #fff;
+  --contact-bg-color-hover: rgba(70, 70, 70, 0.5);
+  --message-snippet-font-color: #363636;
+  --openk-link-color: rgba(80, 80, 80, 0.5);
+  --chat-bg-color: #252525;
+  --added-member-bg-color: #87ceeb;
+  --create-private-chat-header-font-color: #fff;
+  --add-new-contact-form-bg-color: #353535;
+  --add-new-contact-header-font-color: #fff;
+  --adding-members-header-font-color: #fff;
+  --add-member-input-font-color: #fff;
+  --change-group-information-form-bg-color: #353535;
+  --edit-profile-header-font-color: #fff;
+  --member-font-color: #fff;
+  --create-group-header-font-color: #fff;
+  --change-password-error-font-color: #ff0000;
+  --change-email-error-font-color: #ff0000;
+  --otp-container-bg-color: #353535;
+}
+
+.light {
+  --overlay-bg-color: rgba(0, 0, 0, 0.3);
+  --chat-page-container-bg-color: #fff;
+  --user-setting-button-bg: #cc1414;
+  --user-setting-button-bg-hover: #d81212;
+  --user-setting-button-bg-active: #971010;
+  --user-setting-button-font-color: #ffffff;
+  --font-grey: #757575;
+  --message-input-bg-color: #fff;
+  --message-input-font-color: #000;
+  --setting-header-bg-color: #fff;
+  --search-bar-border-top-color: #000;
+  --send-message-place-bg-color: #fff;
+  --send-message-place-border-top-color: #000;
+  --edit-message-bg-color: #fff;
+  --message-to-edit-bg-color: #e9e9e9;
+  --editting-font-color: #0b6e4f;
+  --chat-setting-button-font-color: #000;
+  --chat-setting-button-bg-color: #fff;
+  --chat-setting-button-bg-color-hover: #cccccc;
+  --photo-profile-bg-color: #fff;
+  --photo-profile-font-color: #000;
+  --next-button-bg-color: #08a045;
+  --new-contact-bg-color: #08a045;
+  --nav-bg-color: #fff;
+  --nav-user-data-font-color: #fff;
+  --nav-user-data-bg-color: #0b6e4f;
+  --user-profile-header-bg-color: #fff;
+  --edit-profile-header-font-color: #000;
+  --user-data-font-color: #000000;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+  --message-context-bg-color: #fff;
+  --message-context-shadow-color: rgba(100, 100, 100, 0.5);
+  --message-context-button-bg-color-hover: rgba(94, 94, 94, 0.4);
+  --message-bg-color: #fff;
+  --message-username-font-color: #0b6e4f;
+  --message-text-font-color: #000;
+  --message-time-font-color: #7e7e7e;
+  --message-context-btn-font-color: #000;
+  --checkbox-accent-color: #87ceeb;
+  --label-gray: #838383;
+  --label-bg-color: #fff;
+  --ring-gray: #b8b8b8;
+  --ring-green-hover: #29a74e;
+  --label-green-hover: #29a74e;
+  --ring-green-focus: #1f8a3f;
+  --label-green-focus: #1f8a3f;
+  --ring-error-color: #ff0000;
+  --label-error-color: #ff0000;
+  --error-font-color: #ff0000;
+  --home-page-border-color: hsla(0, 0%, 53%, 0.5);
+  --home-page-bg-color: #fff;
+  --contact-home-font-color: #000;
+  --setting-header-font-color: #000000;
+  --setting-body-bg-color: #fff;
+  --setting-font-color: #000;
+  --setting-button-font-color: #000;
+  --setting-button-bg-color: #fff;
+  --setting-button-bg-color-hover: #cccccc;
+  --group-profile-bg-color: #fff;
+  --group-profile-font-color: #000;
+  --group-member-font-color: #000;
+  --group-description-font-color: #000;
+  --float-option-bg-color: #fff;
+  --float-option-shadow-color: rgba(100, 100, 100, 0.4);
+  --float-button-bg-color: #08a045;
+  --wrapper-bg-color: #fff;
+  --contact-container-bg-color: #fff;
+  --contact-container-header-font-color: #000;
+  --toggle-color: #d1d1d1;
+  --toggle-ball-color: #0b6e4f;
+  --chat-profile-bg-color: #fff;
+  --chat-profile-header-font-color: #000;
+  --float-button-bg-color: #08a045;
+  --chat-header-bg-color: #08a045;
+  --chat-header-font-color: #fff;
+  --chat-contact-font-color: #000;
+  --contact-bg-color-hover: #dbdbdb;
+  --message-snippet-font-color: #363636;
+  --openk-link-color: rgba(128, 128, 128, 0.2);
+  --chat-bg-color: #f6eddb;
+  --added-member-bg-color: #87ceeb;
+  --create-private-chat-header-font-color: #000;
+  --add-new-contact-form-bg-color: #fff;
+  --add-new-contact-header-font-color: #000;
+  --adding-members-header-font-color: #000;
+  --add-member-input-font-color: #000;
+  --change-group-information-form-bg-color: #fff;
+  --nav-option-font-color: #000;
+  --member-font-color: #000;
+  --create-group-header-font-color: #000;
+  --change-password-error-font-color: #ff0000;
+  --change-email-error-font-color: #ff0000;
+  --otp-container-bg-color: #fff;
+}
+
+.transition-transform {
+  transition: transform 500ms;
+}
+
+.dark_overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--overlay-bg-color);
+  top: 0;
+  z-index: 1;
+}
+
+.margin-left-auto {
+  margin-left: auto;
+}
+
+.margin-top-auto {
+  margin-top: auto;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo_profile_xl {
+  width: 10rem;
+  height: 10rem;
+}
+
+.photo_profile_md {
+  width: 3.75rem;
+  height: 3.75rem;
+}
+
+.photo_profile_sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+.user-profile-photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15rem;
+  margin-top: 4rem;
+}
+
+.flex-row-reversed {
+  flex-direction: row-reverse;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.h-full-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.z-1 {
+  z-index: 1;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.translateX-0 {
+  transform: translateX(0);
+}
+
+.-translateX-10 {
+  transform: translateX(-10%);
+}
+
+.translateX-100 {
+  transform: translateX(100%);
+}
+
+.-translateX-100-vw {
+  transform: translateX(-100vw);
+}
+
+.translateX-100-vw {
+  transform: translateX(100vw);
+}
+
+.absolute {
+  position: absolute;
+}
+
+.scale-90 {
+  transform: scale(0.9);
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}
+
+.user-select-none {
+  user-select: none;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+}
+
+.not-found {
+  --not-found-bg-color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--not-found-bg-color);
+
+  & > svg {
+    scale: 0.5;
+
+    @include breakpoint.tablet {
+      scale: 1;
+    }
+
+    @include breakpoint.desktop {
+      scale: 1.5;
+    }
+  }
+
+  & > div {
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    @include breakpoint.tablet {
+      font-size: 2rem;
+    }
+
+    @include breakpoint.desktop {
+      font-size: 4rem;
+      margin-top: 5rem;
+    }
+  }
+}
+
+#not-found-svg {
+  & > path {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+
+    animation: draw 3s ease-in-out infinite alternate;
+
+    &:nth-child(2) {
+      animation-delay: 500ms;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 1s;
+    }
+  }
+}
+
+.main-page {
+  display: flex;
+  position: relative;
+}
+
+.chat-page-container {
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+
+  @include breakpoint.tablet {
+    position: static;
+    width: calc(100% - 30rem);
+    background-color: var(--chat-page-container-bg-color);
+  }
+}
+
+.home-page-container {
+  @include breakpoint.tablet {
+    position: relative;
+    width: 30rem;
+    z-index: 0;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

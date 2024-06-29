@@ -1,0 +1,64 @@
+.message_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  max-width: 85%;
+  list-style: none;
+  cursor: default;
+}
+
+.message {
+  border-radius: 10px;
+  padding-block: 0.25rem;
+  background-color: var(--message-bg-color);
+
+  & > div {
+    position: relative;
+    width: 100%;
+    font-size: 14px;
+    padding-inline: 0.75rem 1.5rem;
+  }
+}
+
+.username {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--message-username-font-color);
+  padding-inline: 0.75rem;
+}
+
+.message_text {
+  position: relative;
+  word-break: break-word;
+  white-space: pre-wrap;
+  padding-inline-end: 1.25rem;
+  color: var(--message-text-font-color);
+}
+
+.time {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 5px;
+  font-size: 12px;
+  color: var(--message-time-font-color);
+  z-index: 1;
+}
+
+.message_context_container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+  }
+}

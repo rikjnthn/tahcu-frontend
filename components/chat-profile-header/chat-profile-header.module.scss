@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  color: var(--chat-profile-header-font-color);
+
+  & > span {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  & > button:last-child {
+    margin-left: auto;
+  }
+}

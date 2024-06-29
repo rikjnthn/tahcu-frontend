@@ -1,0 +1,27 @@
+.chat_profile {
+  height: 100%;
+  background-color: var(--chat-profile-bg-color);
+}
+
+.float_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  width: 4rem;
+  height: 4rem;
+  border: none;
+  border-radius: 100%;
+  background-color: var(--float-button-bg-color);
+
+  & > button {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+.change_name {
+  padding-inline: 2rem;
+}

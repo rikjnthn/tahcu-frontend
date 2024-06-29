@@ -1,0 +1,22 @@
+.user_profile_header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 4rem;
+  padding-inline: 2rem;
+  color: var(--user-profile-header-font-color);
+  background-color: var(--user-profile-header-bg-color);
+
+  & > span {
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  & > button:last-child {
+    margin-left: auto;
+  }
+}

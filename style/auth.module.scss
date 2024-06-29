@@ -1,0 +1,56 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  & > form {
+    --border-color: #08a045;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: min(25rem, 80%);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+
+    & > header {
+      margin-inline: auto;
+
+      & > span {
+        --font-color: #0b6e4f;
+
+        font-size: 36px;
+        font-weight: 600;
+        color: var(--font-color);
+      }
+    }
+
+    & > footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > a {
+        --font-color: #000;
+
+        color: var(--font-color);
+      }
+    }
+  }
+}
+
+.auth_error {
+  --error-font-color: #ff0000;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--error-font-color);
+}
+
+.sign_up_otp {
+  position: absolute;
+  background-color: #fff;
+  transition: transform 500ms;
+}

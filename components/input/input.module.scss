@@ -1,0 +1,99 @@
+.input_no_transition {
+  height: 5rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & > label {
+      font-weight: 500;
+    }
+
+    & > input {
+      font-size: inherit;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid;
+      color: var(--input-font-color);
+      background-color: var(--input-bg-color);
+
+      &[aria-invalid="true"] {
+        --ring-error-color: #ff0000;
+
+        border-color: var(--ring-error-color);
+      }
+    }
+  }
+}
+
+.input_with_transition {
+  & > div {
+    display: flex;
+    flex-direction: column-reverse;
+
+    & > label {
+      font-size: 14px;
+      width: fit-content;
+      padding-inline: 0.5rem;
+      transform: translate(10px, 12px);
+      background-color: var(--label-bg-color);
+      color: var(--label-gray);
+      transition: color 250ms;
+    }
+
+    & > input {
+      --transition-duration: 250ms;
+      --input-bg-color: transparent;
+
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 300;
+      padding: 0.5rem;
+      border: 1px solid var(--ring-gray);
+      outline: 1px solid transparent;
+      border-radius: 5px;
+      color: var(--input-font-color);
+      background-color: var(--input-bg-color);
+      transition: border-color var(--transition-duration),
+        outline var(--transition-duration);
+
+      &:hover {
+        border-color: var(--ring-green-hover);
+
+        & + label {
+          color: var(--label-green-hover);
+        }
+      }
+
+      &:focus {
+        border-color: var(--ring-green-focus);
+        outline-color: var(--ring-green-focus);
+
+        & + label {
+          color: var(--label-green-focus);
+        }
+      }
+
+      &[aria-invalid="true"] {
+        border-color: var(--ring-error-color);
+        outline-color: var(--ring-error-color);
+
+        & + label {
+          color: var(--label-error-color);
+        }
+      }
+    }
+  }
+}
+
+.error_message {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--error-font-color);
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

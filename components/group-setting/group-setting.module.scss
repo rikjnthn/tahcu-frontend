@@ -1,0 +1,26 @@
+.setting {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  top: 4.5rem;
+  right: 1rem;
+  width: 8rem;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 10;
+
+  & > button {
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 400;
+    padding: 0.5rem;
+    border: none;
+    color: var(--chat-setting-button-font-color);
+    background-color: var(--chat-setting-button-bg-color);
+  }
+
+  & > button:hover {
+    background-color: var(--chat-setting-button-bg-color-hover);
+  }
+}

@@ -1,0 +1,10 @@
+.create_group_page {
+  & > div {
+    --transition-duration: 200ms;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--transition-duration);
+  }
+}

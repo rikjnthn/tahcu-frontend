@@ -1,0 +1,27 @@
+.button {
+  --submit-font-color: #fff;
+  --submit-button-background-color: #08a045;
+  --submit-button-background-color-hover: #0cad4c;
+  --submit-button-background-color-active: #078037;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
+  font-size: inherit;
+  font-family: inherit;
+  border: none;
+  border-radius: 5px;
+  color: var(--submit-font-color);
+  background-color: var(--submit-button-background-color);
+
+  &:hover {
+    background-color: var(--submit-button-background-color-hover);
+  }
+
+  &:active {
+    background-color: var(--submit-button-background-color-active);
+  }
+}

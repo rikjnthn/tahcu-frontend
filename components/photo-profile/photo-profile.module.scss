@@ -1,0 +1,11 @@
+.photo_profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  border: 1px solid;
+  border-radius: 100%;
+  background-color: var(--photo-profile-bg-color);
+  color: var(--photo-profile-font-color);
+  user-select: none;
+}

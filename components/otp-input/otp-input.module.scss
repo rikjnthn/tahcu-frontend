@@ -1,0 +1,28 @@
+.otp_input {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+
+  & > div {
+    display: flex;
+    gap: 1rem;
+
+    input {
+      width: 50px;
+      text-align: center;
+    }
+  }
+
+  .submit {
+    width: 100%;
+  }
+}
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--error-message-font-color);
+}

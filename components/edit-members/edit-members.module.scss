@@ -1,0 +1,40 @@
+.contact_container {
+  width: 25rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  background-color: var(--contact-container-bg-color);
+
+  & > div {
+    max-height: 50vh;
+    margin-block: 1rem;
+    overflow: scroll;
+  }
+
+  & > form {
+    display: flex;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--contact-container-header-font-color);
+
+  & > span {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+.submit {
+  padding: 0.5rem 1rem;
+  margin-inline-start: auto;
+}
+
+.error_message {
+  --error-message-font-color: #ff0000;
+
+  font-size: 14px;
+  color: var(--error-message-font-color);
+}

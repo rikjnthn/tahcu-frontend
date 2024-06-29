@@ -1,0 +1,48 @@
+@use "../../style/breakpoint.scss";
+
+.chat_contact {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  & > a {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    color: var(--chat-contact-font-color);
+    text-decoration: none;
+    padding: 1rem 2rem;
+  }
+
+  &:hover {
+    background-color: var(--contact-bg-color-hover);
+  }
+}
+
+.name_message {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 10rem);
+}
+
+.contact_name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.message_snippet {
+  font-size: 14px;
+  height: 2ch;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--message-snippet-font-color);
+}
+
+.open_link {
+  background-color: var(--openk-link-color);
+}

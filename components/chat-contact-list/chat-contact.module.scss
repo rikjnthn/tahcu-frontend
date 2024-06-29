@@ -1,0 +1,7 @@
+.chat_contact_list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 3.75rem);
+  height: calc(100dvh - 3.75rem);
+  overflow: scroll;
+}
