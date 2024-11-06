@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import style from "./landing-page-hero.module.scss";
+import HeroImage from "@/public/using-app.jpg";
 
 const LandingPageHero = () => {
   return (
@@ -12,13 +13,7 @@ const LandingPageHero = () => {
         <p>Easily chat with your friends or someone you know!</p>
         <Link href="/sign-up">Start now</Link>
       </div>
-      <Image
-        src="/using-app.jpg"
-        alt="Person using an application"
-        priority
-        width={1920}
-        height={1080}
-      />
+      <Image src={HeroImage} alt="Person using an application" priority />
     </section>
   );
 };
