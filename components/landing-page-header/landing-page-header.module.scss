@@ -31,4 +31,23 @@
   @include breakpoint.desktop {
     padding: 2rem 6rem;
   }
+
+  & > div {
+    & > a {
+      --font-color: #000;
+      --bg-color: #08a045;
+
+      text-decoration: none;
+      padding: 0.75rem 1rem;
+      color: var(--font-color);
+      border-radius: 6px;
+
+      &:hover {
+        --hover-font-color: #fff;
+
+        color: var(--hover-font-color);
+        background-color: var(--bg-color);
+      }
+    }
+  }
 }
