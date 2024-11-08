@@ -1,5 +1,7 @@
 .input_no_transition {
-  height: 5rem;
+  position: relative;
+  height: 6rem;
+  width: 100%;
 
   & > div {
     display: flex;
@@ -11,8 +13,9 @@
 
     & > input {
       font-size: inherit;
-      margin-top: 1rem;
-      padding: 0.5rem;
+      margin-top: 0.5rem;
+      padding: 1rem 0.75rem;
+      width: 100%;
       border-radius: 5px;
       border: 1px solid;
       color: var(--input-font-color);
@@ -28,6 +31,8 @@
 }
 
 .input_with_transition {
+  position: relative;
+
   & > div {
     display: flex;
     flex-direction: column-reverse;
@@ -49,7 +54,7 @@
       font-family: inherit;
       font-size: 16px;
       font-weight: 300;
-      padding: 0.5rem;
+      padding: 1rem 0.75rem;
       border: 1px solid var(--ring-gray);
       outline: 1px solid transparent;
       border-radius: 5px;
@@ -93,6 +98,8 @@
   font-size: 12px;
   color: var(--error-font-color);
   width: 100%;
+  position: absolute;
+  bottom: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
+import clsx from "clsx";
 
 import style from "@/style/auth.module.scss";
 import SubmitButton from "@/components/submit-button";
@@ -13,9 +14,9 @@ import SignUpOTP from "@/components/signup-otp";
 import { ErrorResponseType, SignUpData } from "@/interface";
 
 export default function Page() {
-  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(false);
+  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(!false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [authErrorMessage, setAuthErrorMessage] = useState<string>("");
+  const [signUpError, setSignupError] = useState<string>("");
 
   const {
     register,
@@ -32,7 +33,7 @@ export default function Page() {
     };
 
     try {
-      setAuthErrorMessage("");
+      setSignupError("");
 
       await axios.post("/api/send-otp", sendOTPDto);
 
@@ -40,163 +41,177 @@ export default function Page() {
     } catch (error) {
       if (!isAxiosError<ErrorResponseType>(error)) return;
 
-      if (error.response?.status === 429) {
-        setAuthErrorMessage(
+      const errorResponse = error.response?.data.error;
+
+      if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+        setSignupError(
           "You have sent too many requests. Please try again later."
         );
-
         return;
       }
 
-      if (error.response?.data.error.code === "DUPLICATE_VALUE") {
-        const errorMessage = error.response?.data.error.message;
-
-        setError("email", { message: errorMessage.email });
-        setError("user_id", { message: errorMessage.user_id });
-
+      if (errorResponse?.code === "DUPLICATE_VALUE") {
+        setError("email", { message: errorResponse?.message.email });
+        setError("user_id", { message: errorResponse?.message.user_id });
         return;
       }
 
-      setAuthErrorMessage("Failed to sign up");
+      setSignupError("Failed to sign up");
     }
   };
 
   return (
-    <div className={`${style.auth} h-full-dvh`}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={`absolute transition-transform ${
-          isOpenOTP ? "-translateX-100-vw" : ""
-        }`}
-      >
-        <header>
-          <span>Sign Up</span>
-        </header>
-
-        <Input
-          noTransition
-          labelName="User Id"
-          errorMessage={errors.user_id?.message?.toString()}
-          type="text"
-          placeholder="User Id"
-          {...register("user_id", {
-            required: {
-              value: true,
-              message: "Please enter your user id",
-            },
-            minLength: {
-              value: 4,
-              message: "User id should contain a minimum of 4 letters",
-            },
-            maxLength: {
-              value: 20,
-              message: "User id should contain a maximum of 20 letters",
-            },
-          })}
-        />
-
-        <Input
-          noTransition
-          labelName="Username"
-          errorMessage={errors.username?.message?.toString()}
-          type="text"
-          placeholder="Username"
-          {...register("username", {
-            required: {
-              value: true,
-              message: "Please enter your username",
-            },
-            minLength: {
-              value: 4,
-              message: "Username should contain a minimum of 4 letters",
-            },
-            maxLength: {
-              value: 20,
-              message: "Username should contain a maximum of 20 letters",
-            },
-          })}
-        />
-
-        <Input
-          noTransition
-          labelName="Email"
-          errorMessage={errors.email?.message?.toString()}
-          type="email"
-          placeholder="Email"
-          {...register("email", {
-            required: {
-              value: true,
-              message: "Please enter your email",
-            },
-            validate: {
-              isEmail: (v: string) => {
-                if (isEmail(v)) return true;
-                return "Email is not valid";
-              },
-            },
-          })}
-        />
-
-        <Input
-          noTransition
-          labelName="Password"
-          errorMessage={errors.password?.message?.toString()}
-          type="password"
-          placeholder="Password"
-          {...register("password", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-            minLength: {
-              value: 8,
-              message: "Password should contain a minimum of 8 letters",
-            },
-            maxLength: {
-              value: 64,
-              message: "Password should contain a maximum of 64 letters",
-            },
-          })}
-        />
-
-        <Input
-          noTransition
-          labelName="Confirm password"
-          errorMessage={errors.confirm_password?.message?.toString()}
-          type="password"
-          placeholder="Confirm Password"
-          {...register("confirm_password", {
-            required: {
-              value: true,
-              message: "Please enter the confirm password",
-            },
-            validate: {
-              isSameWithPassword: (confirm_password: string) => {
-                const password = getValues("password");
-                if (password === confirm_password) return true;
-                return "Password and confirm password does not match";
-              },
-            },
-          })}
-        />
-
-        {authErrorMessage.length > 0 && (
-          <em className={style.auth_error}>{authErrorMessage}</em>
-        )}
-
-        <footer>
-          <Link href="/login">Login</Link>
-          <SubmitButton name="Create" isLoading={isLoading} />
-        </footer>
-      </form>
-
+    <div className={clsx(style.auth)}>
       <div
-        className={`${style.sign_up_otp} ${
-          isOpenOTP ? "center" : "translateX-100-vw"
-        }`}
+        className={clsx(style.form_container, !isOpenOTP ? "center" : "hidden")}
       >
+        <div className={clsx(style.title)}>Sign Up</div>
+
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={clsx("transition-transform", {
+            "-translateX-100-vw": isOpenOTP,
+          })}
+        >
+          <Input
+            noTransition
+            labelName="User Id"
+            error={errors.user_id?.message?.toString()}
+            type="text"
+            placeholder="User Id"
+            {...register("user_id", {
+              required: {
+                value: true,
+                message: "Please enter your user id",
+              },
+              minLength: {
+                value: 4,
+                message: "User id should contain a minimum of 4 letters",
+              },
+              maxLength: {
+                value: 20,
+                message: "User id should contain a maximum of 20 letters",
+              },
+              validate: {
+                isNotContainSpace: (v) => {
+                  if (/\s+/.test(v)) return "Space character is not allowed";
+                },
+              },
+            })}
+          />
+
+          <Input
+            noTransition
+            labelName="Username"
+            error={errors.username?.message?.toString()}
+            type="text"
+            placeholder="Username"
+            {...register("username", {
+              required: {
+                value: true,
+                message: "Please enter your username",
+              },
+              minLength: {
+                value: 4,
+                message: "Username should contain a minimum of 4 letters",
+              },
+              maxLength: {
+                value: 20,
+                message: "Username should contain a maximum of 20 letters",
+              },
+              validate: {
+                isNotContainSpace: (v) => {
+                  if (/\s+/.test(v)) return "Space character is not allowed";
+                },
+              },
+            })}
+          />
+
+          <Input
+            noTransition
+            labelName="Email"
+            error={errors.email?.message?.toString()}
+            type="email"
+            inputMode="email"
+            placeholder="Email"
+            {...register("email", {
+              required: {
+                value: true,
+                message: "Please enter your email",
+              },
+              validate: {
+                isEmail: (v: string) => {
+                  if (isEmail(v)) return true;
+                  return "Email is not valid";
+                },
+              },
+            })}
+          />
+
+          <Input
+            noTransition
+            labelName="Password"
+            error={errors.password?.message?.toString()}
+            type="password"
+            placeholder="Password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Please enter your password",
+              },
+              minLength: {
+                value: 8,
+                message: "Password should contain a minimum of 8 letters",
+              },
+              maxLength: {
+                value: 64,
+                message: "Password should contain a maximum of 64 letters",
+              },
+              validate: {
+                isNotContainSpace: (v) => {
+                  if (/\s+/.test(v)) return "Space character is not allowed";
+                },
+              },
+            })}
+          />
+
+          <Input
+            noTransition
+            labelName="Confirm password"
+            error={errors.confirm_password?.message?.toString()}
+            type="password"
+            placeholder="Confirm Password"
+            {...register("confirm_password", {
+              required: {
+                value: true,
+                message: "Please enter the confirm password",
+              },
+              validate: {
+                isSameWithPassword: (confirm_password: string) => {
+                  const password = getValues("password");
+                  if (password === confirm_password) return true;
+                  return "Password and confirm password does not match";
+                },
+              },
+            })}
+          />
+
+          {signUpError.length > 0 && (
+            <div className={style.auth_error}>{signUpError}</div>
+          )}
+
+          <div className={clsx(style.button_and_nav)}>
+            <div>
+              <Link href="/login">Login</Link>
+            </div>
+            <SubmitButton name="Create" isLoading={isLoading} />
+          </div>
+        </form>
+      </div>
+
+      <div className={clsx(style.sign_up_otp, isOpenOTP ? "center" : "hidden")}>
         <SignUpOTP
-          setAuthErrorMessage={setAuthErrorMessage}
+          setSignupError={setSignupError}
           setError={setError}
           setIsLoading={setIsLoading}
           signUpData={getValues()}

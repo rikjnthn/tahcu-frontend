@@ -6,9 +6,9 @@
   box-sizing: border-box;
 }
 
-main {
-  min-height: 100vh;
-  min-height: 100dvh;
+html,
+body {
+  height: 100%;
 }
 
 .dark {
@@ -226,10 +226,18 @@ main {
   margin-top: auto;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .photo_profile_xl {

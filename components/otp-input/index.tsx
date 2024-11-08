@@ -10,7 +10,7 @@ const OTPInput = ({
   isLoading,
   autoFocus = false,
   isInvalid = false,
-  errorMessage,
+  error,
 }: OTPInputPropsType) => {
   const [otpValue, setOtpValue] = useState<string[]>(Array(length).fill(""));
 
@@ -85,9 +85,9 @@ const OTPInput = ({
 
     const otpAsNumber = otpValue.join("");
 
-    if (otpAsNumber.length === 0) return;
-
-    handleSubmit(otpAsNumber);
+    if (otpAsNumber.length === 4) {
+      handleSubmit(otpAsNumber);
+    }
   };
 
   return (
@@ -112,7 +112,7 @@ const OTPInput = ({
         })}
       </div>
 
-      <span className={style.error_message}>{errorMessage}</span>
+      <span className={style.error_message}>{error}</span>
 
       <SubmitButton
         className={style.submit}
@@ -132,5 +132,5 @@ interface OTPInputPropsType {
   isLoading: boolean;
   autoFocus?: boolean;
   isInvalid?: boolean;
-  errorMessage?: string;
+  error?: string;
 }

@@ -5,16 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios, { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import clsx from "clsx";
 
 import style from "@/style/auth.module.scss";
 import Input from "@/components/input";
 import SubmitButton from "@/components/submit-button";
 import { ErrorResponseType } from "@/interface";
 
-const sixtyDaysInMs = "5184000000";
-
 export default function Page() {
-  const [authErrorMessage, setAuthErrorMessage] = useState<string>("");
+  const [loginError, setLoginError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -29,33 +28,22 @@ export default function Page() {
   const login = async (data: LoginDataType) => {
     try {
       setIsLoading(true);
-      setAuthErrorMessage("");
+      setLoginError("");
 
       await axios.post("/api/login", data);
-
-      localStorage.setItem(
-        "token_exp",
-        JSON.stringify(
-          new Date(
-            Date.now() +
-              parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? sixtyDaysInMs)
-          )
-        )
-      );
 
       router.push("/a");
     } catch (error) {
       if (!isAxiosError<ErrorResponseType>(error)) return;
 
-      if (error.response?.status === 429) {
-        setAuthErrorMessage(
+      const errorResponse = error.response?.data.error;
+
+      if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+        setLoginError(
           "You have sent too many requests. Please try again later."
         );
-
         return;
       }
-
-      const errorResponse = error.response?.data.error;
 
       if (errorResponse?.code === "VALIDATION_ERROR") {
         setError("user_idOrEmail", {
@@ -66,72 +54,86 @@ export default function Page() {
       }
 
       if (errorResponse?.code === "INVALID") {
-        setAuthErrorMessage(errorResponse?.message);
+        setLoginError(errorResponse?.message);
         return;
       }
 
-      setAuthErrorMessage("Failed to login");
+      setLoginError("Failed to login");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className={`${style.auth} h-full-dvh`}>
-      <form onSubmit={handleSubmit(login)}>
-        <header>
-          <span>Login</span>
-        </header>
+    <div className={clsx(style.auth)}>
+      <div className={style.form_container}>
+        <div className={clsx(style.title)}>Login</div>
 
-        <Input
-          noTransition
-          labelName="Email / User Id"
-          errorMessage={errors.user_idOrEmail?.message?.toString()}
-          type="text"
-          placeholder="Email or User Id"
-          {...register("user_idOrEmail", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-            minLength: {
-              value: 4,
-              message: "User id should contain a minimum of 4 letters",
-            },
-          })}
-        />
+        <form onSubmit={handleSubmit(login)}>
+          <Input
+            noTransition
+            labelName="Email / User Id"
+            error={errors.user_idOrEmail?.message?.toString()}
+            type="text"
+            inputMode="email"
+            placeholder="Email or User Id"
+            {...register("user_idOrEmail", {
+              required: {
+                value: true,
+                message: "Please enter your password",
+              },
+              minLength: {
+                value: 4,
+                message: "User id should contain a minimum of 4 letters",
+              },
+              validate: {
+                isNotContainSpace: (v) => {
+                  if (/\s+/.test(v)) return "Space character is not allowed";
+                },
+              },
+            })}
+          />
 
-        <Input
-          noTransition
-          labelName="Password"
-          errorMessage={errors.password?.message?.toString()}
-          type="password"
-          placeholder="Password"
-          {...register("password", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-            minLength: {
-              value: 8,
-              message: "Password should contain a minimum of 8 letters",
-            },
-            maxLength: {
-              value: 64,
-              message: "Password should contain a maximum of 64 letters",
-            },
-          })}
-        />
+          <Input
+            noTransition
+            labelName="Password"
+            error={errors.password?.message?.toString()}
+            type="password"
+            placeholder="Password"
+            {...register("password", {
+              required: {
+                value: true,
+                message: "Please enter your password",
+              },
+              minLength: {
+                value: 8,
+                message: "Password should contain a minimum of 8 letters",
+              },
+              maxLength: {
+                value: 64,
+                message: "Password should contain a maximum of 64 letters",
+              },
+              validate: {
+                isNotContainSpace: (v) => {
+                  if (/\s+/.test(v)) return "Space character is not allowed";
+                },
+              },
+            })}
+          />
 
-        {authErrorMessage.length > 0 && (
-          <em className={style.auth_error}>{authErrorMessage}</em>
-        )}
+          {loginError.length > 0 && (
+            <div className={style.auth_error}>{loginError}</div>
+          )}
 
-        <footer>
-          <Link href="/sign-up">Create account</Link>
-          <SubmitButton name="Login" isLoading={isLoading} />
-        </footer>
-      </form>
+          <div className={clsx(style.button_and_nav)}>
+            <div>
+              <Link href="/sign-up">Create account</Link>
+              <Link href="/forget-password">Forget password</Link>
+            </div>
+            <SubmitButton name="Login" isLoading={isLoading} />
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
