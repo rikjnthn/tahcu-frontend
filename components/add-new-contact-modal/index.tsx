@@ -112,7 +112,7 @@ const AddNewContactModal = ({
 
         <Input
           labelName="User Id"
-          errorMessage={errors.user_id?.message?.toString()}
+          error={errors.user_id?.message?.toString()}
           placeholder="User id"
           {...register("user_id", {
             required: {

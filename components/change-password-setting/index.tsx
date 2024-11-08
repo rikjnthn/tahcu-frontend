@@ -92,7 +92,7 @@ const ChangePasswordSetting = () => {
       >
         <Input
           labelName="Current Password"
-          errorMessage={errors.current_password?.message?.toString()}
+          error={errors.current_password?.message?.toString()}
           type="password"
           placeholder="Password"
           {...register("current_password", {
@@ -113,7 +113,7 @@ const ChangePasswordSetting = () => {
 
         <Input
           labelName="New Password"
-          errorMessage={errors.new_password?.message?.toString()}
+          error={errors.new_password?.message?.toString()}
           type="password"
           placeholder="New Password"
           {...register("new_password", {

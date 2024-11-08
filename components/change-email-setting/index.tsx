@@ -77,7 +77,7 @@ const ChangeEmailSetting = () => {
       >
         <Input
           labelName="Email"
-          errorMessage=""
+          error=""
           type="email"
           placeholder="Email"
           aria-invalid={isError}

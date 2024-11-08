@@ -97,7 +97,7 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           labelName="Group Name"
-          errorMessage={errors.group_name?.message?.toString()}
+          error={errors.group_name?.message?.toString()}
           placeholder="Group"
           {...register("group_name", {
             required: {
