@@ -78,7 +78,7 @@ const EditProfileModalBody = ({
     <form onSubmit={handleSubmit(onSubmit)} className={style.body}>
       <Input
         labelName="Username"
-        errorMessage={errors.username?.message?.toString()}
+        error={errors.username?.message?.toString()}
         {...register("username", {
           required: {
             value: true,
@@ -93,7 +93,7 @@ const EditProfileModalBody = ({
       />
       <Input
         labelName="User Id"
-        errorMessage={errors.user_id?.message?.toString()}
+        error={errors.user_id?.message?.toString()}
         {...register("user_id", {
           required: {
             value: true,

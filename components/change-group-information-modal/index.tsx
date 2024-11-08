@@ -80,7 +80,7 @@ const ChangeGroupInformationModal = ({
 
         <Input
           labelName="Name"
-          errorMessage={errors.name?.message?.toString()}
+          error={errors.name?.message?.toString()}
           {...register("name", {
             required: {
               value: true,
