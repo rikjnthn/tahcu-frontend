@@ -75,7 +75,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <SocketProvider>
         <DarkModeProvider value={{ isDark, setIsDark }}>
           <URLHashProvider>
-            <main className={`main-page ${isDark ? "dark" : "light"}`}>
+            <main className={`main-page h-full ${isDark ? "dark" : "light"}`}>
               <div className="home-page-container">
                 <HomePageProvider>
                   <HomePage />

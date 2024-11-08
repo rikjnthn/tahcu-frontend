@@ -14,7 +14,9 @@ async function Layout({ children }: { children: React.ReactNode }) {
 
   if (!isValid) redirect("/");
   return (
-    <div className={`${poppins.className} user-select-none overflow-hidden`}>
+    <div
+      className={`${poppins.className} user-select-none overflow-hidden h-full`}
+    >
       {children}
     </div>
   );
