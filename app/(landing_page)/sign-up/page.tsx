@@ -14,7 +14,7 @@ import SignUpOTP from "@/components/signup-otp";
 import { ErrorResponseType, SignUpData } from "@/interface";
 
 export default function Page() {
-  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(!false);
+  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [signUpError, setSignupError] = useState<string>("");
 

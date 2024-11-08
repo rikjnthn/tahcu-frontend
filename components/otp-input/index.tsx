@@ -33,7 +33,7 @@ const OTPInput = ({
     if (pasteValue.every((val) => !Number.isNaN(Number(val)))) {
       const newOtp = [...otpValue];
 
-      for (let i = 0; i < pasteValue.length; i++) {
+      for (let i = 0; i < length; i++) {
         if (idx < otpValue.length) newOtp[i] = pasteValue[i];
       }
 
@@ -83,10 +83,10 @@ const OTPInput = ({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const otpAsNumber = otpValue.join("");
+    const otp = otpValue.join("");
 
-    if (otpAsNumber.length === 4) {
-      handleSubmit(otpAsNumber);
+    if (otp.length === 4) {
+      handleSubmit(otp);
     }
   };
 
