@@ -107,7 +107,8 @@ type ErrorCode =
   | "NOT_FOUND"
   | "DUPLICATE_VALUE"
   | "VALIDATION_ERROR"
-  | "OTP_EXPIRED";
+  | "OTP_EXPIRED"
+  | "TOO_MANY_REQUESTS";
 
 export interface ErrorResponseType {
   error: {

@@ -4,8 +4,6 @@ import { montserrat } from "@/font";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${montserrat.className} light overflow-hidden`}>
-      {children}
-    </div>
+    <div className={`${montserrat.className} light h-full`}>{children}</div>
   );
 }
