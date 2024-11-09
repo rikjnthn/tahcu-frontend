@@ -11,13 +11,13 @@ const FloatOption = ({ setIsOpen }: { setIsOpen: SetStateType<boolean> }) => {
   const dispact = useHomePageDispatch();
 
   const openCreatePrivateChat = () => {
-    dispact({ type: "SET_OPEN_CREATE_PRIVATE_CHAT" });
+    dispact({ type: "OPEN_CREATE_PRIVATE_CHAT" });
 
     setIsOpen(false);
   };
 
   const openCreateGroup = () => {
-    dispact({ type: "SET_OPEN_CREATE_GROUP" });
+    dispact({ type: "OPEN_CREATE_GROUP" });
 
     setIsOpen(false);
   };

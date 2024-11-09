@@ -14,7 +14,7 @@ const CreateGroupHeader = () => {
 
   const openChatContact = () => {
     setAddedMembers([]);
-    dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
+    dispatch({ type: "OPEN_CHAT_CONTACT" });
   };
   return (
     <header className={style.header}>

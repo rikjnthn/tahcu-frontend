@@ -16,7 +16,7 @@ const UserProfileHeader = ({
   const dispatch = useHomePageDispatch();
 
   const closeUserProfile = () => {
-    dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
+    dispatch({ type: "OPEN_CHAT_CONTACT" });
   };
 
   return (

@@ -88,7 +88,7 @@ const AddNewContactModal = ({
         messageIo.emit("join-room", { ids: [data?.data.id] });
 
         setIsOpenModal(false);
-        dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
+        dispatch({ type: "OPEN_CHAT_CONTACT" });
       },
     });
   };

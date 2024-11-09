@@ -1,6 +1,7 @@
 "use client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 import NavOption from "../nav-option";
 import PhotoProfile from "../photo-profile";
@@ -10,7 +11,6 @@ import { useHomePageDispatch } from "@/context/home-page-context";
 import { SetStateType, UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
 import cookieParser from "@/util/cookie-parser";
-import clsx from "clsx";
 
 const Navigation = ({
   isOpenNav,
@@ -28,12 +28,12 @@ const Navigation = ({
 
   const openUserProfile = () => {
     setIsOpenNav(false);
-    dispatch({ type: "SET_OPEN_PROFILE" });
+    dispatch({ type: "OPEN_PROFILE" });
   };
 
   const openSetting = () => {
     setIsOpenNav(false);
-    dispatch({ type: "SET_OPEN_SETTING" });
+    dispatch({ type: "OPEN_SETTING" });
   };
 
   const logout = () => {
