@@ -1,15 +1,11 @@
 "use client";
-import axios from "axios";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import ChatContact from "../chat-contact";
 import style from "./chat-contact.module.scss";
 import { ContactType, GroupType, UserDataType } from "@/interface";
-
-const getUserData = async () => {
-  const { data } = await axios.get<UserDataType>("/api/users");
-  return data;
-};
+import getUserData from "@/util/get-user-data";
 
 const ChatContactList = () => {
   const { data: userData } = useQuery<UserDataType>({
