@@ -14,10 +14,10 @@ const LandingPageBody = () => {
         <div className={style.chat_preview}>
           <div className={style.user_1}>
             <div>Hello there!</div>
-            <Image src={User1} alt="User one" width={640} height={960} />
+            <Image src={User1} alt="User one" width={50} height={50} />
           </div>
           <div className={style.user_2}>
-            <Image src={User2} alt="User two" width={640} height={427} />
+            <Image src={User2} alt="User two" width={50} height={50} />
             <div>Hi</div>
           </div>
         </div>
