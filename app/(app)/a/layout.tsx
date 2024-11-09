@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 
 import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
+import { SocketProvider } from "@/context/socket-connection-context";
 import HomePage from "@/components/home-page";
 import { URLHashProvider } from "@/context/url-hash-context";
 import cookieParser from "@/util/cookie-parser";
@@ -17,14 +18,6 @@ const ReactQueryDevtools = dynamic(
       default: d.ReactQueryDevtools,
     }));
   },
-  { ssr: false }
-);
-
-const SocketProvider = dynamic(
-  () =>
-    import("@/context/socket-connection-context").then((d) => ({
-      default: d.SocketProvider,
-    })),
   { ssr: false }
 );
 
