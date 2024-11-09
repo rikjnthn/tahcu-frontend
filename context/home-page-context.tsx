@@ -90,11 +90,11 @@ export const HomePageProvider = ({
   const [homePageState, dispatch] = useReducer(reducer, initialHomePageState);
 
   return (
-    <HomePageContext.Provider value={homePageState}>
-      <HomePageDispatchContext.Provider value={dispatch}>
+    <HomePageDispatchContext.Provider value={dispatch}>
+      <HomePageContext.Provider value={homePageState}>
         {children}
-      </HomePageDispatchContext.Provider>
-    </HomePageContext.Provider>
+      </HomePageContext.Provider>
+    </HomePageDispatchContext.Provider>
   );
 };
 

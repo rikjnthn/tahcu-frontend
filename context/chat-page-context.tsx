@@ -38,11 +38,11 @@ export const ChatPageProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <ChatPageContext.Provider value={stateContext}>
-      <ChatPageDispatchContext.Provider value={dispatchContext}>
+    <ChatPageDispatchContext.Provider value={dispatchContext}>
+      <ChatPageContext.Provider value={stateContext}>
         {children}
-      </ChatPageDispatchContext.Provider>
-    </ChatPageContext.Provider>
+      </ChatPageContext.Provider>
+    </ChatPageDispatchContext.Provider>
   );
 };
 
