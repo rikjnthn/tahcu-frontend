@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 import style from "./back-button.module.scss";
 import { ButtonType } from "@/interface";
@@ -7,7 +8,7 @@ const BackButton = ({ onClick, fill, title }: ButtonType) => {
   return (
     <button
       onClick={onClick}
-      className={`icon ${style.back_button}`}
+      className={clsx("icon", style.back_button)}
       type="button"
       title={title}
     >

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import clsx from "clsx";
 
 import ChatHomePage from "@/components/chat-home-page";
 import CreateGroupPage from "@/components/create-group-page";
@@ -14,16 +14,8 @@ import SettingPage from "../setting-page";
 import { CreateGroupProvider } from "@/context/create-group-context";
 import { ContactType, GroupType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
-
-const getContactList = async (): Promise<Array<any>> => {
-  const { data } = await axios.get<ContactType[]>("/api/chat-contact");
-  return data;
-};
-
-const getGroupList = async () => {
-  const { data } = await axios.get<GroupType[]>("/api/group");
-  return data;
-};
+import getContacts from "@/util/get-contacts";
+import getGroups from "@/util/get-groups";
 
 const HomePage = () => {
   const {
@@ -37,14 +29,14 @@ const HomePage = () => {
   const messageIo = useSocket();
 
   const { data: contacts } = useQuery<ContactType[]>({
-    queryKey: ["contactList"],
-    queryFn: getContactList,
+    queryKey: ["contacts"],
+    queryFn: getContacts,
     refetchOnWindowFocus: false,
   });
 
   const { data: groups } = useQuery<GroupType[]>({
-    queryKey: ["groupList"],
-    queryFn: getGroupList,
+    queryKey: ["groups"],
+    queryFn: getGroups,
     refetchOnWindowFocus: false,
   });
 
@@ -58,30 +50,30 @@ const HomePage = () => {
   return (
     <div className={style.home}>
       <div
-        className={`${isOpenChatContact ? "translateX-0" : "-translateX-10"}`}
+        className={clsx(isOpenChatContact ? "translateX-0" : "-translateX-10")}
       >
         <ChatHomePage />
       </div>
       <div
-        className={`${isOpenCreateGroup ? "translateX-0" : "translateX-100"}`}
+        className={clsx(isOpenCreateGroup ? "translateX-0" : "translateX-100")}
       >
         <CreateGroupProvider>
           <CreateGroupPage />
         </CreateGroupProvider>
       </div>
       <div
-        className={`${
+        className={clsx(
           isOpenCreatePrivateChat ? "translateX-0" : "translateX-100"
-        }`}
+        )}
       >
         <CreatePrivateChat />
       </div>
       <div
-        className={`${isOpenUserProfile ? "translateX-0" : "translateX-100"}`}
+        className={clsx(isOpenUserProfile ? "translateX-0" : "translateX-100")}
       >
         <UserPage />
       </div>
-      <div className={`${isOpenSetting ? "translateX-0" : "translateX-100"}`}>
+      <div className={clsx(isOpenSetting ? "translateX-0" : "translateX-100")}>
         <SettingPage />
       </div>
     </div>

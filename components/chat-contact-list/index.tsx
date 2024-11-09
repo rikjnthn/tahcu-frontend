@@ -20,8 +20,8 @@ const ChatContactList = () => {
 
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const groups = queryClient.getQueryData<GroupType[]>(["groupList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
+  const groups = queryClient.getQueryData<GroupType[]>(["groups"]);
 
   return (
     <ul className={style.chat_contact_list}>

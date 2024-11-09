@@ -77,9 +77,7 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
         setCreateGroupErrorMessage("Failed to create group");
       },
       async onSuccess() {
-        await queryClient.prefetchQuery({
-          queryKey: ["groupList"],
-        });
+        await queryClient.prefetchQuery({ queryKey: ["groups"] });
 
         setIsCreateGroup(false);
         setAddedMembers([]);

@@ -10,6 +10,7 @@ import { useHomePageDispatch } from "@/context/home-page-context";
 import { SetStateType, UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
 import cookieParser from "@/util/cookie-parser";
+import clsx from "clsx";
 
 const Navigation = ({
   isOpenNav,
@@ -50,11 +51,7 @@ const Navigation = ({
   };
 
   return (
-    <nav
-      className={`${style.navigation} ${
-        !isOpenNav ? `${style.close_nav}` : ""
-      }`}
-    >
+    <nav className={clsx(style.navigation, !isOpenNav && style.close_nav)}>
       <div className={style.user_data} onClick={openUserProfile}>
         <PhotoProfile name={data?.username} size="md" />
         <div>

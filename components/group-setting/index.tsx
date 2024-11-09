@@ -27,7 +27,7 @@ const GroupSetting = ({
         new_admin,
       }),
     async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["groupList"] });
+      await queryClient.refetchQueries({ queryKey: ["groups"] });
 
       setHash("");
       router.push("/a");
@@ -42,7 +42,7 @@ const GroupSetting = ({
     mutationKey: ["deleteGroup"],
     mutationFn: async (chatId) => await axios.delete(`/api/group/${chatId}`),
     async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["groupList"] });
+      await queryClient.refetchQueries({ queryKey: ["groups"] });
 
       setHash("");
       router.push("/a");
@@ -53,7 +53,7 @@ const GroupSetting = ({
   const queryClient = useQueryClient();
 
   const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
-    "groupList",
+    "groups",
   ]);
 
   const group = groups?.find((group) => group.id === chatId);

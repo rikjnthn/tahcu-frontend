@@ -24,7 +24,7 @@ const PrivateChatSetting = ({
     mutationFn: async (contactId) =>
       axios.delete(`/api/chat-contact/${contactId}`),
     async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["contactList"] });
+      await queryClient.refetchQueries({ queryKey: ["contacts"] });
 
       setHash("");
       router.push("/a");

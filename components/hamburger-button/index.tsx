@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 import style from "./hamburger-button.module.scss";
 import { ButtonType } from "@/interface";
 
@@ -5,7 +7,7 @@ const HamburgerButton = ({ fill, onClick, title }: ButtonType) => {
   return (
     <button
       onClick={onClick}
-      className={`icon ${style.hamburger_button}`}
+      className={clsx("icon", style.hamburger_button)}
       type="button"
       title={title}
     >

@@ -34,7 +34,7 @@ const EditMembers = ({
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
 
   const { mutate: addMembers, isPending } = useMutation<
     AxiosResponse,

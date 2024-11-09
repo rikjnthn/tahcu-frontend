@@ -45,7 +45,7 @@ const AddNewContactModal = ({
     retry: false,
   });
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
     const contactFound = contacts?.find((val) => {
@@ -83,7 +83,7 @@ const AddNewContactModal = ({
       },
 
       async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["contactList"] });
+        await queryClient.refetchQueries({ queryKey: ["contacts"] });
 
         messageIo.emit("join-room", { ids: [data?.data.id] });
 

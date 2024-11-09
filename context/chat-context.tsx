@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useRef, useState } from "react";
 
 import { SetStateType } from "@/interface";

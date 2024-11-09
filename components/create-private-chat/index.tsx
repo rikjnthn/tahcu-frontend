@@ -9,7 +9,7 @@ import ChatContact from "../chat-contact";
 const ContactList = () => {
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   return (

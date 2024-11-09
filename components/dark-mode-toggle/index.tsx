@@ -1,5 +1,7 @@
 "use client";
 
+import clsx from "clsx";
+
 import style from "./dark-mode-toggle.module.scss";
 import { useDarkMode } from "@/context/dark-mode-context";
 
@@ -29,9 +31,10 @@ const DarkModeToggle = () => {
 
       <div
         onClick={() => setIsDark((prev) => !prev)}
-        className={`${style.toggle} ${
+        className={clsx(
+          style.toggle,
           isDark ? style.toggle_true : style.toggle_false
-        }`}
+        )}
       />
     </div>
   );

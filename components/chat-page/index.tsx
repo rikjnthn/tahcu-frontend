@@ -15,6 +15,7 @@ import {
   UserDataType,
 } from "@/interface";
 import { useURLHash } from "@/context/url-hash-context";
+import clsx from "clsx";
 
 const handlePrivateChat = ({
   setName,
@@ -61,9 +62,9 @@ const ChatPage = () => {
 
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
   const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
-    "groupList",
+    "groups",
   ]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
@@ -82,14 +83,17 @@ const ChatPage = () => {
     >
       <div className={style.chat_page}>
         <div
-          className={`z-1 ${isOpenHeader ? "translateX-0" : "translateX-100"}`}
+          className={clsx(
+            "z-1",
+            isOpenHeader ? "translateX-0" : "translateX-100"
+          )}
         >
           <ChatProfile />
         </div>
         <div
-          className={`${
+          className={clsx(
             isRouteChangeComplete ? "translateX-0" : "translateX-100"
-          }`}
+          )}
         >
           <ChatProvider>
             <Chat />

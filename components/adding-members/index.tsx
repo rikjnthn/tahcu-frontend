@@ -15,7 +15,7 @@ import {
 const AddingMembers = () => {
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const { addedMembers } = useCreateGroup();

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -25,8 +27,8 @@ export const URLHashProvider = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const groups = queryClient.getQueryData<GroupType[]>(["groupList"]);
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const groups = queryClient.getQueryData<GroupType[]>(["groups"]);
+  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
 
   useEffect(() => {
     setHash(window.location.hash.substring(1));

@@ -23,7 +23,7 @@ const UserSetting = () => {
 
   const queryClient = useQueryClient();
 
-  const groups = queryClient.getQueryData<GroupType[]>(["groupList"]);
+  const groups = queryClient.getQueryData<GroupType[]>(["groups"]);
 
   const handleDeleteAccount = () => {
     if (groups && groups.length > 0) {

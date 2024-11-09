@@ -103,7 +103,7 @@ const OTPModal = ({
             length={4}
             handleSubmit={onSubmit}
             isLoading={isPending}
-            errorMessage={otpErrorMessage}
+            error={otpErrorMessage}
             isInvalid={otpErrorMessage.length > 0}
             autoFocus
           />

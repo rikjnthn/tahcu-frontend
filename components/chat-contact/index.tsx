@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import PhotoProfile from "../photo-profile";
 import style from "./chat-contact.module.scss";
 import { useURLHash } from "@/context/url-hash-context";
+import clsx from "clsx";
 
 const ChatContact = ({
   to,
@@ -24,7 +25,7 @@ const ChatContact = ({
 
   return (
     <li
-      className={`${style.chat_contact} ${isOpen ? style.open_link : ""}`}
+      className={clsx(style.chat_contact, isOpen && style.open_link)}
       title={name}
     >
       <Link

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import clsx from "clsx";
 
 import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
@@ -72,7 +73,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <SocketProvider>
         <DarkModeProvider value={{ isDark, setIsDark }}>
           <URLHashProvider>
-            <main className={`main-page h-full ${isDark ? "dark" : "light"}`}>
+            <main
+              className={clsx("main-page h-full", isDark ? "dark" : "light")}
+            >
               <div className="home-page-container">
                 <HomePageProvider>
                   <HomePage />

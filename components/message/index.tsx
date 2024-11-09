@@ -10,6 +10,7 @@ import {
   SetStateType,
 } from "@/interface";
 import { useChatPage } from "@/context/chat-page-context";
+import clsx from "clsx";
 
 const Message = ({
   id,
@@ -50,9 +51,10 @@ const Message = ({
   return (
     <li
       onContextMenu={handleMessageContext}
-      className={`${style.message_container} ${
-        isSender ? "margin-left-auto flex-row-reversed" : ""
-      }`}
+      className={clsx(
+        style.message_container,
+        isSender && "margin-left-auto flex-row-reversed"
+      )}
       title={`${name}, ${time}`}
     >
       <div className={style.message}>
@@ -68,7 +70,7 @@ const Message = ({
       {openMessageMenu && (
         <div
           onClick={() => setOpenMessageMenu(false)}
-          className={`${style.message_context_container}`}
+          className={style.message_context_container}
         >
           <MessageContextMenu
             id={id}

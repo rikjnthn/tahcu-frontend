@@ -2,6 +2,7 @@ import React from "react";
 
 import { ButtonType } from "@/interface";
 import style from "./close-button.module.scss";
+import clsx from "clsx";
 
 const CloseButton = ({
   stroke,
@@ -11,7 +12,7 @@ const CloseButton = ({
   return (
     <button
       onClick={onClick}
-      className={`icon ${style.close_button}`}
+      className={clsx("icon", style.close_button)}
       type="button"
       title={title}
     >
