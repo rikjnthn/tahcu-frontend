@@ -37,6 +37,10 @@ const Navigation = ({
   };
 
   const logout = () => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.clear();
+    }
+
     const cookies = cookieParser(document.cookie);
 
     for (const cookieName in cookies) {
@@ -44,8 +48,6 @@ const Navigation = ({
         cookies[cookieName]
       }; expires=${new Date(0).toUTCString()};`;
     }
-
-    localStorage.removeItem("token_exp");
 
     router.push("/");
   };

@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./user-setting.module.scss";
-import { GroupType } from "@/interface";
 import ChangePasswordSetting from "../change-password-setting";
 import ChangeEmailSetting from "../change-email-setting";
+import cookieParser from "@/util/cookie-parser";
 
 const UserSetting = () => {
   const router = useRouter();
@@ -21,19 +21,21 @@ const UserSetting = () => {
     mutationFn: async () => axios.delete("/api/users"),
   });
 
-  const queryClient = useQueryClient();
-
-  const groups = queryClient.getQueryData<GroupType[]>(["groups"]);
-
   const handleDeleteAccount = () => {
-    if (groups && groups.length > 0) {
-      alert("Exit from all joined groups before delete your account");
-
-      return;
-    }
-
     deleteAccount(undefined, {
       onSuccess() {
+        if (typeof localStorage !== "undefined") {
+          localStorage.clear();
+        }
+
+        const cookies = cookieParser(document.cookie);
+
+        for (const cookieName in cookies) {
+          document.cookie = `${cookieName}=${
+            cookies[cookieName]
+          }; expires=${new Date(0).toUTCString()};`;
+        }
+
         router.push("/");
       },
     });
