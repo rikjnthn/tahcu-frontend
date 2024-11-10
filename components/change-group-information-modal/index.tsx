@@ -95,11 +95,11 @@ const ChangeGroupInformationModal = ({
         />
         <div>
           <textarea
-            id={"description"}
+            id="description"
             autoComplete="off"
             placeholder="No Description"
             rows={8}
-            aria-invalid={!!errors.description?.message?.toString()}
+            aria-invalid={!!errors.description?.message}
             {...register("description", {
               maxLength: {
                 value: 600,
@@ -108,7 +108,7 @@ const ChangeGroupInformationModal = ({
               value: description,
             })}
           />
-          <label htmlFor={"description"}>Description</label>
+          <label htmlFor="description">Description</label>
         </div>
         <SubmitButton
           className={style.submit}

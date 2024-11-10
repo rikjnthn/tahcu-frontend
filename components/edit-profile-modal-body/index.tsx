@@ -98,6 +98,10 @@ const EditProfileModalBody = ({
             value: 4,
             message: "Username should contain a minimum of 4 letters",
           },
+          maxLength: {
+            value: 20,
+            message: "Username should contain a maximum of 20 letters",
+          },
           value: userData?.username,
         })}
       />
@@ -112,6 +116,10 @@ const EditProfileModalBody = ({
           minLength: {
             value: 4,
             message: "User id should contain a minimum of 4 letters",
+          },
+          maxLength: {
+            value: 20,
+            message: "User id should contain a maximum of 20 letters",
           },
           value: userData?.user_id,
         })}

@@ -114,7 +114,7 @@ const CreateGroupInformation = () => {
             },
             maxLength: {
               value: 30,
-              message: "Group name should contain a maximum of 30 letters",
+              message: "Group name too long",
             },
           })}
         />

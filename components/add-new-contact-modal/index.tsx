@@ -136,6 +136,10 @@ const AddNewContactModal = ({
               value: 4,
               message: "User id should contain a minimum of 4 letters",
             },
+            maxLength: {
+              value: 20,
+              message: "User id should contain a maximum of 20 letters",
+            },
           })}
         />
 
