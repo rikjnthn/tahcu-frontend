@@ -50,12 +50,12 @@ export const ChatPageProvider = ({
 
 interface ChatPageStateType {
   isOpenHeader: boolean;
-  isRouteChangeComplete: boolean;
+  isCloseChatPage: boolean;
   isGroup: boolean;
   name: string;
 }
 
 interface ChatPageSetStateType {
   setIsOpenHeader: SetStateType<boolean>;
-  setIsRouteChangeComplete: SetStateType<boolean>;
+  setIsCloseChatPage: SetStateType<boolean>;
 }

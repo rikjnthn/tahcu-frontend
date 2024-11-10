@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 
 import Chat from "@/components/chat";
 import ChatProfile from "@/components/chat-profile";
@@ -15,7 +16,6 @@ import {
   UserDataType,
 } from "@/interface";
 import { useURLHash } from "@/context/url-hash-context";
-import clsx from "clsx";
 
 const handlePrivateChat = ({
   setName,
@@ -49,15 +49,14 @@ const handleGroupChat = ({
 
 const ChatPage = () => {
   const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
-  const [isRouteChangeComplete, setIsRouteChangeComplete] =
-    useState<boolean>(false);
+  const [isCloseChatPage, setIsCloseChatPage] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [isGroup, setIsGroup] = useState<boolean>(false);
 
   const { hash: chatId } = useURLHash();
 
   useEffect(() => {
-    setIsRouteChangeComplete(true);
+    setIsCloseChatPage(true);
   }, [chatId]);
 
   const queryClient = useQueryClient();
@@ -78,8 +77,8 @@ const ChatPage = () => {
 
   return (
     <ChatPageProvider
-      stateContext={{ isOpenHeader, isRouteChangeComplete, isGroup, name }}
-      dispatchContext={{ setIsOpenHeader, setIsRouteChangeComplete }}
+      stateContext={{ isOpenHeader, isCloseChatPage, isGroup, name }}
+      dispatchContext={{ setIsOpenHeader, setIsCloseChatPage }}
     >
       <div className={style.chat_page}>
         <div
@@ -91,9 +90,7 @@ const ChatPage = () => {
           <ChatProfile />
         </div>
         <div
-          className={clsx(
-            isRouteChangeComplete ? "translateX-0" : "translateX-100"
-          )}
+          className={clsx(isCloseChatPage ? "translateX-0" : "translateX-100")}
         >
           <ChatProvider>
             <Chat />
