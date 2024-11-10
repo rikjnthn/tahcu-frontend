@@ -19,8 +19,7 @@ const AddNewContactModal = ({
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const [addContactErrorMessage, setAddContactErrorMessage] =
-    useState<string>("");
+  const [addContactError, setAddContactError] = useState<string>("");
 
   const { isDark } = useDarkMode();
   const messageIo = useSocket();
@@ -34,7 +33,7 @@ const AddNewContactModal = ({
     setError,
   } = useForm<ContactInformationType>();
 
-  const { data, mutate, isPending } = useMutation<
+  const { mutate, isPending } = useMutation<
     AxiosResponse<ContactType>,
     AxiosError<ErrorResponseType>,
     string
@@ -64,26 +63,40 @@ const AddNewContactModal = ({
       onError(error) {
         const errorResponse = error.response?.data.error;
 
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setAddContactError("You have sent too many requests");
+          return;
+        }
+
         if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("user_id", {
             message: errorResponse.message.user_id,
           });
           return;
         }
+
         if (errorResponse?.code === "DUPLICATE_VALUE") {
           setError("user_id", { message: "Contact has already exists" });
           return;
         }
+
         if (errorResponse?.code === "NOT_FOUND") {
           setError("user_id", { message: "User id not found" });
           return;
         }
 
-        setAddContactErrorMessage("Failed to add contact");
+        setAddContactError("Failed to add contact");
       },
 
-      async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["contacts"] });
+      onSuccess(data) {
+        queryClient.setQueryData<ContactType[]>(
+          ["contacts"],
+          (prevContacts) => {
+            if (!prevContacts) return [];
+
+            return [...prevContacts, data.data];
+          }
+        );
 
         messageIo.emit("join-room", { ids: [data?.data.id] });
 
@@ -126,8 +139,8 @@ const AddNewContactModal = ({
           })}
         />
 
-        {addContactErrorMessage.length > 0 && (
-          <em className={style.error_message}>{addContactErrorMessage}</em>
+        {addContactError.length > 0 && (
+          <em className={style.error_message}>{addContactError}</em>
         )}
 
         <SubmitButton name="Add" isLoading={isPending} title="Add contact" />

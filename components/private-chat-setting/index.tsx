@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./private-chat-setting.module.scss";
-import { SetStateType } from "@/interface";
+import { ContactType, SetStateType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useURLHash } from "@/context/url-hash-context";
 
@@ -23,8 +23,12 @@ const PrivateChatSetting = ({
     mutationKey: ["deleteContact", chatId],
     mutationFn: async (contactId) =>
       axios.delete(`/api/chat-contact/${contactId}`),
-    async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["contacts"] });
+    onSuccess() {
+      queryClient.setQueryData<ContactType[]>(["contacts"], (prevContacts) => {
+        if (!prevContacts) return [];
+
+        return prevContacts.filter((contact) => contact.id !== chatId);
+      });
 
       setHash("");
       router.push("/a");

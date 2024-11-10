@@ -5,6 +5,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./group-setting.module.scss";
 import {
+  GroupType,
   GroupWithMembershipType,
   SetStateType,
   UserDataType,
@@ -20,14 +21,20 @@ const GroupSetting = ({
   const { hash: chatId, setHash } = useURLHash();
   const router = useRouter();
 
-  const { mutate: exitGroup } = useMutation<AxiosResponse, AxiosError, string>({
+  const { mutate: exitGroup } = useMutation<
+    AxiosResponse<GroupType>,
+    AxiosError,
+    string
+  >({
     mutationKey: ["exitGroup"],
     mutationFn: async (new_admin) =>
-      await axios.patch(`/api/group/exit-group/${chatId}`, {
-        new_admin,
-      }),
-    async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["groups"] });
+      axios.patch(`/api/group/exit-group/${chatId}`, { new_admin }),
+    onSuccess() {
+      queryClient.setQueryData<GroupType[]>(["groups"], (prevGroups) => {
+        if (!prevGroups) return [];
+
+        return prevGroups.filter((group) => group.id !== chatId);
+      });
 
       setHash("");
       router.push("/a");
@@ -41,8 +48,12 @@ const GroupSetting = ({
   >({
     mutationKey: ["deleteGroup"],
     mutationFn: async (chatId) => await axios.delete(`/api/group/${chatId}`),
-    async onSuccess() {
-      await queryClient.refetchQueries({ queryKey: ["groups"] });
+    onSuccess() {
+      queryClient.setQueryData<GroupType[]>(["groups"], (prevGroups) => {
+        if (!prevGroups) return [];
+
+        return prevGroups.filter((group) => group.id !== chatId);
+      });
 
       setHash("");
       router.push("/a");

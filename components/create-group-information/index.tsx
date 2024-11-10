@@ -15,9 +15,8 @@ import {
   useCreateGroupDispatch,
 } from "@/context/create-group-context";
 
-const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
-  const [createGroupErrorMessage, setCreateGroupErrorMessage] =
-    useState<string>("");
+const CreateGroupInformation = () => {
+  const [createGroupError, setCreateGroupError] = useState<string>("");
 
   const queryClient = useQueryClient();
 
@@ -31,6 +30,8 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
     setValue,
     setError,
   } = useForm<{ group_name: string }>();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const { mutate } = useMutation<
     AxiosResponse,
@@ -54,30 +55,39 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
       members,
     };
 
-    setCreateGroupErrorMessage("");
+    setCreateGroupError("");
 
     mutate(groupData, {
       onError(error) {
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
-          setError("group_name", {
-            message: error.response.data.error.message,
-          });
+        const errorResponse = error.response?.data.error;
 
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setCreateGroupError("You have sent too many requests");
           return;
         }
 
-        if (error.response?.data.error.code === "NOT_FOUND") {
-          setCreateGroupErrorMessage(
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("group_name", {
+            message: errorResponse.message.name,
+          });
+          return;
+        }
+
+        if (errorResponse?.code === "NOT_FOUND") {
+          setCreateGroupError(
             "One or more members to be added to the group are not found"
           );
-
           return;
         }
 
-        setCreateGroupErrorMessage("Failed to create group");
+        setCreateGroupError("Failed to create group");
       },
-      async onSuccess() {
-        await queryClient.prefetchQuery({ queryKey: ["groups"] });
+      onSuccess(data) {
+        queryClient.setQueryData<GroupDataType[]>(["groups"], (prevGroups) => {
+          if (!prevGroups) return [data.data];
+
+          return [...prevGroups, data.data];
+        });
 
         setIsCreateGroup(false);
         setAddedMembers([]);
@@ -102,12 +112,14 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
               value: true,
               message: "Please enter your group name",
             },
+            maxLength: {
+              value: 30,
+              message: "Group name should contain a maximum of 30 letters",
+            },
           })}
         />
 
-        {createGroupErrorMessage.length > 0 && (
-          <em>{createGroupErrorMessage}</em>
-        )}
+        {createGroupError.length > 0 && <em>{createGroupError}</em>}
 
         <NextButton type="submit" fill="#fff" title="Create group" />
       </form>

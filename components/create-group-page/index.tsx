@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
+import clsx from "clsx";
 
 import CreateGroup from "../create-group";
 import AddingMembers from "../adding-members";
 import style from "./create-group.module.scss";
 import { useCreateGroup } from "@/context/create-group-context";
-import clsx from "clsx";
 
 const CreateGroupPage = () => {
   const { isCreateGroup } = useCreateGroup();
