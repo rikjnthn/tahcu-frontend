@@ -66,7 +66,7 @@ export default function Page() {
 
   return (
     <div className={clsx(style.auth)}>
-      <div className={style.form_container}>
+      <div className={clsx(style.form_container, "center")}>
         <div className={clsx(style.title)}>Login</div>
 
         <form onSubmit={handleSubmit(login)}>
