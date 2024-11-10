@@ -34,6 +34,7 @@ const MessageContainer = () => {
       {
         group_id: isGroup ? chatId : undefined,
         contact_id: !isGroup ? chatId : undefined,
+        skip: 0,
       },
       (messages: MessageType[]) => {
         setMessages(
@@ -43,7 +44,9 @@ const MessageContainer = () => {
         );
       }
     );
+  }, [messageIo, chatId, isGroup]);
 
+  useEffect(() => {
     messageIo.on("updated-message", (updatedMessage: MessageType) => {
       setMessages((prev) => {
         const newMessages = prev.map((message) => {
@@ -54,12 +57,24 @@ const MessageContainer = () => {
       });
     });
 
+    return () => {
+      messageIo.off("updated-message");
+    };
+  }, [messageIo]);
+
+  useEffect(() => {
     messageIo.on("deleted-message", (deletedMessageId: string[]) => {
       setMessages((prev) =>
         prev.filter((val) => !deletedMessageId.includes(val.id))
       );
     });
 
+    return () => {
+      messageIo.off("deleted-message");
+    };
+  }, [messageIo]);
+
+  useEffect(() => {
     messageIo.on("message", (message: MessageType) => {
       const { group_id, contact_id } = message;
 
@@ -70,10 +85,8 @@ const MessageContainer = () => {
 
     return () => {
       messageIo.off("message");
-      messageIo.off("updated-message");
-      messageIo.off("deleted-message");
     };
-  }, [messageIo, chatId, isGroup]);
+  }, [messageIo, chatId]);
 
   return (
     <ul ref={messageContainerRef} className={style.message_container}>
