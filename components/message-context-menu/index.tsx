@@ -1,11 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import style from "./message-context-menu.module.scss";
-import {
-  MessageMenuCoordinateType,
-  MessageType,
-  SetStateType,
-} from "@/interface";
+import { MessageMenuCoordinateType } from "@/interface";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { useURLHash } from "@/context/url-hash-context";
@@ -15,14 +11,7 @@ const MessageContextMenu = ({
   message,
   menuCoordinate,
   isSender,
-  setMessages,
-}: {
-  id: string;
-  message: string;
-  menuCoordinate: MessageMenuCoordinateType;
-  isSender: boolean;
-  setMessages: SetStateType<MessageType[]>;
-}) => {
+}: MessageContextMenuType) => {
   const messageContextRef = useRef<HTMLDivElement>(null);
 
   const { hash: chatId } = useURLHash();
@@ -72,8 +61,6 @@ const MessageContextMenu = ({
       chat_id: chatId,
       data: { ids: [id] },
     });
-
-    setMessages((prev) => prev.filter((val) => val.id !== id));
   };
 
   const handleEditMessage = () => {
@@ -102,3 +89,10 @@ const MessageContextMenu = ({
 };
 
 export default MessageContextMenu;
+
+interface MessageContextMenuType {
+  id: string;
+  message: string;
+  menuCoordinate: MessageMenuCoordinateType;
+  isSender: boolean;
+}

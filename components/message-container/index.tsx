@@ -1,111 +1,174 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 
 import Message from "../message";
 import style from "./message-container.module.scss";
-import { MessageType, UserDataType } from "@/interface";
-import { useSocket } from "@/context/socket-connection-context";
-import { useURLHash } from "@/context/url-hash-context";
-import { useChatPage } from "@/context/chat-page-context";
+import { UserDataType } from "@/interface";
+import useMessages from "@/hooks/useMessage";
+import { useChat } from "@/context/chat-context";
 
 const MessageContainer = () => {
-  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
+  const [isMessageAdded, setIsMessageAdded] = useState<boolean>(false);
+  const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
 
   const messageContainerRef = useRef<HTMLUListElement>(null);
+  const isAfterEdit = useRef<boolean>(false);
 
-  const { hash: chatId } = useURLHash();
-  const messageIo = useSocket();
-  const { isGroup } = useChatPage();
+  const { messages, fetchNextMessages, shouldFetch } = useMessages({
+    setScrollPosition,
+    setIsMessageAdded,
+  });
+  const { isEditMessage } = useChat();
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop =
-        messageContainerRef.current.scrollHeight;
+    const messageContainer = messageContainerRef.current;
+
+    if (!messageContainer) return;
+
+    const scrollTop = messageContainer.scrollTop;
+    const clientHeight = messageContainer.clientHeight;
+    const scrollHeight = messageContainer.scrollHeight;
+
+    if (isAfterEdit.current) {
+      isAfterEdit.current = false;
+      return;
     }
-  }, [messages]);
+
+    if (isAtBottom && isMessageAdded) {
+      messageContainer.scrollTo({ top: scrollTop + clientHeight });
+
+      setIsMessageAdded(false);
+      return;
+    }
+
+    if (scrollPosition !== messageContainer.scrollHeight) {
+      const diff = scrollHeight - scrollPosition;
+
+      if (diff > 0) messageContainer.scrollTo({ top: diff });
+
+      setScrollPosition(scrollHeight);
+    }
+  }, [scrollPosition, messages, isMessageAdded, isAtBottom]);
 
   useEffect(() => {
-    messageIo.emit(
-      "find-all",
-      {
-        group_id: isGroup ? chatId : undefined,
-        contact_id: !isGroup ? chatId : undefined,
-        skip: 0,
-      },
-      (messages: MessageType[]) => {
-        setMessages(
-          messages.sort((message1, message2) =>
-            message1.sent_at < message2.sent_at ? -1 : 1
-          )
-        );
-      }
-    );
-  }, [messageIo, chatId, isGroup]);
+    const firstChild = messageContainerRef.current?.firstElementChild;
 
-  useEffect(() => {
-    messageIo.on("updated-message", (updatedMessage: MessageType) => {
-      setMessages((prev) => {
-        const newMessages = prev.map((message) => {
-          return message.id === updatedMessage.id ? updatedMessage : message;
-        });
+    if (!firstChild) return;
 
-        return newMessages;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (!messageContainerRef.current) return;
+
+          setScrollPosition(messageContainerRef.current.scrollHeight);
+        }
       });
     });
 
-    return () => {
-      messageIo.off("updated-message");
-    };
-  }, [messageIo]);
+    observer.observe(firstChild);
+  }, [messages]);
 
   useEffect(() => {
-    messageIo.on("deleted-message", (deletedMessageId: string[]) => {
-      setMessages((prev) =>
-        prev.filter((val) => !deletedMessageId.includes(val.id))
-      );
-    });
+    if (isEditMessage) isAfterEdit.current = true;
+  }, [isEditMessage]);
 
-    return () => {
-      messageIo.off("deleted-message");
-    };
-  }, [messageIo]);
+  const handleScroll = async (e: React.UIEvent<HTMLUListElement, UIEvent>) => {
+    const clientHeight = e.currentTarget.clientHeight;
+    const scrollTop = e.currentTarget.scrollTop;
+    const scrollHeight = e.currentTarget.scrollHeight;
 
-  useEffect(() => {
-    messageIo.on("message", (message: MessageType) => {
-      const { group_id, contact_id } = message;
+    if (Math.abs(scrollTop + clientHeight - scrollHeight) < 3) {
+      setIsAtBottom(true);
+    } else {
+      setIsAtBottom(false);
+      setScrollPosition(scrollHeight);
+    }
 
-      if (group_id === chatId || contact_id === chatId) {
-        setMessages((prev) => [...prev, message]);
-      }
-    });
+    if (!shouldFetch.current) return;
 
-    return () => {
-      messageIo.off("message");
-    };
-  }, [messageIo, chatId]);
+    if (scrollTop === 0) fetchNextMessages();
+  };
+
+  const locale = navigator.languages
+    ? navigator.languages[0]
+    : navigator.language;
+
+  const time = new Intl.DateTimeFormat(locale, {
+    timeStyle: "short",
+    hour12: false,
+  });
+
+  const date = new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <ul ref={messageContainerRef} className={style.message_container}>
-      {messages.map(
-        ({ id, message, sent_at, sender_id, sender: { username } }) => (
-          <Message
-            key={id}
-            id={id}
-            isSender={sender_id === userData?.user_id}
-            message={message}
-            time={new Date(sent_at).toLocaleTimeString("en-En", {
-              timeStyle: "short",
-              hour12: false,
-            })}
-            name={username}
-            setMessages={setMessages}
-          />
-        )
-      )}
+    <ul
+      ref={messageContainerRef}
+      onScroll={handleScroll}
+      className={clsx(style.message_container)}
+    >
+      {messages.map(({ id, message, sent_at, sender_id, sender }, idx) => {
+        const currentDate = date.format(new Date(sent_at));
+
+        if (!messages[idx - 1])
+          return (
+            <React.Fragment key={id}>
+              <li key={currentDate} className={clsx(style.date_badge)}>
+                {currentDate}
+              </li>
+
+              <Message
+                key={id}
+                id={id}
+                isSender={sender_id === userData?.user_id}
+                message={message}
+                time={time.format(new Date(sent_at))}
+                name={sender.username}
+              />
+            </React.Fragment>
+          );
+
+        const prevDate = date.format(new Date(messages[idx - 1]?.sent_at));
+
+        if (currentDate === prevDate) {
+          return (
+            <Message
+              key={id}
+              id={id}
+              isSender={sender_id === userData?.user_id}
+              message={message}
+              time={time.format(new Date(sent_at))}
+              name={sender.username}
+            />
+          );
+        }
+
+        return (
+          <React.Fragment key={id}>
+            <li key={currentDate} className={clsx(style.date_badge)}>
+              {currentDate}
+            </li>
+
+            <Message
+              key={id}
+              id={id}
+              isSender={sender_id === userData?.user_id}
+              message={message}
+              time={time.format(new Date(sent_at))}
+              name={sender.username}
+            />
+          </React.Fragment>
+        );
+      })}
     </ul>
   );
 };

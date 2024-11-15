@@ -4,29 +4,11 @@ import { useState } from "react";
 
 import style from "./message.module.scss";
 import MessageContextMenu from "../message-context-menu";
-import {
-  MessageMenuCoordinateType,
-  MessageType,
-  SetStateType,
-} from "@/interface";
+import { MessageMenuCoordinateType } from "@/interface";
 import { useChatPage } from "@/context/chat-page-context";
 import clsx from "clsx";
 
-const Message = ({
-  id,
-  message,
-  time,
-  isSender,
-  name,
-  setMessages,
-}: {
-  id: string;
-  message: string;
-  time: string;
-  isSender: boolean;
-  name?: string;
-  setMessages: SetStateType<MessageType[]>;
-}) => {
+const Message = ({ id, message, time, isSender, name }: MessagePropsType) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);
   const [menuCoordinate, setMenuCoordinate] =
     useState<MessageMenuCoordinateType>({
@@ -51,10 +33,9 @@ const Message = ({
   return (
     <li
       onContextMenu={handleMessageContext}
-      className={clsx(
-        style.message_container,
-        isSender && "margin-left-auto flex-row-reversed"
-      )}
+      className={clsx(style.message_wrapper, {
+        "margin-left-auto flex-row-reversed": isSender,
+      })}
       title={`${name}, ${time}`}
     >
       <div className={style.message}>
@@ -77,7 +58,6 @@ const Message = ({
             message={message}
             menuCoordinate={menuCoordinate}
             isSender={isSender}
-            setMessages={setMessages}
           />
         </div>
       )}
@@ -86,3 +66,11 @@ const Message = ({
 };
 
 export default Message;
+
+interface MessagePropsType {
+  id: string;
+  message: string;
+  time: string;
+  isSender: boolean;
+  name?: string;
+}
