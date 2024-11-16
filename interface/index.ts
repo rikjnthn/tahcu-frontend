@@ -38,7 +38,6 @@ export interface ContactType {
   friends_id: string;
   user: UserContactType;
   friends: FriendsContactType;
-  isGroup: boolean;
 }
 
 export interface AddedMembersType {
@@ -63,7 +62,6 @@ export interface GroupType {
   created_at: Date;
   admin_id: string;
   created_by_id: string;
-  isGroup: boolean;
 }
 
 export interface GroupWithMembershipType extends GroupType {
