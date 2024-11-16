@@ -7,7 +7,6 @@ import Message from "../message";
 import style from "./message-container.module.scss";
 import { UserDataType } from "@/interface";
 import useMessages from "@/hooks/useMessage";
-import { useChat } from "@/context/chat-context";
 
 const MessageContainer = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -20,8 +19,8 @@ const MessageContainer = () => {
   const { messages, fetchNextMessages, shouldFetch } = useMessages({
     setScrollPosition,
     setIsMessageAdded,
+    isAfterEdit,
   });
-  const { isEditMessage } = useChat();
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
@@ -37,6 +36,7 @@ const MessageContainer = () => {
 
     if (isAfterEdit.current) {
       isAfterEdit.current = false;
+
       return;
     }
 
@@ -73,10 +73,6 @@ const MessageContainer = () => {
 
     observer.observe(firstChild);
   }, [messages]);
-
-  useEffect(() => {
-    if (isEditMessage) isAfterEdit.current = true;
-  }, [isEditMessage]);
 
   const handleScroll = async (e: React.UIEvent<HTMLUListElement, UIEvent>) => {
     const clientHeight = e.currentTarget.clientHeight;

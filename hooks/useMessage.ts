@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 
 import { MessageType, SetStateType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
@@ -8,9 +8,11 @@ import { useChatPage } from "@/context/chat-page-context";
 export default function useMessages({
   setScrollPosition,
   setIsMessageAdded,
+  isAfterEdit,
 }: {
   setScrollPosition: SetStateType<number>;
   setIsMessageAdded: SetStateType<boolean>;
+  isAfterEdit: MutableRefObject<boolean>;
 }) {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
@@ -48,6 +50,8 @@ export default function useMessages({
           return message.id === updatedMessage.id ? updatedMessage : message;
         });
       });
+
+      isAfterEdit.current = true;
     });
 
     messageIo.on("deleted-message", (deletedMessageId: string[]) => {
@@ -72,7 +76,7 @@ export default function useMessages({
       messageIo.off("message");
       messageIo.off("deleted-message");
     };
-  }, [messageIo, chatId, setScrollPosition, setIsMessageAdded]);
+  }, [messageIo, chatId, setScrollPosition, setIsMessageAdded, isAfterEdit]);
 
   const fetchNextMessages = () => {
     skipFactor.current += 1;
