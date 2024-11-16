@@ -11,13 +11,7 @@ import { useURLHash } from "@/context/url-hash-context";
 import { useChatPage } from "@/context/chat-page-context";
 
 const TextTyping = (
-  {
-    textareaRef,
-    onInput,
-  }: {
-    textareaRef: React.RefObject<HTMLTextAreaElement>;
-    onInput?: React.FormEventHandler<HTMLTextAreaElement>;
-  },
+  { textareaRef, onInput }: TextTypingPropsType,
   ref: React.ForwardedRef<HTMLTextAreaElement>
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
@@ -64,7 +58,16 @@ const TextTyping = (
         },
       });
     }
-    if (textareaRef.current) textareaRef.current.value = "";
+
+    const textarea = textareaRef.current;
+    const inputMessageContainer = textarea.parentElement?.parentElement;
+
+    textarea.value = "";
+    textarea.style.height = "0px";
+
+    if (inputMessageContainer) {
+      inputMessageContainer.style.height = "0px";
+    }
   };
 
   return (
@@ -107,3 +110,8 @@ const TextTyping = (
 };
 
 export default forwardRef(TextTyping);
+
+interface TextTypingPropsType {
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  onInput?: React.FormEventHandler<HTMLTextAreaElement>;
+}
