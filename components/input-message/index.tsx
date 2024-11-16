@@ -2,7 +2,7 @@
 import React, { forwardRef, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import style from "./text-typing.module.scss";
+import style from "./input-message.module.scss";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
 import { UserDataType } from "@/interface";
@@ -10,8 +10,8 @@ import { useDarkMode } from "@/context/dark-mode-context";
 import { useURLHash } from "@/context/url-hash-context";
 import { useChatPage } from "@/context/chat-page-context";
 
-const TextTyping = (
-  { textareaRef, onInput }: TextTypingPropsType,
+const InputMessage = (
+  { inputMessageRef, onInput }: InputMessagePropsType,
   ref: React.ForwardedRef<HTMLTextAreaElement>
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
@@ -36,7 +36,7 @@ const TextTyping = (
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const message = textareaRef.current?.value;
+    const message = inputMessageRef.current?.value;
 
     setIsEditMessage(false);
 
@@ -59,7 +59,7 @@ const TextTyping = (
       });
     }
 
-    const textarea = textareaRef.current;
+    const textarea = inputMessageRef.current;
     const inputMessageContainer = textarea.parentElement?.parentElement;
 
     textarea.value = "";
@@ -109,9 +109,9 @@ const TextTyping = (
   );
 };
 
-export default forwardRef(TextTyping);
+export default forwardRef(InputMessage);
 
-interface TextTypingPropsType {
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
+interface InputMessagePropsType {
+  inputMessageRef: React.RefObject<HTMLTextAreaElement>;
   onInput?: React.FormEventHandler<HTMLTextAreaElement>;
 }
