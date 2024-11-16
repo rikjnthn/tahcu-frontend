@@ -1,4 +1,10 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { MessageType, SetStateType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
@@ -32,6 +38,8 @@ export default function useMessages({
         skip: 0,
       },
       (messagesRes: MessageType[]) => {
+        shouldFetch.current = true;
+
         if (messagesRes.length < 50) {
           shouldFetch.current = false;
         }
@@ -78,7 +86,12 @@ export default function useMessages({
     };
   }, [messageIo, chatId, setScrollPosition, setIsMessageAdded, isAfterEdit]);
 
-  const fetchNextMessages = () => {
+  useEffect(() => {
+    skipFactor.current = 0;
+    shouldFetch.current = true;
+  }, [chatId]);
+
+  const fetchNextMessages = useCallback(() => {
     skipFactor.current += 1;
 
     messageIo.emit(
@@ -101,7 +114,7 @@ export default function useMessages({
         ]);
       }
     );
-  };
+  }, [chatId, isGroup, messageIo]);
 
   return { messages, fetchNextMessages, shouldFetch };
 }

@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { ContactType, GroupType, SetStateType } from "@/interface";
+import { ChatType, SetStateType } from "@/interface";
 
 const URLHashContext = createContext<URLHashContextType | null>(null);
 
@@ -27,8 +27,7 @@ export const URLHashProvider = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const groups = queryClient.getQueryData<GroupType[]>(["groups"]);
-  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
 
   useEffect(() => {
     setHash(window.location.hash.substring(1));
@@ -38,9 +37,7 @@ export const URLHashProvider = ({
     const handleHashChange = () => {
       const chatId = window.location.hash.substring(1);
 
-      const isChatValid =
-        groups?.find((val) => val.id === chatId) ||
-        contacts?.find((val) => val.id === chatId);
+      const isChatValid = chats?.find((chat) => chat.id === chatId);
 
       if (!isChatValid) {
         router.push(`${window.location.origin}/a#${hash}`);
@@ -54,7 +51,7 @@ export const URLHashProvider = ({
     window.addEventListener("hashchange", handleHashChange);
 
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [groups, contacts, hash, router]);
+  }, [chats, hash, router]);
 
   return (
     <URLHashContext.Provider value={{ hash, setHash }}>

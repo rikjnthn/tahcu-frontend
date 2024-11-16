@@ -38,11 +38,19 @@ export interface ContactType {
   friends_id: string;
   user: UserContactType;
   friends: FriendsContactType;
+  type: "Contact";
 }
 
 export interface AddedMembersType {
   name: string;
   user_id: string;
+}
+
+export interface MemberType {
+  id: string;
+  user_id: string;
+  group_id: string;
+  joined_at: Date;
 }
 
 export interface GroupMemberShipType {
@@ -62,6 +70,7 @@ export interface GroupType {
   created_at: Date;
   admin_id: string;
   created_by_id: string;
+  type: "Group";
 }
 
 export interface GroupWithMembershipType extends GroupType {
@@ -109,3 +118,5 @@ export interface ErrorResponseType {
     message: any;
   };
 }
+
+export type ChatType = GroupWithMembershipType | ContactType;

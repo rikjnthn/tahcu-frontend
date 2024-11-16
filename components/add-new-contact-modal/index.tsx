@@ -6,7 +6,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./add-new-contact-modal.module.scss";
 import CloseButton from "../close-button";
-import { ContactType, ErrorResponseType, SetStateType } from "@/interface";
+import {
+  ChatType,
+  ContactType,
+  ErrorResponseType,
+  SetStateType,
+} from "@/interface";
 import Input from "../input";
 import SubmitButton from "../submit-button";
 import { useSocket } from "@/context/socket-connection-context";
@@ -44,7 +49,8 @@ const AddNewContactModal = ({
     retry: false,
   });
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const contacts = chats?.filter((chat) => chat.type === "Contact");
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
     const contactFound = contacts?.find((val) => {
@@ -53,7 +59,6 @@ const AddNewContactModal = ({
 
     if (contactFound) {
       setError("user_id", { message: "Contact has already exists" });
-
       return;
     }
 
@@ -89,14 +94,13 @@ const AddNewContactModal = ({
       },
 
       onSuccess(data) {
-        queryClient.setQueryData<ContactType[]>(
-          ["contacts"],
-          (prevContacts) => {
-            if (!prevContacts) return [];
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          const newContact = { ...data.data, type: "Contact" as const };
 
-            return [...prevContacts, data.data];
-          }
-        );
+          if (!chats) return [newContact];
+
+          return [...chats, newContact];
+        });
 
         messageIo.emit("join-room", { ids: [data?.data.id] });
 

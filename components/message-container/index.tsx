@@ -7,6 +7,7 @@ import Message from "../message";
 import style from "./message-container.module.scss";
 import { UserDataType } from "@/interface";
 import useMessages from "@/hooks/useMessage";
+import { useURLHash } from "@/context/url-hash-context";
 
 const MessageContainer = () => {
   const [scrollPosition, setScrollPosition] = useState<number>(0);
@@ -21,6 +22,8 @@ const MessageContainer = () => {
     setIsMessageAdded,
     isAfterEdit,
   });
+
+  const { hash: chatId } = useURLHash();
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
@@ -67,12 +70,24 @@ const MessageContainer = () => {
           if (!messageContainerRef.current) return;
 
           setScrollPosition(messageContainerRef.current.scrollHeight);
+
+          if (!shouldFetch.current) return;
+
+          fetchNextMessages();
         }
       });
     });
 
     observer.observe(firstChild);
-  }, [messages]);
+
+    return () => {
+      observer.unobserve(firstChild);
+    };
+  }, [messages, shouldFetch, fetchNextMessages]);
+
+  useEffect(() => {
+    isAfterEdit.current = false;
+  }, [chatId]);
 
   const handleScroll = async (e: React.UIEvent<HTMLUListElement, UIEvent>) => {
     const clientHeight = e.currentTarget.clientHeight;
@@ -85,10 +100,6 @@ const MessageContainer = () => {
       setIsAtBottom(false);
       setScrollPosition(scrollHeight);
     }
-
-    if (!shouldFetch.current) return;
-
-    if (scrollTop === 0) fetchNextMessages();
   };
 
   const locale = navigator.languages

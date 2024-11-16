@@ -4,12 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./group-setting.module.scss";
-import {
-  GroupType,
-  GroupWithMembershipType,
-  SetStateType,
-  UserDataType,
-} from "@/interface";
+import { ChatType, GroupType, SetStateType, UserDataType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useURLHash } from "@/context/url-hash-context";
 
@@ -20,6 +15,19 @@ const GroupSetting = ({
 }) => {
   const { hash: chatId, setHash } = useURLHash();
   const router = useRouter();
+  const messageio = useSocket();
+  const queryClient = useQueryClient();
+
+  const removeGroupFromLocal = () => {
+    queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+      if (!chats) return [];
+
+      return chats.filter((chat) => chat.id !== chatId);
+    });
+
+    setHash("");
+    router.push("/a");
+  };
 
   const { mutate: exitGroup } = useMutation<
     AxiosResponse<GroupType>,
@@ -29,16 +37,7 @@ const GroupSetting = ({
     mutationKey: ["exitGroup"],
     mutationFn: async (new_admin) =>
       axios.patch(`/api/group/exit-group/${chatId}`, { new_admin }),
-    onSuccess() {
-      queryClient.setQueryData<GroupType[]>(["groups"], (prevGroups) => {
-        if (!prevGroups) return [];
-
-        return prevGroups.filter((group) => group.id !== chatId);
-      });
-
-      setHash("");
-      router.push("/a");
-    },
+    onSuccess: removeGroupFromLocal,
   });
 
   const { mutate: deleteGroup } = useMutation<
@@ -47,27 +46,13 @@ const GroupSetting = ({
     string
   >({
     mutationKey: ["deleteGroup"],
-    mutationFn: async (chatId) => await axios.delete(`/api/group/${chatId}`),
-    onSuccess() {
-      queryClient.setQueryData<GroupType[]>(["groups"], (prevGroups) => {
-        if (!prevGroups) return [];
-
-        return prevGroups.filter((group) => group.id !== chatId);
-      });
-
-      setHash("");
-      router.push("/a");
-    },
+    mutationFn: async (chatId) => axios.delete(`/api/group/${chatId}`),
+    onSuccess: removeGroupFromLocal,
   });
 
-  const messageio = useSocket();
-  const queryClient = useQueryClient();
-
-  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
-    "groups",
-  ]);
-
-  const group = groups?.find((group) => group.id === chatId);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const foundChat = chats?.find((chat) => chat.id === chatId);
+  const group = foundChat?.type === "Group" ? foundChat : undefined;
 
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 

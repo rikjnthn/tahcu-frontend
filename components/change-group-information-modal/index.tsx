@@ -6,7 +6,12 @@ import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType, UpdateGroupDataType } from "@/interface";
+import {
+  ChatType,
+  GroupWithMembershipType,
+  SetStateType,
+  UpdateGroupDataType,
+} from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -30,7 +35,7 @@ const ChangeGroupInformationModal = ({
   const { hash: chatId } = useURLHash();
 
   const { mutate, isPending } = useMutation<
-    AxiosResponse,
+    AxiosResponse<GroupWithMembershipType>,
     AxiosError,
     UpdateGroupDataType
   >({
@@ -53,8 +58,18 @@ const ChangeGroupInformationModal = ({
     }
 
     mutate(data, {
-      async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["group", chatId] });
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          if (!chats) return [];
+
+          const newChats = [...chats];
+          const groupIndex = newChats.findIndex(
+            (chat) => chat.id === data.data.id
+          );
+          newChats[groupIndex] = { ...data.data, type: "Group" };
+
+          return newChats;
+        });
         setIsOpenModal(false);
       },
     });

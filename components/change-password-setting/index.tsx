@@ -43,15 +43,15 @@ const ChangePasswordSetting = () => {
 
     mutate(data, {
       onError(error) {
-        if (error.response?.status === 429) {
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
           setChangePasswordErrorMessage(
             "You have sent too many requests to the server."
           );
 
           return;
         }
-
-        const errorResponse = error.response?.data.error;
 
         if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("current_password", {

@@ -6,7 +6,7 @@ import style from "./edit-members.module.scss";
 import CloseButton from "../close-button";
 import {
   AddedMembersType,
-  ContactType,
+  ChatType,
   GroupMemberShipType,
   SetStateType,
   UserDataType,
@@ -24,8 +24,7 @@ const EditMembers = ({
   currentMembers: GroupMemberShipType[];
   setIsEditMembers: SetStateType<boolean>;
 }) => {
-  const [addMemberErrorMessage, setAddMembersErrorMessage] =
-    useState<string>("");
+  const [addMemberError, setAddMembersError] = useState<string>("");
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
   const { hash: chatId } = useURLHash();
@@ -34,10 +33,11 @@ const EditMembers = ({
   const queryClient = useQueryClient();
 
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
-  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const contacts = chats?.filter((chat) => chat.type === "Contact");
 
   const { mutate: addMembers, isPending } = useMutation<
-    AxiosResponse,
+    AxiosResponse<GroupMemberShipType[]>,
     AxiosError,
     AddMemberDataType
   >({
@@ -60,11 +60,23 @@ const EditMembers = ({
 
     addMembers(addMembersData, {
       onError() {
-        setAddMembersErrorMessage("Failed to add members");
+        setAddMembersError("Failed to add members");
       },
-      async onSuccess() {
-        await queryClient.prefetchQuery({
-          queryKey: ["group", chatId],
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          if (!chats) return [];
+
+          const newChats = [...chats];
+          const groupIndex = newChats.findIndex((chat) => chat.id === chatId);
+
+          if (newChats[groupIndex].type === "Group") {
+            newChats[groupIndex].group_membership = [
+              ...newChats[groupIndex].group_membership,
+              ...data.data,
+            ];
+          }
+
+          return newChats;
         });
 
         setIsEditMembers(false);
@@ -116,8 +128,8 @@ const EditMembers = ({
           })}
         </div>
 
-        {addMemberErrorMessage.length > 0 && (
-          <em className={style.error_message}>{addMemberErrorMessage}</em>
+        {addMemberError.length > 0 && (
+          <em className={style.error_message}>{addMemberError}</em>
         )}
 
         <form onSubmit={handleSubmit}>

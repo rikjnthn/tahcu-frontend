@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import MemberList from "../member-list";
 import style from "./create-group-information.module.scss";
-import { ErrorResponseType, UserDataType } from "@/interface";
+import { ChatType, ErrorResponseType, UserDataType } from "@/interface";
 import Input from "../input";
 import NextButton from "../next-button";
 import { useHomePageDispatch } from "@/context/home-page-context";
@@ -83,10 +83,12 @@ const CreateGroupInformation = () => {
         setCreateGroupError("Failed to create group");
       },
       onSuccess(data) {
-        queryClient.setQueryData<GroupDataType[]>(["groups"], (prevGroups) => {
-          if (!prevGroups) return [data.data];
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          const addGroup = { ...data.data, type: "Group" };
 
-          return [...prevGroups, data.data];
+          if (!chats) return [addGroup];
+
+          return [...chats, addGroup];
         });
 
         setIsCreateGroup(false);

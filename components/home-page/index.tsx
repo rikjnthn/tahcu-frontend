@@ -12,10 +12,9 @@ import { useHomePage } from "@/context/home-page-context";
 import UserPage from "../user-page";
 import SettingPage from "../setting-page";
 import { CreateGroupProvider } from "@/context/create-group-context";
-import { ContactType, GroupType } from "@/interface";
+import { ChatType } from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
-import getContacts from "@/util/get-contacts";
-import getGroups from "@/util/get-groups";
+import getChats from "@/util/get-chats";
 
 const HomePage = () => {
   const {
@@ -28,24 +27,17 @@ const HomePage = () => {
 
   const messageIo = useSocket();
 
-  const { data: contacts } = useQuery<ContactType[]>({
-    queryKey: ["contacts"],
-    queryFn: getContacts,
-    refetchOnWindowFocus: false,
-  });
-
-  const { data: groups } = useQuery<GroupType[]>({
-    queryKey: ["groups"],
-    queryFn: getGroups,
+  const { data: chats } = useQuery<ChatType[]>({
+    queryKey: ["chats"],
+    queryFn: getChats,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    const contactIds = contacts?.map(({ id }) => id) ?? [];
-    const groupIds = groups?.map(({ id }) => id) ?? [];
+    const chatIds = chats?.map(({ id }) => id) ?? [];
 
-    messageIo.emit("join-room", { ids: contactIds.concat(groupIds) });
-  }, [contacts, groups, messageIo]);
+    messageIo.emit("join-room", { ids: chatIds });
+  }, [chats, messageIo]);
 
   return (
     <div className={style.home}>

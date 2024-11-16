@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import PhotoProfile from "../photo-profile";
 import style from "./chat-contact.module.scss";
@@ -28,13 +27,7 @@ const ChatContact = ({
       className={clsx(style.chat_contact, isOpen && style.open_link)}
       title={name}
     >
-      <Link
-        onClick={() => setHash(to)}
-        href={{
-          pathname: "/a",
-          hash: to,
-        }}
-      >
+      <Link onClick={() => setHash(to)} href={{ pathname: "/a", hash: to }}>
         <PhotoProfile name={name} size="md" />
 
         <div className={style.name_message}>

@@ -8,44 +8,8 @@ import ChatProfile from "@/components/chat-profile";
 import style from "./chat-page.module.scss";
 import { ChatPageProvider } from "@/context/chat-page-context";
 import { ChatProvider } from "@/context/chat-context";
-import {
-  ContactType,
-  GroupType,
-  GroupWithMembershipType,
-  SetStateType,
-  UserDataType,
-} from "@/interface";
+import { ChatType, UserDataType } from "@/interface";
 import { useURLHash } from "@/context/url-hash-context";
-
-const handlePrivateChat = ({
-  setName,
-  contact,
-  userData,
-}: {
-  contact?: ContactType;
-  userData?: UserDataType;
-  setName: SetStateType<string>;
-}) => {
-  if (!contact || !userData) return;
-
-  const { user_id, friends, user } = contact;
-
-  const name = user_id === userData.user_id ? friends.username : user.username;
-  setName(name);
-};
-
-const handleGroupChat = ({
-  group,
-  setIsGroup,
-  setName,
-}: {
-  setIsGroup: SetStateType<boolean>;
-  group: GroupType;
-  setName: SetStateType<string>;
-}) => {
-  setIsGroup(true);
-  setName(group.name);
-};
 
 const ChatPage = () => {
   const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
@@ -61,19 +25,28 @@ const ChatPage = () => {
 
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contacts"]);
-  const groups = queryClient.getQueryData<GroupWithMembershipType[]>([
-    "groups",
-  ]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
-  const group = groups?.find((group) => group.id === chatId);
-  const contact = contacts?.find((contact) => contact.id === chatId);
-
   useEffect(() => {
-    if (group) handleGroupChat({ setIsGroup, group, setName });
-    else handlePrivateChat({ contact, userData, setName });
-  }, [chatId, contact, userData, group]);
+    const foundChat = chats?.find((chat) => chat.id === chatId);
+
+    if (!foundChat) return;
+
+    if (foundChat?.type === "Group") {
+      setIsGroup(true);
+      setName(foundChat.name);
+    } else {
+      setIsGroup(false);
+
+      const { friends, user_id, user } = foundChat;
+
+      const name =
+        user_id === userData?.user_id ? friends.username : user.username;
+
+      setName(name);
+    }
+  }, [chatId, chats, userData]);
 
   return (
     <ChatPageProvider

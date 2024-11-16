@@ -6,6 +6,8 @@ import PhotoProfile from "../photo-profile";
 import style from "./member.module.scss";
 import {
   AddedMembersType,
+  ChatType,
+  GroupMemberShipType,
   GroupType,
   SetStateType,
   UserDataType,
@@ -28,7 +30,7 @@ const KickMember = ({
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation<
-    AxiosResponse,
+    AxiosResponse<GroupMemberShipType[]>,
     AxiosError,
     DeleteMemberDataType
   >({
@@ -48,8 +50,22 @@ const KickMember = ({
     };
 
     mutate(deleteMemberData, {
-      async onSuccess() {
-        await queryClient.fetchQuery({ queryKey: ["group", chatId] });
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          if (!chats) return [];
+
+          const newChats = [...chats];
+          const groupIndex = newChats.findIndex((chat) => chat.id === chatId);
+
+          if (newChats[groupIndex].type === "Group") {
+            newChats[groupIndex].group_membership = [
+              ...newChats[groupIndex].group_membership,
+              ...data.data,
+            ];
+          }
+
+          return newChats;
+        });
       },
     });
   };

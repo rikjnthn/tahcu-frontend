@@ -11,21 +11,10 @@ import GroupMember from "../group-member";
 import GroupDescription from "../group-description";
 import ChangeGroupInformationModal from "../change-group-information-modal";
 import Input from "../input";
-import { GroupWithMembershipType, UserDataType } from "@/interface";
+import { ChatType, UserDataType } from "@/interface";
 import EditMembers from "../edit-members";
 import { useChatPage } from "@/context/chat-page-context";
 import { useURLHash } from "@/context/url-hash-context";
-
-const getGroup = async ({
-  queryKey,
-}: {
-  queryKey: QueryKey;
-}): Promise<GroupWithMembershipType> => {
-  const [_, chatId] = queryKey;
-
-  const { data } = await axios.get(`/api/group/${chatId}`);
-  return data;
-};
 
 const ChatProfile = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -35,12 +24,9 @@ const ChatProfile = () => {
   const { isGroup, name } = useChatPage();
   const queryClient = useQueryClient();
 
-  const { data: group, refetch } = useQuery<GroupWithMembershipType>({
-    queryKey: ["group", chatId],
-    queryFn: getGroup,
-    refetchOnWindowFocus: false,
-    enabled: false,
-  });
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const foundChat = chats?.find((chat) => chat.id === chatId);
+  const group = foundChat?.type === "Group" ? foundChat : undefined;
 
   const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
@@ -49,10 +35,6 @@ const ChatProfile = () => {
   const editMembers = () => {
     setIsEditMembers(true);
   };
-
-  useEffect(() => {
-    if (isGroup) refetch();
-  }, [isGroup, refetch]);
 
   if (isGroup) {
     return (
