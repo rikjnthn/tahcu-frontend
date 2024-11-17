@@ -60,7 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
     const intervalId = setInterval(() => {
       if (fiveDaysBeforeTokenExpInMs < Date.now()) {
-        axios.post("/api/refresh-token").catch((err) => console.log(err));
+        axios.post("/api/refresh-token").catch();
       }
     }, fiveMinutesInMs);
 

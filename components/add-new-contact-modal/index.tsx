@@ -148,7 +148,7 @@ const AddNewContactModal = ({
         />
 
         {addContactError.length > 0 && (
-          <em className={style.error_message}>{addContactError}</em>
+          <span className={style.error_message}>{addContactError}</span>
         )}
 
         <SubmitButton name="Add" isLoading={isPending} title="Add contact" />

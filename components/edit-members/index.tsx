@@ -129,7 +129,7 @@ const EditMembers = ({
         </div>
 
         {addMemberError.length > 0 && (
-          <em className={style.error_message}>{addMemberError}</em>
+          <span className={style.error_message}>{addMemberError}</span>
         )}
 
         <form onSubmit={handleSubmit}>

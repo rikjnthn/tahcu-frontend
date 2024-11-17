@@ -126,7 +126,7 @@ const EditProfileModalBody = ({
       />
 
       {editProfileError.length > 0 && (
-        <em className={style.error_message}>{editProfileError}</em>
+        <span className={style.error_message}>{editProfileError}</span>
       )}
 
       <SubmitButton name="Confirm" isLoading={isPending} />

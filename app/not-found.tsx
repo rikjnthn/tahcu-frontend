@@ -29,7 +29,7 @@ export default function NotFound() {
           />
         </g>
       </svg>
-      <div>Not Found</div>
+      <div style={{ fontFamily: "sans-serif" }}>Not Found</div>
     </div>
   );
 }

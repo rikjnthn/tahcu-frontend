@@ -92,7 +92,7 @@ const ChangeEmailSetting = () => {
         />
 
         {changeEmailError.length > 0 && (
-          <em className={style.change_email_error}>{changeEmailError}</em>
+          <span className={style.change_email_error}>{changeEmailError}</span>
         )}
 
         <SubmitButton name="Change" isLoading={isPending} />

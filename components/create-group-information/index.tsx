@@ -121,7 +121,9 @@ const CreateGroupInformation = () => {
           })}
         />
 
-        {createGroupError.length > 0 && <em>{createGroupError}</em>}
+        {createGroupError.length > 0 && (
+          <span className={style.error_message}>{createGroupError}</span>
+        )}
 
         <NextButton type="submit" fill="#fff" title="Create group" />
       </form>
