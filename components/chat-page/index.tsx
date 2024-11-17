@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 
 import Chat from "@/components/chat";
@@ -10,6 +10,7 @@ import { ChatPageProvider } from "@/context/chat-page-context";
 import { ChatProvider } from "@/context/chat-context";
 import { ChatType, UserDataType } from "@/interface";
 import { useURLHash } from "@/context/url-hash-context";
+import getChats from "@/util/get-chats";
 
 const ChatPage = () => {
   const [isOpenHeader, setIsOpenHeader] = useState<boolean>(false);
@@ -25,7 +26,11 @@ const ChatPage = () => {
 
   const queryClient = useQueryClient();
 
-  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const { data: chats } = useQuery<ChatType[]>({
+    queryKey: ["chats"],
+    queryFn: getChats,
+    refetchOnWindowFocus: false,
+  });
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   useEffect(() => {
@@ -37,13 +42,12 @@ const ChatPage = () => {
       setIsGroup(true);
       setName(foundChat.name);
     } else {
-      setIsGroup(false);
-
       const { friends, user_id, user } = foundChat;
 
       const name =
         user_id === userData?.user_id ? friends.username : user.username;
 
+      setIsGroup(false);
       setName(name);
     }
   }, [chatId, chats, userData]);
