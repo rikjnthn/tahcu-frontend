@@ -14,7 +14,7 @@ import SignUpOTP from "@/components/signup-otp";
 import { ErrorResponseType, SignUpData } from "@/interface";
 
 export default function Page() {
-  const [isOpenOTP, setIsOpenOTPInput] = useState<boolean>(false);
+  const [isOpenOTP, setIsOpenOTP] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [signUpError, setSignupError] = useState<string>("");
 
@@ -37,7 +37,7 @@ export default function Page() {
 
       await axios.post("/api/send-otp", sendOTPDto);
 
-      setIsOpenOTPInput(true);
+      setIsOpenOTP(true);
     } catch (error) {
       if (!isAxiosError<ErrorResponseType>(error)) return;
 
@@ -141,8 +141,7 @@ export default function Page() {
               },
               validate: {
                 isEmail: (v: string) => {
-                  if (isEmail(v)) return true;
-                  return "Email is not valid";
+                  if (!isEmail(v)) return "Email is not valid";
                 },
               },
             })}
@@ -189,8 +188,8 @@ export default function Page() {
               validate: {
                 isSameWithPassword: (confirm_password: string) => {
                   const password = getValues("password");
-                  if (password === confirm_password) return true;
-                  return "Password and confirm password does not match";
+                  if (password !== confirm_password)
+                    return "Password and confirm password does not match";
                 },
               },
             })}
@@ -215,7 +214,7 @@ export default function Page() {
           setError={setError}
           setIsLoading={setIsLoading}
           signUpData={getValues()}
-          setIsOpenOTPInput={setIsOpenOTPInput}
+          setIsOpenOTP={setIsOpenOTP}
         />
       </div>
     </div>

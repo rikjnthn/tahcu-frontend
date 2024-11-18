@@ -1,15 +1,15 @@
 import axios, { isAxiosError } from "axios";
 
 export async function POST(req: Request) {
-  const sendOtpData = await req.json();
+  const resetPwData = await req.json();
 
   try {
-    const { status } = await axios.post(
-      `${process.env.API_URL}/auth/send-otp`,
-      sendOtpData
+    const { status, headers } = await axios.post(
+      `${process.env.API_URL}/auth/reset-password`,
+      resetPwData
     );
 
-    return Response.json(null, { status });
+    return Response.json(null, { headers: Object.entries(headers), status });
   } catch (error) {
     if (isAxiosError(error)) {
       return Response.json(error.response?.data, {

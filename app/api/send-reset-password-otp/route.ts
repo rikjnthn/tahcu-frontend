@@ -1,12 +1,12 @@
 import axios, { isAxiosError } from "axios";
 
 export async function POST(req: Request) {
-  const sendOtpData = await req.json();
+  const sendResetPwOtpData = await req.json();
 
   try {
     const { status } = await axios.post(
-      `${process.env.API_URL}/auth/send-otp`,
-      sendOtpData
+      `${process.env.API_URL}/auth/send-reset-password-otp`,
+      sendResetPwOtpData
     );
 
     return Response.json(null, { status });

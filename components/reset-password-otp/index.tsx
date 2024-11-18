@@ -1,36 +1,37 @@
+"use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios, { isAxiosError } from "axios";
+
+import style from "./reset-password-otp.module.scss";
+import OTPInput from "../otp-input";
+import BackButton from "../back-button";
+import { ErrorResponseType, SetStateType } from "@/interface";
 import { UseFormSetError } from "react-hook-form";
 
-import style from "./signup-otp.module.scss";
-import BackButton from "../back-button";
-import OTPInput from "../otp-input";
-import { ErrorResponseType, SetStateType, SignUpData } from "@/interface";
-
-const SignUpOTP = ({
-  setIsOpenOTP,
+const ResetPasswordOtp = ({
+  resetPwData,
   setIsLoading,
-  setSignupError,
   setError,
-  signUpData,
-}: SignUpOTPPropsType) => {
+  setIsOpenOTP,
+  setResetPwError,
+}: ResetPasswordOtpPropsType) => {
   const [isOtpError, setIsOtpError] = useState<boolean>(false);
   const [otpError, setOtpError] = useState<string>("");
 
   const router = useRouter();
 
-  const signup = async (otp: string) => {
+  const resetPassword = async (otp: string) => {
     try {
       setIsLoading(true);
       setIsOtpError(false);
       setOtpError("");
 
-      const { confirm_password, ...data } = signUpData;
+      const { email, new_password } = resetPwData;
 
-      const bodyData = { data, otp };
+      const bodyData = { email, password: new_password, otp };
 
-      await axios.post("/api/sign-up", bodyData);
+      await axios.post("/api/reset-password", bodyData);
 
       router.push("/a");
     } catch (error) {
@@ -39,15 +40,9 @@ const SignUpOTP = ({
       const errorResponse = error.response?.data.error;
 
       if (errorResponse?.code === "VALIDATION_ERROR") {
-        const signUpDataKeys = [
-          "user_id",
-          "username",
-          "password",
-          "email",
-        ] as const;
-
-        signUpDataKeys.forEach((name) => {
-          setError(name, { message: errorResponse?.message[name] });
+        setError("email", { message: errorResponse?.message.email });
+        setError("new_password", {
+          message: errorResponse?.message.new_password,
         });
 
         setIsOpenOTP(false);
@@ -66,7 +61,7 @@ const SignUpOTP = ({
         return;
       }
 
-      setSignupError("Failed to sign up");
+      setResetPwError("Failed to reset password");
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +83,7 @@ const SignUpOTP = ({
       <div>
         <OTPInput
           length={4}
-          handleSubmit={signup}
+          handleSubmit={resetPassword}
           isLoading={false}
           error={otpError}
           isInvalid={isOtpError}
@@ -98,12 +93,18 @@ const SignUpOTP = ({
   );
 };
 
-export default SignUpOTP;
+export default ResetPasswordOtp;
 
-interface SignUpOTPPropsType {
+interface ResetPasswordDataType {
+  email: string;
+  new_password: string;
+  confirm_password: string;
+}
+
+interface ResetPasswordOtpPropsType {
+  resetPwData: ResetPasswordDataType;
   setIsLoading: SetStateType<boolean>;
   setIsOpenOTP: SetStateType<boolean>;
-  setError: UseFormSetError<SignUpData>;
-  setSignupError: SetStateType<string>;
-  signUpData: SignUpData;
+  setError: UseFormSetError<ResetPasswordDataType>;
+  setResetPwError: SetStateType<string>;
 }
