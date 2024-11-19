@@ -29,7 +29,7 @@ const HomePage = () => {
 
   const { data: chats } = useQuery<ChatType[]>({
     queryKey: ["chats"],
-    queryFn: async () => getChats({ getFromCache: true }),
+    queryFn: getChats,
     refetchOnWindowFocus: false,
   });
 

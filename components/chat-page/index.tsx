@@ -28,7 +28,7 @@ const ChatPage = () => {
 
   const { data: chats } = useQuery<ChatType[]>({
     queryKey: ["chats"],
-    queryFn: async () => getChats({ getFromCache: false }),
+    queryFn: getChats,
     refetchOnWindowFocus: false,
   });
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);

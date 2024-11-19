@@ -2,10 +2,8 @@ import axios from "axios";
 
 import { ChatType, ContactType, GroupWithMembershipType } from "@/interface";
 
-export default async function getChats({
-  getFromCache,
-}: GetChatsOptionType): Promise<ChatType[]> {
-  if (typeof sessionStorage !== "undefined" && getFromCache) {
+export default async function getChats(): Promise<ChatType[]> {
+  if (typeof sessionStorage !== "undefined") {
     const chats = sessionStorage.getItem("chats");
 
     if (chats) return JSON.parse(chats);
@@ -37,8 +35,4 @@ export default async function getChats({
   }
 
   return chats;
-}
-
-interface GetChatsOptionType {
-  getFromCache: boolean;
 }
