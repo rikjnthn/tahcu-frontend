@@ -1,5 +1,4 @@
 "use client";
-
 import clsx from "clsx";
 
 import style from "./dark-mode-toggle.module.scss";

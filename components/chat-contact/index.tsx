@@ -1,23 +1,12 @@
 "use client";
-
 import Link from "next/link";
+import clsx from "clsx";
 
 import PhotoProfile from "../photo-profile";
 import style from "./chat-contact.module.scss";
 import { useURLHash } from "@/context/url-hash-context";
-import clsx from "clsx";
 
-const ChatContact = ({
-  to,
-  name,
-  message,
-  unread,
-}: {
-  to: string;
-  name: string;
-  message: string;
-  unread: number;
-}) => {
+const ChatContact = ({ to, name, message, unread }: ChatContactPropsType) => {
   const { hash, setHash } = useURLHash();
 
   const isOpen = hash === to;
@@ -42,3 +31,10 @@ const ChatContact = ({
 };
 
 export default ChatContact;
+
+interface ChatContactPropsType {
+  to: string;
+  name: string;
+  message: string;
+  unread: number;
+}

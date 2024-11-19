@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 
 import style from "./message-context-menu.module.scss";
@@ -70,7 +71,7 @@ const MessageContextMenu = ({
   };
 
   return (
-    <div ref={messageContextRef} className={`${style.message_context}`}>
+    <div ref={messageContextRef} className={style.message_context}>
       <button onClick={handleCopyMessage} title="Copy message">
         Copy
       </button>

@@ -1,5 +1,4 @@
 "use client";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import ChatContact from "../chat-contact";

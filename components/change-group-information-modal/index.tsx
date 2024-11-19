@@ -22,10 +22,7 @@ import { useURLHash } from "@/context/url-hash-context";
 const ChangeGroupInformationModal = ({
   description,
   setIsOpenModal,
-}: {
-  description: string;
-  setIsOpenModal: SetStateType<boolean>;
-}) => {
+}: ChangeGroupInformationModalPropsType) => {
   const {
     register,
     formState: { errors },
@@ -40,7 +37,8 @@ const ChangeGroupInformationModal = ({
     UpdateGroupDataType
   >({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
+    mutationFn: async (updateData) =>
+      axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   const { isDark } = useDarkMode();
@@ -137,3 +135,8 @@ const ChangeGroupInformationModal = ({
 };
 
 export default ChangeGroupInformationModal;
+
+interface ChangeGroupInformationModalPropsType {
+  description: string;
+  setIsOpenModal: SetStateType<boolean>;
+}

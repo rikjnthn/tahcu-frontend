@@ -53,16 +53,16 @@ const AddNewContactModal = ({
   const contacts = chats?.filter((chat) => chat.type === "Contact");
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
-    const contactFound = contacts?.find((val) => {
-      return val.friends_id === user_id || val.user_id === user_id;
+    if (!user_id) return;
+
+    const contactFound = contacts?.find((contact) => {
+      return contact.friends_id === user_id || contact.user_id === user_id;
     });
 
     if (contactFound) {
       setError("user_id", { message: "Contact has already exists" });
       return;
     }
-
-    if (!user_id) return;
 
     mutate(user_id, {
       onError(error) {
@@ -74,9 +74,7 @@ const AddNewContactModal = ({
         }
 
         if (errorResponse?.code === "VALIDATION_ERROR") {
-          setError("user_id", {
-            message: errorResponse.message.user_id,
-          });
+          setError("user_id", { message: errorResponse.message.user_id });
           return;
         }
 

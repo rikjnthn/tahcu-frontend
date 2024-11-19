@@ -1,5 +1,4 @@
 "use client";
-
 import BackButton from "../back-button";
 import style from "./user-profile-header.module.scss";
 import EditButton from "../edit-button";

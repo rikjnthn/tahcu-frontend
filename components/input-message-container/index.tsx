@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 
 import style from "./input-message-container.module.scss";
@@ -8,7 +7,7 @@ import CloseButton from "../close-button";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useDarkMode } from "@/context/dark-mode-context";
 
-const SendMessagePlace = () => {
+const InputMessageContainer = () => {
   const inputMessageContainerRef = useRef<HTMLDivElement>(null);
   const inputMessageRef = useRef<HTMLTextAreaElement>(null);
 
@@ -87,4 +86,4 @@ const SendMessagePlace = () => {
   );
 };
 
-export default SendMessagePlace;
+export default InputMessageContainer;

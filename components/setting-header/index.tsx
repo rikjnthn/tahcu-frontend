@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import { useHomePageDispatch } from "@/context/home-page-context";

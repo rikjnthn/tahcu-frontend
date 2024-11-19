@@ -1,12 +1,11 @@
 "use client";
-
 import { useState } from "react";
+import clsx from "clsx";
 
 import style from "./message.module.scss";
 import MessageContextMenu from "../message-context-menu";
 import { MessageMenuCoordinateType } from "@/interface";
 import { useChatPage } from "@/context/chat-page-context";
-import clsx from "clsx";
 
 const Message = ({ id, message, time, isSender, name }: MessagePropsType) => {
   const [openMessageMenu, setOpenMessageMenu] = useState<boolean>(false);

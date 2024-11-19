@@ -1,3 +1,4 @@
+"use client";
 import React, { FormEvent, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -20,10 +21,7 @@ import { useURLHash } from "@/context/url-hash-context";
 const EditMembers = ({
   currentMembers,
   setIsEditMembers,
-}: {
-  currentMembers: GroupMemberShipType[];
-  setIsEditMembers: SetStateType<boolean>;
-}) => {
+}: EditMembersPropsType) => {
   const [addMemberError, setAddMembersError] = useState<string>("");
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
@@ -149,4 +147,9 @@ export default EditMembers;
 interface AddMemberDataType {
   group_id: string;
   members: string[];
+}
+
+interface EditMembersPropsType {
+  currentMembers: GroupMemberShipType[];
+  setIsEditMembers: SetStateType<boolean>;
 }

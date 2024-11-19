@@ -1,8 +1,6 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import { QueryKey, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import React, { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./chat-profile.module.scss";
 import PlusButton from "../plus-button";
