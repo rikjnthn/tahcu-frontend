@@ -28,7 +28,7 @@ const ChatPage = () => {
 
   const { data: chats } = useQuery<ChatType[]>({
     queryKey: ["chats"],
-    queryFn: getChats,
+    queryFn: async () => getChats({ getFromCache: false }),
     refetchOnWindowFocus: false,
   });
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
@@ -38,7 +38,7 @@ const ChatPage = () => {
 
     if (!foundChat) return;
 
-    if (foundChat?.type === "Group") {
+    if (foundChat.type === "Group") {
       setIsGroup(true);
       setName(foundChat.name);
     } else {
