@@ -33,6 +33,29 @@ const InputMessage = (
     }
   };
 
+  const handleSendMessage = (message: string) => {
+    if (messageIo.disconnected) return;
+
+    if (isEditMessage) {
+      messageIo.emit("update", {
+        chat_id: chatId,
+        data: { id: editMessageId, message },
+      });
+
+      return;
+    }
+
+    messageIo.emit("create", {
+      chat_id: chatId,
+      data: {
+        sender_id: user?.user_id,
+        group_id: isGroup ? chatId : undefined,
+        contact_id: !isGroup ? chatId : undefined,
+        message,
+      },
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -42,22 +65,7 @@ const InputMessage = (
 
     if (!message) return;
 
-    if (isEditMessage) {
-      messageIo.emit("update", {
-        chat_id: chatId,
-        data: { id: editMessageId, message },
-      });
-    } else {
-      messageIo.emit("create", {
-        chat_id: chatId,
-        data: {
-          sender_id: user?.user_id,
-          group_id: isGroup ? chatId : undefined,
-          contact_id: !isGroup ? chatId : undefined,
-          message,
-        },
-      });
-    }
+    handleSendMessage(message);
 
     const textarea = inputMessageRef.current;
     const inputMessageContainer = textarea.parentElement?.parentElement;

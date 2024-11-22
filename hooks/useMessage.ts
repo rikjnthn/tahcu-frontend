@@ -30,6 +30,8 @@ export default function useMessages({
   const { isGroup } = useChatPage();
 
   useEffect(() => {
+    if (messageIo.disconnected) return;
+
     messageIo.emit(
       "find-all",
       {
@@ -92,6 +94,8 @@ export default function useMessages({
   }, [chatId]);
 
   const fetchNextMessages = useCallback(() => {
+    if (messageIo.disconnected) return;
+
     skipFactor.current += 1;
 
     messageIo.emit(
