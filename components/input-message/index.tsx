@@ -1,11 +1,9 @@
 "use client";
 import React, { forwardRef, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
 import style from "./input-message.module.scss";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
-import { UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
 import { useURLHash } from "@/context/url-hash-context";
 import { useChatPage } from "@/context/chat-page-context";
@@ -17,14 +15,11 @@ const InputMessage = (
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   const { hash: chatId } = useURLHash();
-  const queryClient = useQueryClient();
   const messageIo = useSocket();
   const { isEditMessage, editMessageId } = useChat();
   const { isGroup } = useChatPage();
   const { setIsEditMessage } = useChatDispatch();
   const { isDark } = useDarkMode();
-
-  const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -48,7 +43,6 @@ const InputMessage = (
     messageIo.emit("create", {
       chat_id: chatId,
       data: {
-        sender_id: user?.user_id,
         group_id: isGroup ? chatId : undefined,
         contact_id: !isGroup ? chatId : undefined,
         message,

@@ -5,8 +5,15 @@ import {
   useRef,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { MessageType, SetStateType } from "@/interface";
+import {
+  ChatType,
+  ErrorResponseType,
+  MessageType,
+  SetStateType,
+} from "@/interface";
 import { useSocket } from "@/context/socket-connection-context";
 import { useURLHash } from "@/context/url-hash-context";
 import { useChatPage } from "@/context/chat-page-context";
@@ -25,9 +32,11 @@ export default function useMessages({
   const skipFactor = useRef<number>(0);
   const shouldFetch = useRef<boolean>(true);
 
+  const router = useRouter();
   const { hash: chatId } = useURLHash();
   const messageIo = useSocket();
   const { isGroup } = useChatPage();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (messageIo.disconnected) return;
@@ -87,6 +96,30 @@ export default function useMessages({
       messageIo.off("deleted-message");
     };
   }, [messageIo, chatId, setScrollPosition, setIsMessageAdded, isAfterEdit]);
+
+  useEffect(() => {
+    messageIo.on("error", (error: ErrorResponseType) => {
+      if (error.error.code === "NOT_FOUND") {
+        queryClient.setQueryData<ChatType[]>(["chats"], (prevChats) => {
+          if (!prevChats) return [];
+
+          const newChats = prevChats.filter((chat) => chat.id !== chatId);
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
+        });
+
+        router.push("/a");
+      }
+    });
+
+    return () => {
+      messageIo.off("error");
+    };
+  }, [messageIo, queryClient, router, chatId]);
 
   useEffect(() => {
     skipFactor.current = 0;
