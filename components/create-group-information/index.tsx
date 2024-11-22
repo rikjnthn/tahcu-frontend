@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import MemberList from "../member-list";
 import style from "./create-group-information.module.scss";
-import { ErrorResponseType, UserDataType } from "@/interface";
+import { ChatType, ErrorResponseType, UserDataType } from "@/interface";
 import Input from "../input";
 import NextButton from "../next-button";
 import { useHomePageDispatch } from "@/context/home-page-context";
@@ -15,9 +15,8 @@ import {
   useCreateGroupDispatch,
 } from "@/context/create-group-context";
 
-const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
-  const [createGroupErrorMessage, setCreateGroupErrorMessage] =
-    useState<string>("");
+const CreateGroupInformation = () => {
+  const [createGroupError, setCreateGroupError] = useState<string>("");
 
   const queryClient = useQueryClient();
 
@@ -31,6 +30,8 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
     setValue,
     setError,
   } = useForm<{ group_name: string }>();
+
+  const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const { mutate } = useMutation<
     AxiosResponse,
@@ -54,36 +55,51 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
       members,
     };
 
-    setCreateGroupErrorMessage("");
+    setCreateGroupError("");
 
     mutate(groupData, {
       onError(error) {
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
-          setError("group_name", {
-            message: error.response.data.error.message,
-          });
+        const errorResponse = error.response?.data.error;
 
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setCreateGroupError("You have sent too many requests");
           return;
         }
 
-        if (error.response?.data.error.code === "NOT_FOUND") {
-          setCreateGroupErrorMessage(
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("group_name", {
+            message: errorResponse.message.name,
+          });
+          return;
+        }
+
+        if (errorResponse?.code === "NOT_FOUND") {
+          setCreateGroupError(
             "One or more members to be added to the group are not found"
           );
-
           return;
         }
 
-        setCreateGroupErrorMessage("Failed to create group");
+        setCreateGroupError("Failed to create group");
       },
-      async onSuccess() {
-        await queryClient.prefetchQuery({
-          queryKey: ["groupList"],
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          const addGroup = { ...data.data, type: "Group" };
+
+          if (!chats) return [addGroup];
+
+          const newChats = [...chats, addGroup];
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
         });
 
         setIsCreateGroup(false);
         setAddedMembers([]);
-        dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
+        dispatch({ type: "OPEN_CHAT_CONTACT" });
       },
     });
   };
@@ -104,11 +120,15 @@ const CreateGroupInformation = ({ userData }: { userData?: UserDataType }) => {
               value: true,
               message: "Please enter your group name",
             },
+            maxLength: {
+              value: 30,
+              message: "Group name too long",
+            },
           })}
         />
 
-        {createGroupErrorMessage.length > 0 && (
-          <em>{createGroupErrorMessage}</em>
+        {createGroupError.length > 0 && (
+          <span className={style.error_message}>{createGroupError}</span>
         )}
 
         <NextButton type="submit" fill="#fff" title="Create group" />

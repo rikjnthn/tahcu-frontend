@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -18,22 +17,17 @@ const ChatHeader = () => {
   const router = useRouter();
   const { setHash } = useURLHash();
   const { isGroup, name } = useChatPage();
-  const { setIsRouteChangeComplete, setIsOpenHeader } = useChatPageDispatch();
+  const { setIsCloseChatPage, setIsOpenHeader } = useChatPageDispatch();
 
   const backToMain = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setIsRouteChangeComplete(false);
+    setIsCloseChatPage(false);
 
-    //To wait the transition and then change the route
-    let done = false;
-
-    const id = setTimeout(() => {
+    //To wait the close chat page transition to end and then change the route
+    setTimeout(() => {
       router.replace("/a");
       setHash("");
-      done = true;
     }, 100);
-
-    done && clearTimeout(id);
   };
 
   const openChatSetting = (e: React.MouseEvent<HTMLButtonElement>) => {

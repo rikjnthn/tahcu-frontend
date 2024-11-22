@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 import style from "./photo-profile.module.scss";
 
 const PhotoProfile = ({
@@ -10,7 +12,7 @@ const PhotoProfile = ({
   if (!name) return;
   return (
     <div
-      className={`${style.photo_profile} photo_profile_${size}`}
+      className={clsx(style.photo_profile, `photo_profile_${size}`)}
       title={name}
     >
       {name[0].toUpperCase()}

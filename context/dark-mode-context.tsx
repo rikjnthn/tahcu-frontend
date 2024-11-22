@@ -1,5 +1,8 @@
-import { SetStateType } from "@/interface";
+"use client";
+
 import React, { createContext, useContext } from "react";
+
+import { SetStateType } from "@/interface";
 
 const DarkModeContext = createContext<DarkModeContextType | null>(null);
 

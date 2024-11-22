@@ -9,7 +9,7 @@ import OTPInput from "../otp-input";
 import { ErrorResponseType, SetStateType, SignUpData } from "@/interface";
 
 const SignUpOTP = ({
-  setIsOpenOTPInput,
+  setIsOpenOTP,
   setIsLoading,
   setSignupError,
   setError,
@@ -50,22 +50,19 @@ const SignUpOTP = ({
           setError(name, { message: errorResponse?.message[name] });
         });
 
-        setIsOpenOTPInput(false);
-
+        setIsOpenOTP(false);
         return;
       }
 
       if (errorResponse?.code === "OTP_EXPIRED") {
         setIsOtpError(true);
         setOtpError("OTP has been expired");
-
         return;
       }
 
       if (errorResponse?.code === "INVALID") {
         setIsOtpError(true);
         setOtpError("OTP is invalid");
-
         return;
       }
 
@@ -79,7 +76,7 @@ const SignUpOTP = ({
     <div className={style.otp_container}>
       <div>
         <header className={style.header}>
-          <BackButton onClick={() => setIsOpenOTPInput(false)} fill="#000000" />
+          <BackButton onClick={() => setIsOpenOTP(false)} fill="#000000" />
           <span>Verify OTP</span>
         </header>
 
@@ -105,7 +102,7 @@ export default SignUpOTP;
 
 interface SignUpOTPPropsType {
   setIsLoading: SetStateType<boolean>;
-  setIsOpenOTPInput: SetStateType<boolean>;
+  setIsOpenOTP: SetStateType<boolean>;
   setError: UseFormSetError<SignUpData>;
   setSignupError: SetStateType<string>;
   signUpData: SignUpData;

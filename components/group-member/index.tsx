@@ -4,13 +4,7 @@ import Member from "../member";
 import style from "./group-member.module.scss";
 import { GroupMemberShipType } from "@/interface";
 
-const GroupMember = ({
-  members,
-  adminId,
-}: {
-  members?: GroupMemberShipType[];
-  adminId?: string;
-}) => {
+const GroupMember = ({ members, adminId }: GroupMemberPropsType) => {
   return (
     <div className={style.group_member}>
       <span>Member</span>
@@ -31,3 +25,8 @@ const GroupMember = ({
 };
 
 export default GroupMember;
+
+interface GroupMemberPropsType {
+  members?: GroupMemberShipType[];
+  adminId?: string;
+}

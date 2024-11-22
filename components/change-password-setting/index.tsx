@@ -43,15 +43,15 @@ const ChangePasswordSetting = () => {
 
     mutate(data, {
       onError(error) {
-        if (error.response?.status === 429) {
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
           setChangePasswordErrorMessage(
             "You have sent too many requests to the server."
           );
 
           return;
         }
-
-        const errorResponse = error.response?.data.error;
 
         if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("current_password", {
@@ -133,9 +133,9 @@ const ChangePasswordSetting = () => {
         />
 
         {changePasswordErrorMessage.length > 0 && (
-          <em className={style.change_password_error}>
+          <span className={style.change_password_error}>
             {changePasswordErrorMessage}
-          </em>
+          </span>
         )}
 
         <SubmitButton name="Confrim" isLoading={isPending} />

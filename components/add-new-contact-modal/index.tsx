@@ -6,7 +6,12 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 import style from "./add-new-contact-modal.module.scss";
 import CloseButton from "../close-button";
-import { ContactType, ErrorResponseType, SetStateType } from "@/interface";
+import {
+  ChatType,
+  ContactType,
+  ErrorResponseType,
+  SetStateType,
+} from "@/interface";
 import Input from "../input";
 import SubmitButton from "../submit-button";
 import { useSocket } from "@/context/socket-connection-context";
@@ -19,8 +24,7 @@ const AddNewContactModal = ({
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const [addContactErrorMessage, setAddContactErrorMessage] =
-    useState<string>("");
+  const [addContactError, setAddContactError] = useState<string>("");
 
   const { isDark } = useDarkMode();
   const messageIo = useSocket();
@@ -34,7 +38,7 @@ const AddNewContactModal = ({
     setError,
   } = useForm<ContactInformationType>();
 
-  const { data, mutate, isPending } = useMutation<
+  const { mutate, isPending } = useMutation<
     AxiosResponse<ContactType>,
     AxiosError<ErrorResponseType>,
     string
@@ -45,50 +49,67 @@ const AddNewContactModal = ({
     retry: false,
   });
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
+  const contacts = chats?.filter((chat) => chat.type === "Contact");
 
   const onSubmit = ({ user_id }: ContactInformationType) => {
-    const contactFound = contacts?.find((val) => {
-      return val.friends_id === user_id || val.user_id === user_id;
+    if (!user_id) return;
+
+    const contactFound = contacts?.find((contact) => {
+      return contact.friends_id === user_id || contact.user_id === user_id;
     });
 
     if (contactFound) {
       setError("user_id", { message: "Contact has already exists" });
-
       return;
     }
-
-    if (!user_id) return;
 
     mutate(user_id, {
       onError(error) {
         const errorResponse = error.response?.data.error;
 
-        if (errorResponse?.code === "VALIDATION_ERROR") {
-          setError("user_id", {
-            message: errorResponse.message.user_id,
-          });
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setAddContactError("You have sent too many requests");
           return;
         }
+
+        if (errorResponse?.code === "VALIDATION_ERROR") {
+          setError("user_id", { message: errorResponse.message.user_id });
+          return;
+        }
+
         if (errorResponse?.code === "DUPLICATE_VALUE") {
           setError("user_id", { message: "Contact has already exists" });
           return;
         }
+
         if (errorResponse?.code === "NOT_FOUND") {
           setError("user_id", { message: "User id not found" });
           return;
         }
 
-        setAddContactErrorMessage("Failed to add contact");
+        setAddContactError("Failed to add contact");
       },
 
-      async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["contactList"] });
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          const newContact = { ...data.data, type: "Contact" as const };
+
+          if (!chats) return [newContact];
+
+          const newChats = [...chats, newContact];
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
+        });
 
         messageIo.emit("join-room", { ids: [data?.data.id] });
 
         setIsOpenModal(false);
-        dispatch({ type: "SET_OPEN_CHAT_CONTACT" });
+        dispatch({ type: "OPEN_CHAT_CONTACT" });
       },
     });
   };
@@ -123,11 +144,15 @@ const AddNewContactModal = ({
               value: 4,
               message: "User id should contain a minimum of 4 letters",
             },
+            maxLength: {
+              value: 20,
+              message: "User id should contain a maximum of 20 letters",
+            },
           })}
         />
 
-        {addContactErrorMessage.length > 0 && (
-          <em className={style.error_message}>{addContactErrorMessage}</em>
+        {addContactError.length > 0 && (
+          <span className={style.error_message}>{addContactError}</span>
         )}
 
         <SubmitButton name="Add" isLoading={isPending} title="Add contact" />

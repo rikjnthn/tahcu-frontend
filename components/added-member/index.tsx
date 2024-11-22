@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 
 import PhotoProfile from "../photo-profile";

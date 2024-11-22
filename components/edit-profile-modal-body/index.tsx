@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -15,8 +14,7 @@ const EditProfileModalBody = ({
 }: {
   setIsOpenModal: SetStateType<boolean>;
 }) => {
-  const [editProfileErrorMessage, setEditProfileErrorMessage] =
-    useState<string>("");
+  const [editProfileError, setEditProfileError] = useState<string>("");
 
   const queryClient = useQueryClient();
 
@@ -28,7 +26,7 @@ const EditProfileModalBody = ({
   } = useForm<UpdateUserDataType>();
 
   const { isPending, mutate } = useMutation<
-    AxiosResponse,
+    AxiosResponse<UserDataType>,
     AxiosError<ErrorResponseType>,
     UpdateUserDataType
   >({
@@ -44,7 +42,7 @@ const EditProfileModalBody = ({
       data.user_id === userData?.user_id &&
       data.username === userData?.username;
 
-    setEditProfileErrorMessage("");
+    setEditProfileError("");
 
     if (isDataSame) {
       setIsOpenModal(false);
@@ -54,6 +52,12 @@ const EditProfileModalBody = ({
     mutate(data, {
       onError(error) {
         const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setEditProfileError("You have sent too many requests");
+          return;
+        }
+
         if (errorResponse?.code === "DUPLICATE_VALUE") {
           setError("user_id", { message: errorResponse?.message.user_id });
           return;
@@ -65,10 +69,15 @@ const EditProfileModalBody = ({
           return;
         }
 
-        setEditProfileErrorMessage("Failed to update profile");
+        setEditProfileError("Failed to update profile");
       },
-      async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["userData"] });
+      onSuccess(data) {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(data.data));
+        }
+
+        queryClient.setQueryData(["userData"], data.data);
+
         setIsOpenModal(false);
       },
     });
@@ -88,6 +97,10 @@ const EditProfileModalBody = ({
             value: 4,
             message: "Username should contain a minimum of 4 letters",
           },
+          maxLength: {
+            value: 20,
+            message: "Username should contain a maximum of 20 letters",
+          },
           value: userData?.username,
         })}
       />
@@ -103,12 +116,16 @@ const EditProfileModalBody = ({
             value: 4,
             message: "User id should contain a minimum of 4 letters",
           },
+          maxLength: {
+            value: 20,
+            message: "User id should contain a maximum of 20 letters",
+          },
           value: userData?.user_id,
         })}
       />
 
-      {editProfileErrorMessage.length > 0 && (
-        <em className={style.error_message}>{editProfileErrorMessage}</em>
+      {editProfileError.length > 0 && (
+        <span className={style.error_message}>{editProfileError}</span>
       )}
 
       <SubmitButton name="Confirm" isLoading={isPending} />

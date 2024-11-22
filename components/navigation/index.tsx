@@ -1,6 +1,7 @@
 "use client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
 
 import NavOption from "../nav-option";
 import PhotoProfile from "../photo-profile";
@@ -27,15 +28,19 @@ const Navigation = ({
 
   const openUserProfile = () => {
     setIsOpenNav(false);
-    dispatch({ type: "SET_OPEN_PROFILE" });
+    dispatch({ type: "OPEN_PROFILE" });
   };
 
   const openSetting = () => {
     setIsOpenNav(false);
-    dispatch({ type: "SET_OPEN_SETTING" });
+    dispatch({ type: "OPEN_SETTING" });
   };
 
   const logout = () => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.clear();
+    }
+
     const cookies = cookieParser(document.cookie);
 
     for (const cookieName in cookies) {
@@ -44,17 +49,11 @@ const Navigation = ({
       }; expires=${new Date(0).toUTCString()};`;
     }
 
-    localStorage.removeItem("token_exp");
-
     router.push("/");
   };
 
   return (
-    <nav
-      className={`${style.navigation} ${
-        !isOpenNav ? `${style.close_nav}` : ""
-      }`}
-    >
+    <nav className={clsx(style.navigation, !isOpenNav && style.close_nav)}>
       <div className={style.user_data} onClick={openUserProfile}>
         <PhotoProfile name={data?.username} size="md" />
         <div>

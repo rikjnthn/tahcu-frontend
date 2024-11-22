@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState } from "react";
 
 import { AddedMembersType, SetStateType } from "@/interface";
@@ -36,13 +38,13 @@ export const CreateGroupProvider = ({
   const [addedMembers, setAddedMembers] = useState<AddedMembersType[]>([]);
 
   return (
-    <CreateGroupContext.Provider value={{ isCreateGroup, addedMembers }}>
-      <CreateGroupDispatchContext.Provider
-        value={{ setIsCreateGroup, setAddedMembers }}
-      >
+    <CreateGroupDispatchContext.Provider
+      value={{ setIsCreateGroup, setAddedMembers }}
+    >
+      <CreateGroupContext.Provider value={{ isCreateGroup, addedMembers }}>
         {children}
-      </CreateGroupDispatchContext.Provider>
-    </CreateGroupContext.Provider>
+      </CreateGroupContext.Provider>
+    </CreateGroupDispatchContext.Provider>
   );
 };
 

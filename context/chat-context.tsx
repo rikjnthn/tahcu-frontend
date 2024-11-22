@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useRef, useState } from "react";
 
 import { SetStateType } from "@/interface";
@@ -31,15 +33,15 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
 
   const chatRef = useRef<HTMLDivElement>(null);
   return (
-    <ChatContext.Provider
-      value={{ isEditMessage, editMessage, editMessageId, chatRef }}
+    <ChatDispatchContext.Provider
+      value={{ setEditMessage, setEditMessageId, setIsEditMessage }}
     >
-      <ChatDispatchContext.Provider
-        value={{ setEditMessage, setEditMessageId, setIsEditMessage }}
+      <ChatContext.Provider
+        value={{ isEditMessage, editMessage, editMessageId, chatRef }}
       >
         {children}
-      </ChatDispatchContext.Provider>
-    </ChatContext.Provider>
+      </ChatContext.Provider>
+    </ChatDispatchContext.Provider>
   );
 };
 

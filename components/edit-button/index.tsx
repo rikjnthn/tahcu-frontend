@@ -2,6 +2,7 @@ import React from "react";
 
 import style from "./edit-button.module.scss";
 import { ButtonType } from "@/interface";
+import clsx from "clsx";
 
 const EditButton = ({
   onClick,
@@ -12,7 +13,7 @@ const EditButton = ({
     <button
       type="button"
       onClick={onClick}
-      className={`icon ${style.edit_button}`}
+      className={clsx("icon", style.edit_button)}
       title={title}
     >
       <svg
