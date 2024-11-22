@@ -88,7 +88,13 @@ const CreateGroupInformation = () => {
 
           if (!chats) return [addGroup];
 
-          return [...chats, addGroup];
+          const newChats = [...chats, addGroup];
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
         });
 
         setIsCreateGroup(false);

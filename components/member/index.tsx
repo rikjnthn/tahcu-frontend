@@ -55,6 +55,10 @@ const KickMember = ({ user_id, adminId }: KickMemberPropsType) => {
               ...newChats[groupIndex].group_membership,
               ...data.data,
             ];
+
+            if (typeof sessionStorage !== "undefined") {
+              sessionStorage.setItem("chats", JSON.stringify(newChats));
+            }
           }
 
           return newChats;

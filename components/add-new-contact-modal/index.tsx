@@ -97,7 +97,13 @@ const AddNewContactModal = ({
 
           if (!chats) return [newContact];
 
-          return [...chats, newContact];
+          const newChats = [...chats, newContact];
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
         });
 
         messageIo.emit("join-room", { ids: [data?.data.id] });

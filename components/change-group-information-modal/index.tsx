@@ -66,6 +66,10 @@ const ChangeGroupInformationModal = ({
           );
           newChats[groupIndex] = { ...data.data, type: "Group" };
 
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
           return newChats;
         });
         setIsOpenModal(false);

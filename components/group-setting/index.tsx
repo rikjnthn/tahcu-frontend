@@ -23,7 +23,13 @@ const GroupSetting = ({
     queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
       if (!chats) return [];
 
-      return chats.filter((chat) => chat.id !== chatId);
+      const newChats = chats.filter((chat) => chat.id !== chatId);
+
+      if (typeof sessionStorage !== "undefined") {
+        sessionStorage.setItem("chats", JSON.stringify(newChats));
+      }
+
+      return newChats;
     });
 
     setHash("");
