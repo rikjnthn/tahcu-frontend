@@ -1,15 +1,10 @@
 "use client";
-import axios from "axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import ChatContact from "../chat-contact";
 import style from "./chat-contact.module.scss";
-import { ContactType, GroupType, UserDataType } from "@/interface";
-
-const getUserData = async () => {
-  const { data } = await axios.get<UserDataType>("/api/users");
-  return data;
-};
+import { ChatType, UserDataType } from "@/interface";
+import getUserData from "@/util/get-user-data";
 
 const ChatContactList = () => {
   const { data: userData } = useQuery<UserDataType>({
@@ -20,26 +15,28 @@ const ChatContactList = () => {
 
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
-  const groups = queryClient.getQueryData<GroupType[]>(["groupList"]);
+  const chats = queryClient.getQueryData<ChatType[]>(["chats"]);
 
   return (
     <ul className={style.chat_contact_list}>
-      {contacts?.map(({ id, user_id, friends, user }) => (
-        <ChatContact
-          key={id}
-          to={id}
-          message=""
-          name={
-            user_id === userData?.user_id ? friends.username : user.username
-          }
-          unread={0}
-        />
-      ))}
+      {chats?.map((chat) => {
+        if (chat.type === "Contact") {
+          const { id, friends, user, user_id } = chat;
 
-      {groups?.map(({ id, name }) => (
-        <ChatContact key={id} to={id} message="" name={name} unread={0} />
-      ))}
+          const name =
+            user_id === userData?.user_id ? friends.username : user.username;
+
+          return (
+            <ChatContact key={id} to={id} message="" name={name} unread={0} />
+          );
+        }
+
+        const { id, name } = chat;
+
+        return (
+          <ChatContact key={id} to={id} message="" name={name} unread={0} />
+        );
+      })}
     </ul>
   );
 };

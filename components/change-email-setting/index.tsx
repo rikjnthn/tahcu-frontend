@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,8 +13,7 @@ import { useHomePage } from "@/context/home-page-context";
 import OTPModal from "../otp-modal";
 
 const ChangeEmailSetting = () => {
-  const [changeEmailErrorMessage, setChangeEmailErrorMessage] =
-    useState<string>("");
+  const [changeEmailError, setChangeEmailError] = useState<string>("");
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { register, handleSubmit, reset, clearErrors, getValues, setError } =
@@ -40,25 +40,23 @@ const ChangeEmailSetting = () => {
   const onSubmit = (data: ChangeEmailDataType) => {
     if (data.email === userData?.email) return;
 
-    setChangeEmailErrorMessage("");
+    setChangeEmailError("");
 
     mutate(data, {
       onError(error) {
-        if (error.response?.status === 429) {
-          setChangeEmailErrorMessage(
-            "You have sent too many request. Please try again later"
-          );
+        const errorResponse = error.response?.data.error;
 
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setChangeEmailError("You have sent too many requests");
           return;
         }
 
-        if (error.response?.data.error.code === "DUPLICATE_VALUE") {
+        if (errorResponse?.code === "DUPLICATE_VALUE") {
           setError("email", { message: "OTP has been expired" });
-
           return;
         }
 
-        setChangeEmailErrorMessage("Failed to change email");
+        setChangeEmailError("Failed to change email");
       },
 
       onSuccess() {
@@ -77,7 +75,6 @@ const ChangeEmailSetting = () => {
       >
         <Input
           labelName="Email"
-          errorMessage=""
           type="email"
           placeholder="Email"
           aria-invalid={isError}
@@ -88,19 +85,15 @@ const ChangeEmailSetting = () => {
             },
             validate: {
               isEmail: (v: string) => {
-                if (isEmail(v)) return true;
-
-                return "Email is not valid";
+                if (!isEmail(v)) return "Email is not valid";
               },
             },
             value: userData?.email,
           })}
         />
 
-        {changeEmailErrorMessage.length > 0 && (
-          <em className={style.change_email_error}>
-            {changeEmailErrorMessage}
-          </em>
+        {changeEmailError.length > 0 && (
+          <span className={style.change_email_error}>{changeEmailError}</span>
         )}
 
         <SubmitButton name="Change" isLoading={isPending} />
@@ -109,7 +102,7 @@ const ChangeEmailSetting = () => {
       {isOpenModal && (
         <OTPModal
           setIsOpenModal={setIsOpenModal}
-          setChangeEmailErrorMessage={setChangeEmailErrorMessage}
+          setChangeEmailError={setChangeEmailError}
           setError={setError}
           email={getValues("email")}
         />

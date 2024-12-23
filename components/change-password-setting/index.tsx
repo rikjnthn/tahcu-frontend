@@ -43,15 +43,15 @@ const ChangePasswordSetting = () => {
 
     mutate(data, {
       onError(error) {
-        if (error.response?.status === 429) {
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
           setChangePasswordErrorMessage(
             "You have sent too many requests to the server."
           );
 
           return;
         }
-
-        const errorResponse = error.response?.data.error;
 
         if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("current_password", {
@@ -92,7 +92,7 @@ const ChangePasswordSetting = () => {
       >
         <Input
           labelName="Current Password"
-          errorMessage={errors.current_password?.message?.toString()}
+          error={errors.current_password?.message?.toString()}
           type="password"
           placeholder="Password"
           {...register("current_password", {
@@ -113,7 +113,7 @@ const ChangePasswordSetting = () => {
 
         <Input
           labelName="New Password"
-          errorMessage={errors.new_password?.message?.toString()}
+          error={errors.new_password?.message?.toString()}
           type="password"
           placeholder="New Password"
           {...register("new_password", {
@@ -133,9 +133,9 @@ const ChangePasswordSetting = () => {
         />
 
         {changePasswordErrorMessage.length > 0 && (
-          <em className={style.change_password_error}>
+          <span className={style.change_password_error}>
             {changePasswordErrorMessage}
-          </em>
+          </span>
         )}
 
         <SubmitButton name="Confrim" isLoading={isPending} />

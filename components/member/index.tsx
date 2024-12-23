@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -6,6 +7,8 @@ import PhotoProfile from "../photo-profile";
 import style from "./member.module.scss";
 import {
   AddedMembersType,
+  ChatType,
+  GroupMemberShipType,
   GroupType,
   SetStateType,
   UserDataType,
@@ -14,21 +17,13 @@ import DeleteButton from "../close-button";
 import { useDarkMode } from "@/context/dark-mode-context";
 import { useURLHash } from "@/context/url-hash-context";
 
-const KickMember = ({
-  user_id,
-  chatId,
-  isDark,
-  adminId,
-}: {
-  user_id: string;
-  chatId: string;
-  isDark: boolean;
-  adminId?: string;
-}) => {
+const KickMember = ({ user_id, adminId }: KickMemberPropsType) => {
   const queryClient = useQueryClient();
+  const { isDark } = useDarkMode();
+  const { hash: chatId } = useURLHash();
 
   const { mutate } = useMutation<
-    AxiosResponse,
+    AxiosResponse<GroupMemberShipType[]>,
     AxiosError,
     DeleteMemberDataType
   >({
@@ -48,8 +43,26 @@ const KickMember = ({
     };
 
     mutate(deleteMemberData, {
-      async onSuccess() {
-        await queryClient.fetchQuery({ queryKey: ["group", chatId] });
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          if (!chats) return [];
+
+          const newChats = [...chats];
+          const groupIndex = newChats.findIndex((chat) => chat.id === chatId);
+
+          if (newChats[groupIndex].type === "Group") {
+            newChats[groupIndex].group_membership = [
+              ...newChats[groupIndex].group_membership,
+              ...data.data,
+            ];
+
+            if (typeof sessionStorage !== "undefined") {
+              sessionStorage.setItem("chats", JSON.stringify(newChats));
+            }
+          }
+
+          return newChats;
+        });
       },
     });
   };
@@ -82,9 +95,6 @@ const Member = ({
 }: MembersPropsType) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { hash: chatId } = useURLHash();
-  const { isDark } = useDarkMode();
-
   const addMemberCreateGroup = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.currentTarget.checked;
 
@@ -109,8 +119,11 @@ const Member = ({
       {checkbox && setAddedMembers ? (
         <input ref={inputRef} onChange={addMemberCreateGroup} type="checkbox" />
       ) : null}
+
       <PhotoProfile name={name} size="md" />
+
       <span>{name}</span>
+
       {isMemberAdmin && (
         <div className={style.admin}>
           <span>Admin</span>
@@ -118,12 +131,7 @@ const Member = ({
       )}
 
       {!isMemberAdmin && showDelete ? (
-        <KickMember
-          isDark={isDark}
-          adminId={adminId}
-          chatId={chatId}
-          user_id={user_id}
-        />
+        <KickMember adminId={adminId} user_id={user_id} />
       ) : null}
     </li>
   );
@@ -145,4 +153,9 @@ interface MembersPropsType {
   user_id: string;
   addedMembers?: AddedMembersType[];
   setAddedMembers?: SetStateType<AddedMembersType[]>;
+}
+
+interface KickMemberPropsType {
+  user_id: string;
+  adminId?: string;
 }

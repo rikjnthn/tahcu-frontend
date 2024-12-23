@@ -3,11 +3,15 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import clsx from "clsx";
 
 import { DarkModeProvider } from "@/context/dark-mode-context";
 import { HomePageProvider } from "@/context/home-page-context";
+import { SocketProvider } from "@/context/socket-connection-context";
 import HomePage from "@/components/home-page";
 import { URLHashProvider } from "@/context/url-hash-context";
+import cookieParser from "@/util/cookie-parser";
 
 const ReactQueryDevtools = dynamic(
   async () => {
@@ -15,14 +19,6 @@ const ReactQueryDevtools = dynamic(
       default: d.ReactQueryDevtools,
     }));
   },
-  { ssr: false }
-);
-
-const SocketProvider = dynamic(
-  () =>
-    import("@/context/socket-connection-context").then((d) => ({
-      default: d.SocketProvider,
-    })),
   { ssr: false }
 );
 
@@ -51,18 +47,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const tokenExp = localStorage.getItem("token_exp");
+    const tahcuToken = cookieParser(document.cookie)?.tahcu_auth;
 
-    const parsedTokenExp = JSON.parse(tokenExp ?? "");
-    const tokenExpDate = new Date(parsedTokenExp);
+    const tokenExp = jwtDecode(tahcuToken ?? "").exp;
+
+    if (!tokenExp) return;
+
     const fiveDaysInMs = 432_000_000;
-    const fiveDaysBeforeTokenExpInMs = tokenExpDate.getTime() - fiveDaysInMs;
+    const fiveDaysBeforeTokenExpInMs = tokenExp * 1000 - fiveDaysInMs;
 
     const fiveMinutesInMs = 300_000;
 
     const intervalId = setInterval(() => {
       if (fiveDaysBeforeTokenExpInMs < Date.now()) {
-        axios.post("/api/refresh-token");
+        axios.post("/api/refresh-token").catch();
       }
     }, fiveMinutesInMs);
 
@@ -75,7 +73,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <SocketProvider>
         <DarkModeProvider value={{ isDark, setIsDark }}>
           <URLHashProvider>
-            <main className={`main-page ${isDark ? "dark" : "light"}`}>
+            <main
+              className={clsx("main-page h-full", isDark ? "dark" : "light")}
+            >
               <div className="home-page-container">
                 <HomePageProvider>
                   <HomePage />

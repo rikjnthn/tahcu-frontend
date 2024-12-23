@@ -1,11 +1,12 @@
 import React from "react";
+import clsx from "clsx";
 
 import { ButtonType } from "@/interface";
 import style from "./three-dots.module.scss";
 
 const ThreeDots = ({ onClick, fill }: ButtonType) => {
   return (
-    <button onClick={onClick} className={`icon ${style.three_dots}}`}>
+    <button onClick={onClick} className={clsx("icon", style.three_dots)}>
       <svg
         width="4"
         height="16"

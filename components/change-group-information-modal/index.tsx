@@ -6,7 +6,12 @@ import { useForm } from "react-hook-form";
 
 import style from "./change-group-information-modal.module.scss";
 import CloseButton from "../close-button";
-import { SetStateType, UpdateGroupDataType } from "@/interface";
+import {
+  ChatType,
+  GroupWithMembershipType,
+  SetStateType,
+  UpdateGroupDataType,
+} from "@/interface";
 import SubmitButton from "../submit-button";
 import { useChatPage } from "@/context/chat-page-context";
 import Modal from "@/components/modal";
@@ -17,10 +22,7 @@ import { useURLHash } from "@/context/url-hash-context";
 const ChangeGroupInformationModal = ({
   description,
   setIsOpenModal,
-}: {
-  description: string;
-  setIsOpenModal: SetStateType<boolean>;
-}) => {
+}: ChangeGroupInformationModalPropsType) => {
   const {
     register,
     formState: { errors },
@@ -30,12 +32,13 @@ const ChangeGroupInformationModal = ({
   const { hash: chatId } = useURLHash();
 
   const { mutate, isPending } = useMutation<
-    AxiosResponse,
+    AxiosResponse<GroupWithMembershipType>,
     AxiosError,
     UpdateGroupDataType
   >({
     mutationKey: ["updateGroupInformation"],
-    mutationFn: (updateData) => axios.patch(`/api/group/${chatId}`, updateData),
+    mutationFn: async (updateData) =>
+      axios.patch(`/api/group/${chatId}`, updateData),
   });
 
   const { isDark } = useDarkMode();
@@ -53,8 +56,22 @@ const ChangeGroupInformationModal = ({
     }
 
     mutate(data, {
-      async onSuccess() {
-        await queryClient.refetchQueries({ queryKey: ["group", chatId] });
+      onSuccess(data) {
+        queryClient.setQueryData<ChatType[]>(["chats"], (chats) => {
+          if (!chats) return [];
+
+          const newChats = [...chats];
+          const groupIndex = newChats.findIndex(
+            (chat) => chat.id === data.data.id
+          );
+          newChats[groupIndex] = { ...data.data, type: "Group" };
+
+          if (typeof sessionStorage !== "undefined") {
+            sessionStorage.setItem("chats", JSON.stringify(newChats));
+          }
+
+          return newChats;
+        });
         setIsOpenModal(false);
       },
     });
@@ -80,7 +97,7 @@ const ChangeGroupInformationModal = ({
 
         <Input
           labelName="Name"
-          errorMessage={errors.name?.message?.toString()}
+          error={errors.name?.message?.toString()}
           {...register("name", {
             required: {
               value: true,
@@ -95,11 +112,11 @@ const ChangeGroupInformationModal = ({
         />
         <div>
           <textarea
-            id={"description"}
+            id="description"
             autoComplete="off"
             placeholder="No Description"
             rows={8}
-            aria-invalid={!!errors.description?.message?.toString()}
+            aria-invalid={!!errors.description?.message}
             {...register("description", {
               maxLength: {
                 value: 600,
@@ -108,7 +125,7 @@ const ChangeGroupInformationModal = ({
               value: description,
             })}
           />
-          <label htmlFor={"description"}>Description</label>
+          <label htmlFor="description">Description</label>
         </div>
         <SubmitButton
           className={style.submit}
@@ -122,3 +139,8 @@ const ChangeGroupInformationModal = ({
 };
 
 export default ChangeGroupInformationModal;
+
+interface ChangeGroupInformationModalPropsType {
+  description: string;
+  setIsOpenModal: SetStateType<boolean>;
+}

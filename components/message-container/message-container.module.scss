@@ -12,3 +12,12 @@
     margin-top: auto;
   }
 }
+
+.date_badge {
+  display: flex;
+  justify-content: center;
+  margin-block: 1rem;
+  font-weight: 300;
+  opacity: 0.75;
+  color: var(--date-badge-font-color);
+}

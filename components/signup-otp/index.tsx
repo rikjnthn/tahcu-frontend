@@ -8,17 +8,15 @@ import BackButton from "../back-button";
 import OTPInput from "../otp-input";
 import { ErrorResponseType, SetStateType, SignUpData } from "@/interface";
 
-const sixtyDaysInMs = "5184000000";
-
 const SignUpOTP = ({
-  setIsOpenOTPInput,
+  setIsOpenOTP,
   setIsLoading,
-  setAuthErrorMessage,
+  setSignupError,
   setError,
   signUpData,
 }: SignUpOTPPropsType) => {
   const [isOtpError, setIsOtpError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [otpError, setOtpError] = useState<string>("");
 
   const router = useRouter();
 
@@ -26,23 +24,13 @@ const SignUpOTP = ({
     try {
       setIsLoading(true);
       setIsOtpError(false);
-      setErrorMessage("");
+      setOtpError("");
 
       const { confirm_password, ...data } = signUpData;
 
       const bodyData = { data, otp };
 
       await axios.post("/api/sign-up", bodyData);
-
-      localStorage.setItem(
-        "token_exp",
-        JSON.stringify(
-          new Date(
-            Date.now() +
-              parseInt(process.env.NEXT_PUBLIC_TOKEN_EXPIRED ?? sixtyDaysInMs)
-          )
-        )
-      );
 
       router.push("/a");
     } catch (error) {
@@ -62,26 +50,23 @@ const SignUpOTP = ({
           setError(name, { message: errorResponse?.message[name] });
         });
 
-        setIsOpenOTPInput(false);
-
+        setIsOpenOTP(false);
         return;
       }
 
       if (errorResponse?.code === "OTP_EXPIRED") {
         setIsOtpError(true);
-        setErrorMessage("OTP has been expired");
-
+        setOtpError("OTP has been expired");
         return;
       }
 
       if (errorResponse?.code === "INVALID") {
         setIsOtpError(true);
-        setErrorMessage("OTP is invalid");
-
+        setOtpError("OTP is invalid");
         return;
       }
 
-      setAuthErrorMessage("Failed to sign up");
+      setSignupError("Failed to sign up");
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +76,7 @@ const SignUpOTP = ({
     <div className={style.otp_container}>
       <div>
         <header className={style.header}>
-          <BackButton onClick={() => setIsOpenOTPInput(false)} fill="#000000" />
+          <BackButton onClick={() => setIsOpenOTP(false)} fill="#000000" />
           <span>Verify OTP</span>
         </header>
 
@@ -105,7 +90,7 @@ const SignUpOTP = ({
           length={4}
           handleSubmit={signup}
           isLoading={false}
-          errorMessage={errorMessage}
+          error={otpError}
           isInvalid={isOtpError}
         />
       </div>
@@ -117,8 +102,8 @@ export default SignUpOTP;
 
 interface SignUpOTPPropsType {
   setIsLoading: SetStateType<boolean>;
-  setIsOpenOTPInput: SetStateType<boolean>;
+  setIsOpenOTP: SetStateType<boolean>;
   setError: UseFormSetError<SignUpData>;
-  setAuthErrorMessage: SetStateType<string>;
+  setSignupError: SetStateType<string>;
   signUpData: SignUpData;
 }

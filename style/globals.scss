@@ -6,9 +6,9 @@
   box-sizing: border-box;
 }
 
-main {
-  min-height: 100vh;
-  min-height: 100dvh;
+html,
+body {
+  height: 100%;
 }
 
 .dark {
@@ -107,6 +107,7 @@ main {
   --change-password-error-font-color: #ff0000;
   --change-email-error-font-color: #ff0000;
   --otp-container-bg-color: #353535;
+  --date-badge-font-color: #fff;
 }
 
 .light {
@@ -203,6 +204,7 @@ main {
   --change-password-error-font-color: #ff0000;
   --change-email-error-font-color: #ff0000;
   --otp-container-bg-color: #fff;
+  --date-badge-font-color: #000;
 }
 
 .transition-transform {
@@ -226,10 +228,18 @@ main {
   margin-top: auto;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .photo_profile_xl {
@@ -332,8 +342,9 @@ textarea:focus {
   background-color: transparent;
 }
 
+.error-page,
 .not-found {
-  --not-found-bg-color: #fff;
+  --bg-color: #fff;
 
   display: flex;
   flex-direction: column;
@@ -344,19 +355,7 @@ textarea:focus {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--not-found-bg-color);
-
-  & > svg {
-    scale: 0.5;
-
-    @include breakpoint.tablet {
-      scale: 1;
-    }
-
-    @include breakpoint.desktop {
-      scale: 1.5;
-    }
-  }
+  background-color: var(--bg-color);
 
   & > div {
     font-size: 1.5rem;
@@ -370,6 +369,18 @@ textarea:focus {
       font-size: 4rem;
       margin-top: 5rem;
     }
+  }
+}
+
+.not-found > svg {
+  scale: 0.5;
+
+  @include breakpoint.tablet {
+    scale: 1;
+  }
+
+  @include breakpoint.desktop {
+    scale: 1.5;
   }
 }
 

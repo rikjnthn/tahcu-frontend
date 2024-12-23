@@ -1,17 +1,10 @@
+"use client";
 import React, { useEffect } from "react";
 
 import style from "./modal.module.scss";
 import { SetStateType } from "@/interface";
 
-const Modal = ({
-  onClick,
-  setIsOpenModal,
-  children,
-}: {
-  onClick?: React.MouseEventHandler;
-  setIsOpenModal: SetStateType<boolean>;
-  children: React.ReactNode | React.ReactNode[];
-}) => {
+const Modal = ({ onClick, setIsOpenModal, children }: ModalPropsType) => {
   useEffect(() => {
     const closeModalOnEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsOpenModal(false);
@@ -30,3 +23,9 @@ const Modal = ({
 };
 
 export default Modal;
+
+interface ModalPropsType {
+  onClick?: React.MouseEventHandler;
+  setIsOpenModal: SetStateType<boolean>;
+  children: React.ReactNode | React.ReactNode[];
+}

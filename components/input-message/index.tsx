@@ -1,37 +1,25 @@
 "use client";
-
 import React, { forwardRef, useRef } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 
-import style from "./text-typing.module.scss";
+import style from "./input-message.module.scss";
 import { useChat, useChatDispatch } from "@/context/chat-context";
 import { useSocket } from "@/context/socket-connection-context";
-import { UserDataType } from "@/interface";
 import { useDarkMode } from "@/context/dark-mode-context";
 import { useURLHash } from "@/context/url-hash-context";
 import { useChatPage } from "@/context/chat-page-context";
 
-const TextTyping = (
-  {
-    textareaRef,
-    onInput,
-  }: {
-    textareaRef: React.RefObject<HTMLTextAreaElement>;
-    onInput?: React.FormEventHandler<HTMLTextAreaElement>;
-  },
+const InputMessage = (
+  { inputMessageRef, onInput }: InputMessagePropsType,
   ref: React.ForwardedRef<HTMLTextAreaElement>
 ) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
 
   const { hash: chatId } = useURLHash();
-  const queryClient = useQueryClient();
   const messageIo = useSocket();
   const { isEditMessage, editMessageId } = useChat();
   const { isGroup } = useChatPage();
   const { setIsEditMessage } = useChatDispatch();
   const { isDark } = useDarkMode();
-
-  const user = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -40,32 +28,48 @@ const TextTyping = (
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const message = textareaRef.current?.value;
-
-    setIsEditMessage(false);
-
-    if (!message) return;
+  const handleSendMessage = (message: string) => {
+    if (messageIo.disconnected) return;
 
     if (isEditMessage) {
       messageIo.emit("update", {
         chat_id: chatId,
         data: { id: editMessageId, message },
       });
-    } else {
-      messageIo.emit("create", {
-        chat_id: chatId,
-        data: {
-          sender_id: user?.user_id,
-          group_id: isGroup ? chatId : undefined,
-          contact_id: !isGroup ? chatId : undefined,
-          message,
-        },
-      });
+
+      return;
     }
-    if (textareaRef.current) textareaRef.current.value = "";
+
+    messageIo.emit("create", {
+      chat_id: chatId,
+      data: {
+        group_id: isGroup ? chatId : undefined,
+        contact_id: !isGroup ? chatId : undefined,
+        message,
+      },
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const message = inputMessageRef.current?.value;
+
+    setIsEditMessage(false);
+
+    if (!message) return;
+
+    handleSendMessage(message);
+
+    const textarea = inputMessageRef.current;
+    const inputMessageContainer = textarea.parentElement?.parentElement;
+
+    textarea.value = "";
+    textarea.style.height = "0px";
+
+    if (inputMessageContainer) {
+      inputMessageContainer.style.height = "0px";
+    }
   };
 
   return (
@@ -107,4 +111,9 @@ const TextTyping = (
   );
 };
 
-export default forwardRef(TextTyping);
+export default forwardRef(InputMessage);
+
+interface InputMessagePropsType {
+  inputMessageRef: React.RefObject<HTMLTextAreaElement>;
+  onInput?: React.FormEventHandler<HTMLTextAreaElement>;
+}

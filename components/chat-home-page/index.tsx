@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import clsx from "clsx";
 
 import ChatContactHeader from "@/components/chat-contact-header";
 import Navigation from "@/components/navigation";
@@ -16,7 +17,7 @@ const ChatHomePage = () => {
   return (
     <div>
       <Navigation setIsOpenNav={setIsOpenNav} isOpenNav={isOpenNav} />
-      <div className={`${isOpenChatContact ? "" : "scale-90"}`}>
+      <div className={clsx(!isOpenChatContact && "scale-90")}>
         <ChatContactHeader setIsOpenNav={setIsOpenNav} />
         <ChatContactList />
         {isOpenNav && (

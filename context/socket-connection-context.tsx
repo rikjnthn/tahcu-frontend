@@ -1,7 +1,9 @@
-import React, { createContext, useContext, useEffect, useMemo } from "react";
-import { Socket } from "socket.io-client";
+"use client";
 
-import { messageSocket } from "@/socket";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
+
+import cookieParser from "@/util/cookie-parser";
 
 const SocketContext = createContext<Socket | null>(null);
 
@@ -15,14 +17,29 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
-  const messageIo = useMemo(messageSocket, []);
+  const [messageIo, setMessageIo] = useState<Socket>();
 
   useEffect(() => {
+    const cookies = cookieParser(document.cookie);
+
+    const messageIo = io(`${process.env.NEXT_PUBLIC_API_URL}/message`, {
+      path: "/message",
+      extraHeaders: {
+        "x-csrf-token": decodeURIComponent(cookies?.CSRF_TOKEN ?? ""),
+      },
+      withCredentials: true,
+      autoConnect: false,
+    });
+
+    setMessageIo(messageIo);
+
     messageIo.connect();
     return () => {
       messageIo.disconnect();
     };
-  }, [messageIo]);
+  }, []);
+
+  if (!messageIo) return;
 
   return (
     <SocketContext.Provider value={messageIo}>

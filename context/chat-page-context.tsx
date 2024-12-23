@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext } from "react";
 
 import { SetStateType } from "@/interface";
@@ -38,22 +40,22 @@ export const ChatPageProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <ChatPageContext.Provider value={stateContext}>
-      <ChatPageDispatchContext.Provider value={dispatchContext}>
+    <ChatPageDispatchContext.Provider value={dispatchContext}>
+      <ChatPageContext.Provider value={stateContext}>
         {children}
-      </ChatPageDispatchContext.Provider>
-    </ChatPageContext.Provider>
+      </ChatPageContext.Provider>
+    </ChatPageDispatchContext.Provider>
   );
 };
 
 interface ChatPageStateType {
   isOpenHeader: boolean;
-  isRouteChangeComplete: boolean;
+  isCloseChatPage: boolean;
   isGroup: boolean;
   name: string;
 }
 
 interface ChatPageSetStateType {
   setIsOpenHeader: SetStateType<boolean>;
-  setIsRouteChangeComplete: SetStateType<boolean>;
+  setIsCloseChatPage: SetStateType<boolean>;
 }

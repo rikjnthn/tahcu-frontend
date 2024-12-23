@@ -8,12 +8,7 @@ const SubmitButton = ({
   isLoading,
   className,
   title,
-}: {
-  className?: string;
-  name: string;
-  title?: string;
-  isLoading: boolean;
-}) => {
+}: SubmitButtonPropsType) => {
   return (
     <button
       className={`${style.button} ${className}`}
@@ -27,3 +22,10 @@ const SubmitButton = ({
 };
 
 export default SubmitButton;
+
+interface SubmitButtonPropsType {
+  className?: string;
+  name: string;
+  title?: string;
+  isLoading: boolean;
+}

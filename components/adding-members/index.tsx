@@ -6,7 +6,7 @@ import AddingMembersHeader from "../adding-members-header";
 import AddMembers from "../add-members";
 import MemberList from "../member-list";
 import NextButton from "../next-button";
-import { ContactType, UserDataType } from "@/interface";
+import { ChatType, UserDataType } from "@/interface";
 import {
   useCreateGroup,
   useCreateGroupDispatch,
@@ -15,7 +15,10 @@ import {
 const AddingMembers = () => {
   const queryClient = useQueryClient();
 
-  const contacts = queryClient.getQueryData<ContactType[]>(["contactList"]);
+  const contacts = queryClient
+    .getQueryData<ChatType[]>(["chats"])
+    ?.filter((chat) => chat.type === "Contact");
+
   const userData = queryClient.getQueryData<UserDataType>(["userData"]);
 
   const { addedMembers } = useCreateGroup();

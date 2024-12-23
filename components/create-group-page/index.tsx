@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import clsx from "clsx";
 
 import CreateGroup from "../create-group";
 import AddingMembers from "../adding-members";
@@ -12,10 +13,10 @@ const CreateGroupPage = () => {
 
   return (
     <div className={style.create_group_page}>
-      <div className={`${!isCreateGroup ? "translateX-0" : "translateX-100"}`}>
+      <div className={clsx(!isCreateGroup ? "translateX-0" : "translateX-100")}>
         <AddingMembers />
       </div>
-      <div className={`${isCreateGroup ? "translateX-0" : "translateX-100"}`}>
+      <div className={clsx(isCreateGroup ? "translateX-0" : "translateX-100")}>
         <CreateGroup />
       </div>
     </div>

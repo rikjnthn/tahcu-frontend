@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,11 +13,11 @@ import OTPInput from "../otp-input";
 
 const OTPModal = ({
   setIsOpenModal,
-  setChangeEmailErrorMessage,
+  setChangeEmailError,
   setError,
   email,
 }: ChangeOtpModalPropsType) => {
-  const [otpErrorMessage, setOtpErrorMessage] = useState<string>("");
+  const [otpError, setOtpError] = useState<string>("");
 
   const { mutate, isPending } = useMutation<
     AxiosResponse<UserDataType>,
@@ -33,43 +34,44 @@ const OTPModal = ({
   const onSubmit = (otp: string) => {
     const changeEmailData = { otp, email };
 
-    setChangeEmailErrorMessage("");
-    setOtpErrorMessage("");
+    setChangeEmailError("");
+    setOtpError("");
 
     mutate(changeEmailData, {
       onError(error) {
-        if (error.response?.status === 429) {
-          setChangeEmailErrorMessage(
-            "You have sent too many requests to the server"
-          );
+        const errorResponse = error.response?.data.error;
+
+        if (errorResponse?.code === "TOO_MANY_REQUESTS") {
+          setChangeEmailError("You have sent too many requests");
           return;
         }
 
-        if (error.response?.data.error.code === "VALIDATION_ERROR") {
+        if (errorResponse?.code === "VALIDATION_ERROR") {
           setError("email", {
-            message: error.response.data.error.message.email,
+            message: errorResponse?.message.email,
           });
           return;
         }
 
-        if (error.response?.data.error.code === "INVALID") {
-          setOtpErrorMessage("OTP is not valid");
+        if (errorResponse?.code === "INVALID") {
+          setOtpError("OTP is not valid");
           return;
         }
 
-        if (error.response?.data.error.code === "OTP_EXPIRED") {
-          setOtpErrorMessage("OTP has expired");
+        if (errorResponse?.code === "OTP_EXPIRED") {
+          setOtpError("OTP has expired");
           return;
         }
 
-        setChangeEmailErrorMessage("Failed to change email");
+        setChangeEmailError("Failed to change email");
       },
 
-      async onSuccess(data) {
-        queryClient.setQueryData(["userData"], data);
-        await queryClient.invalidateQueries({
-          queryKey: ["userData"],
-        });
+      onSuccess(data) {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("user", JSON.stringify(data.data));
+        }
+
+        queryClient.setQueryData(["userData"], data.data);
 
         setIsOpenModal(false);
       },
@@ -103,8 +105,8 @@ const OTPModal = ({
             length={4}
             handleSubmit={onSubmit}
             isLoading={isPending}
-            errorMessage={otpErrorMessage}
-            isInvalid={otpErrorMessage.length > 0}
+            error={otpError}
+            isInvalid={otpError.length > 0}
             autoFocus
           />
         </div>
@@ -122,7 +124,7 @@ interface ChangeEmailDataType {
 
 interface ChangeOtpModalPropsType {
   setIsOpenModal: SetStateType<boolean>;
-  setChangeEmailErrorMessage: SetStateType<string>;
+  setChangeEmailError: SetStateType<string>;
   setError: UseFormSetError<Omit<ChangeEmailDataType, "otp">>;
   email: string;
 }

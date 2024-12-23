@@ -1,3 +1,5 @@
+"use client";
+
 import { Dispatch, createContext, useContext, useReducer } from "react";
 
 const initialHomePageState = {
@@ -13,7 +15,7 @@ const reducer = (
   action: ActionType
 ): HomePageStateType => {
   switch (action.type) {
-    case "SET_OPEN_CHAT_CONTACT":
+    case "OPEN_CHAT_CONTACT":
       return {
         isOpenChatContact: true,
         isOpenCreateGroup: false,
@@ -21,7 +23,7 @@ const reducer = (
         isOpenUserProfile: false,
         isOpenSetting: false,
       };
-    case "SET_OPEN_CREATE_GROUP":
+    case "OPEN_CREATE_GROUP":
       return {
         isOpenChatContact: false,
         isOpenCreateGroup: true,
@@ -29,7 +31,7 @@ const reducer = (
         isOpenUserProfile: false,
         isOpenSetting: false,
       };
-    case "SET_OPEN_CREATE_PRIVATE_CHAT":
+    case "OPEN_CREATE_PRIVATE_CHAT":
       return {
         isOpenChatContact: false,
         isOpenCreateGroup: false,
@@ -37,7 +39,7 @@ const reducer = (
         isOpenUserProfile: false,
         isOpenSetting: false,
       };
-    case "SET_OPEN_PROFILE":
+    case "OPEN_PROFILE":
       return {
         isOpenChatContact: false,
         isOpenCreateGroup: false,
@@ -46,7 +48,7 @@ const reducer = (
         isOpenSetting: false,
       };
 
-    case "SET_OPEN_SETTING":
+    case "OPEN_SETTING":
       return {
         isOpenChatContact: false,
         isOpenCreateGroup: false,
@@ -90,21 +92,21 @@ export const HomePageProvider = ({
   const [homePageState, dispatch] = useReducer(reducer, initialHomePageState);
 
   return (
-    <HomePageContext.Provider value={homePageState}>
-      <HomePageDispatchContext.Provider value={dispatch}>
+    <HomePageDispatchContext.Provider value={dispatch}>
+      <HomePageContext.Provider value={homePageState}>
         {children}
-      </HomePageDispatchContext.Provider>
-    </HomePageContext.Provider>
+      </HomePageContext.Provider>
+    </HomePageDispatchContext.Provider>
   );
 };
 
 interface ActionType {
   type:
-    | "SET_OPEN_CHAT_CONTACT"
-    | "SET_OPEN_CREATE_GROUP"
-    | "SET_OPEN_CREATE_PRIVATE_CHAT"
-    | "SET_OPEN_PROFILE"
-    | "SET_OPEN_SETTING";
+    | "OPEN_CHAT_CONTACT"
+    | "OPEN_CREATE_GROUP"
+    | "OPEN_CREATE_PRIVATE_CHAT"
+    | "OPEN_PROFILE"
+    | "OPEN_SETTING";
 }
 
 interface HomePageStateType {

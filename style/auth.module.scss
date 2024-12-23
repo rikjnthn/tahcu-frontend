@@ -1,42 +1,56 @@
+@use "../style/breakpoint.scss";
+
 .auth {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  padding-block: 2.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  --font-color: #0b6e4f;
+
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-align: center;
+  color: var(--font-color);
+}
+
+.form_container {
+  --border-color: #08a045;
+
+  flex-direction: column;
+  gap: 2rem;
+  width: min(90%, 25rem);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
 
   & > form {
-    --border-color: #08a045;
-
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    width: min(25rem, 80%);
-    padding: 2rem;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
+    gap: 1.5rem;
+    width: 100%;
+  }
+}
 
-    & > header {
-      margin-inline: auto;
+.button_and_nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
 
-      & > span {
-        --font-color: #0b6e4f;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 
-        font-size: 36px;
-        font-weight: 600;
-        color: var(--font-color);
-      }
-    }
+    & > a {
+      --font-color: #000;
 
-    & > footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      & > a {
-        --font-color: #000;
-
-        color: var(--font-color);
-      }
+      color: var(--font-color);
     }
   }
 }
@@ -44,13 +58,12 @@
 .auth_error {
   --error-font-color: #ff0000;
 
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 400;
   color: var(--error-font-color);
 }
 
 .sign_up_otp {
   position: absolute;
   background-color: #fff;
-  transition: transform 500ms;
 }

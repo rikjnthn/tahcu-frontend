@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 
 import style from "./otp-input.module.scss";
@@ -10,7 +11,7 @@ const OTPInput = ({
   isLoading,
   autoFocus = false,
   isInvalid = false,
-  errorMessage,
+  error,
 }: OTPInputPropsType) => {
   const [otpValue, setOtpValue] = useState<string[]>(Array(length).fill(""));
 
@@ -33,7 +34,7 @@ const OTPInput = ({
     if (pasteValue.every((val) => !Number.isNaN(Number(val)))) {
       const newOtp = [...otpValue];
 
-      for (let i = 0; i < pasteValue.length; i++) {
+      for (let i = 0; i < length; i++) {
         if (idx < otpValue.length) newOtp[i] = pasteValue[i];
       }
 
@@ -83,11 +84,11 @@ const OTPInput = ({
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const otpAsNumber = otpValue.join("");
+    const otp = otpValue.join("");
 
-    if (otpAsNumber.length === 0) return;
-
-    handleSubmit(otpAsNumber);
+    if (otp.length === 4) {
+      handleSubmit(otp);
+    }
   };
 
   return (
@@ -112,7 +113,7 @@ const OTPInput = ({
         })}
       </div>
 
-      <span className={style.error_message}>{errorMessage}</span>
+      <span className={style.error_message}>{error}</span>
 
       <SubmitButton
         className={style.submit}
@@ -132,5 +133,5 @@ interface OTPInputPropsType {
   isLoading: boolean;
   autoFocus?: boolean;
   isInvalid?: boolean;
-  errorMessage?: string;
+  error?: string;
 }
